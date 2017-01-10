@@ -18,9 +18,14 @@ module.exports={
     //Cursos
     crearCurso: crearCurso,
     modificarCurso: modificarCurso,
+    borrarCurso:borrarCurso,
     mostrarCurso: mostrarCurso,
+    mostrarCursoPorTitulo:mostrarCursoPorTitulo,
     //Horarios
-    insertarHorario:insertarHorario
+    insertarHorario:insertarHorario,
+    actualizarHorario:actualizarHorario,
+    borrarHorario:borrarHorario,
+    mostrarHorario:mostrarHorario
 };
 /*=======================================USUARIOS=======================================*/
 //Crear un usuario
@@ -71,9 +76,7 @@ function modificarUsuario(IDUsuario,valores,callback)
     {
         if(valores!==null)
         {
-            query="UPDATE Usuarios"+
-                  "SET  Correo=?, Nombre=?, Apellidos=?, Contraseña=?, F_Nacimiento=?, Sexo=?" +
-                  "WHERE ID_Usuario= ?";
+            query="UPDATE Usuario SET  Correo=?, Nombre=?, Apellidos=?, Contraseña=?, F_Nacimiento=?, Sexo=? WHERE ID_Usuario= ?";
             valoresEntrada=[valores.correo,valores.nombre,valores.apellidos,valores.contraseña,valores.fechaNac,valores.sexo,IDUsuario];
             //Conectamos con la consulta requerida
             conexion.query(mysql.format(query,valoresEntrada),function(err) 
@@ -207,6 +210,127 @@ function crearCurso(valores,callback)
     else
     {
         callback(new Error("Los valores no son validos"),null);
+    }
+}
+//modificar un usuario
+function modificarCurso(IDCurso,valores,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null)
+    {
+        if(valores!==null)
+        {
+            query="UPDATE cursos SET  Titulo=?, Localidad=?, Direccion=?, Plazas=?, F_Inicio=?, F_Fin=?, Imagen=? WHERE ID_Curso= ?";
+            valoresEntrada=[valores.titulo,valores.localidad,valores.direccion,valores.plazas,valores.fechaInicio,valores.fechaFin,valores.imagen,IDCurso];
+            //Conectamos con la consulta requerida
+            conexion.query(mysql.format(query,valoresEntrada),function(err) 
+            {
+                if (err) 
+                {
+                    console.error(err);
+                    callback(err);
+                } 
+                else 
+                {
+                    conexion.end();
+                }
+            });
+        }
+        else
+        {
+            callback(new Error("Los valores no son validos"));
+        }
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"));
+    }
+}
+//Borra un curso de la BBDD
+function borrarCurso(IDCurso,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null)
+    {
+        query="DELETE FROM cursos WHERE ID_Curso= ?";
+        valoresEntrada=[IDCurso];
+        //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err) 
+        {
+            if (err) 
+            {
+                console.error(err);
+                callback(err);
+            } 
+            else 
+            {
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"));
+    }
+}
+//Muestra todos los datos de un curso
+function mostrarCurso(IDCurso,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null)
+    {
+        query="SELECT * FROM cursos WHERE ID_Curso=?";
+        valoresEntrada=[IDCurso];
+         //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
+        {
+            if (err) 
+            {
+                console.error(err);
+                callback(err,null);
+            } 
+            else 
+            {
+                callback(null,rows);
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"),null);
+    }
+}
+/*Muestra todos los datos de los cursos que tengan todo o parte del titulo pasado
+ * titulo: texto por el que buscar
+ * limite: numero maximo de resultados
+ * posInicio: a partir de donde se quiere mepzar a buscar
+*/
+function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(titulo!==null && titulo!==undefined)
+    {
+        query="SELECT * FROM cursos WHERE MATCH(Titulo) AGAINST(?) ORDER BY F_Inicio ASC LIMIT ? OFFSET ?";
+        valoresEntrada=[titulo,limite,posInicio];
+         //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
+        {
+            if (err) 
+            {
+                console.error(err);
+                callback(err,null);
+            } 
+            else 
+            {
+                callback(null,rows);
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"),null);
     }
 }
 /*=======================================HORARIOS=======================================*/
