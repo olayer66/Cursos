@@ -11,8 +11,7 @@ var session = require("express-session");
 var mysqlSession = require("express-mysql-session");
 //Craga de modulos personalizados
 var config= require("./config");
-var accBBDD =require("./accesoBBDD");
-var controlPartidas=require("./controlPartidas");
+var Cursos=require("./controlCursos");
 //Variables
 var facMulter= multer({ storage: multer.memoryStorage() });
 var recEstaticos= path.join(__dirname, "static");
