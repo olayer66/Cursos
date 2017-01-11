@@ -7,23 +7,14 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var multer=require("multer");
 var expressValidator = require("express-validator");
-var session = require("express-session");
 var mysqlSession = require("express-mysql-session");
 //Craga de modulos personalizados
-var config= require("./config");
-var Cursos=require("./controlCursos");
+var config=require("./config");
+var cursos=require("./controlCursos");
 //Variables
 var facMulter= multer({ storage: multer.memoryStorage() });
 var recEstaticos= path.join(__dirname, "static");
 var servidor= express();
-var MySQLStore = mysqlSession(session);
-var sessionStore = new MySQLStore(config.conexionBBDD);
-var middlewareSession = session({
-    saveUninitialized: false,
-    secret: "foobar34",
-    resave: false,
-    store: sessionStore
-});
 
 //Configuracion de Express
 servidor.set("view engine", "ejs");
@@ -33,7 +24,7 @@ servidor.set("views","paginas");
 servidor.use(express.static(recEstaticos));
 servidor.use(bodyParser.urlencoded({ extended: true }));
 servidor.use(expressValidator());
-servidor.use(middlewareSession);
+
 //funcionalidad del servidor
 /*==========================================METODOS GET==================================================*/
 //Carga pagina inicio
@@ -46,6 +37,61 @@ servidor.get("/",function(req,res)
         res.redirect("/");
 });
 /*=========================================METODOS POST==================================================*/
+//Creacion de un nuevo curso
+servidor.post("/index/curso/nuevo",facMulter.single("imgCurso"), function(req, res) 
+{
+    //control de contenido    
+        //Campos vacios
+            req.checkBody("titulo","El titulo no puede estar vacio").notEmpty();
+            req.checkBody("descripcion","Debe de indicar una descripcion del curso").notEmpty();
+            req.checkBody("localidad","Debe de indicar la localidad donde se imparte el curso").notEmpty();
+            req.checkBody("direccion","Debe de Indicar la direccion de donde se imparte el curso").notEmpty();
+            req.checkBody("plazas","Debe de indicar el numero de plazas").notEmpty();
+            req.checkBody("fechaInicio","La fecha de inicio no puede estar en blanco").notEmpty();
+            req.checkBody("fechaFin","La fecha de fin no puede estar en blanco").notEmpty();
+        //Control de tipos de datos
+            req.checkBody("titulo","El titulo solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
+            req.checkBody("descripcion","La descripcion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
+            req.checkBody("localidad","La localidad solo puede contener letras").matches(/^[A-Z\s]*$/i);
+            req.checkBody("direccion","La direccion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
+            req.checkBody("plazas","El numero de plazas solo puede ser numerico").matches(/^[0-9]*$/i);
+            
+    //Validacion del contenido
+    req.getValidationResult().then(function(result) 
+    {
+        //Carga de la imagen de perfil
+        if (result.isEmpty()) 
+        {
+            if (req.file)
+            {
+                req.body.imgCurso= req.file.buffer;
+            }
+            else
+            {
+                req.body.imgCurso=null;
+            }
+            //Llamada a la funcion para crear el curso
+            cursos.crearCurso(req.body,function(err)
+            {
+                if(err)
+                {
+                    res.status(400);
+                    res.render();
+                }
+                else
+                {
+                    res.status(200);
+                    res.render();
+                }
+            });
+        } 
+        else 
+        {
+             res.status(200);
+             res.render("nuevousuario",{errores:result.array()});
+        }
+    });
+});
 //Creacion de un nuevo usuario
 servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res) 
 {

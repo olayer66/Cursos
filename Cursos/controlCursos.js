@@ -14,6 +14,9 @@ module.exports={
 //Crear un curso
 function crearCurso(datos,callback)
 {
+    //Insertamos el curso
+    
+    //Insertamos los horarios
     
 }
 //Modificar un curso

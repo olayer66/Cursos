@@ -15,6 +15,8 @@ module.exports={
     //Usuarios y cursos
     cursosDeUnUsuario:cursosDeUnUsuario,
     usuariosDeUnCurso:usuariosDeUnCurso,
+    añadirUsuarioCurso:añadirUsuarioCurso,
+    quitarUsuarioCurso:quitarUsuarioCurso,
     //Cursos
     crearCurso: crearCurso,
     modificarCurso: modificarCurso,
@@ -171,6 +173,130 @@ function conectar(datos,callback)
     }
 }
 /*===================================USUARIOS Y CURSOS==================================*/
+//Extrae los cursos en los que esta apuntado el usuario pasado
+function cursosDeUnUsuario(IDUsuario,callback)
+{
+  var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDUsuario!==null && IDUsuario!==undefined)
+    {
+        query="SELECT * FROM asig_cursos WHERE ID_Usuario=?";
+        valoresEntrada=[IDUsuario];
+         //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
+        {
+            if (err) 
+            {
+                console.error(err);
+                callback(err,null);
+            } 
+            else 
+            {
+                callback(null,rows);
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"),null);
+    }
+}
+//Extrae los usuarios que estan inscritos en el curso pasado
+function usuariosDeUnCurso(IDCurso,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null)
+    {
+        query="SELECT * FROM asig_cursos WHERE ID_Curso=?";
+        valoresEntrada=[IDCurso];
+         //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
+        {
+            if (err) 
+            {
+                console.error(err);
+                callback(err,null);
+            } 
+            else 
+            {
+                callback(null,rows);
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"),null);
+    }
+}
+//Añade un usuario a un curso
+function añadirUsuarioCurso(IDUsuario,IDCurso,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null && IDCurso!==undefined)
+    {
+        if(IDUsuario!==null && IDUsuario!==undefined)
+        {
+            query="INSERT INTO Cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
+            valoresEntrada=[IDCurso,IDUsuario];
+            //Conectamos con la consulta requerida
+            conexion.query(mysql.format(query,valoresEntrada),function(err) 
+            {
+                if (err) 
+                {
+                    console.error(err);
+                    callback(err);
+                } 
+                else 
+                {
+                    conexion.end();
+                }
+            });
+        }
+        else
+        {
+            callback(new Error("El ID de usuario no es valido"));
+        }
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"));
+    }
+}
+//Quita un usuario de un curso
+function quitarUsuarioCurso(IDUsuario,IDCurso,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null && IDCurso!==undefined)
+    {
+        if(IDUsuario!==null && IDUsuario!==undefined)
+        {
+            query="DELETE FROM asig_cursos WHERE ID_Curso= ? AND ID_Usuario=?";
+            valoresEntrada=[IDCurso,IDUsuario];
+            //Conectamos con la consulta requerida
+            conexion.query(mysql.format(query,valoresEntrada),function(err) 
+            {
+                if (err) 
+                {
+                    console.error(err);
+                    callback(err);
+                } 
+                else 
+                {
+                    conexion.end();
+                }
+            });
+        }
+        else
+        {
+            callback(new Error("El ID de usuario no es valido"));
+        }
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"));
+    }
+}
 /*========================================CURSOS========================================*/
 //Crear un curso
 function crearCurso(valores,callback)
@@ -178,8 +304,7 @@ function crearCurso(valores,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(valores!==null)
     {
-        query="INSERT INTO Cursos(Titulo,Descripcion,Localidad,Direccion,Plazas,F_inicio,F_Fin)"+
-              "VALUES (?,?,?,?,?,?,?)";
+        query="INSERT INTO Cursos(Titulo,Descripcion,Localidad,Direccion,Plazas,F_inicio,F_Fin) VALUES (?,?,?,?,?,?,?)";
         valoresEntrada=[valores.titulo,valores.descripcion,valores.localidad,valores.direccion,valores.plazas,valores.fechaInicio,valores.fechaFin];
         //Conectamos con la consulta requerida
         conexion.connect(function(err)
@@ -334,6 +459,141 @@ function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
     }
 }
 /*=======================================HORARIOS=======================================*/
+//Inserta un horario en la tabla
+function insertarHorario (horario,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+   if(horario!==null)
+   {
+       query="INSERT INTO horarios(ID_Curso,ID_Horario,Dia,Hora_Inicio,Hora_Fin)"+
+             "VALUES (?,?,?,?,?)";
+       valoresEntrada=[horario.IDCurso,horario.IDHorario,horario.dia,horario.horaInicio,horario.horaFin];
+       //Conectamos con la consulta requerida
+       conexion.connect(function(err)
+       {
+           if (err) 
+           {
+               console.error(err);
+               callback(err);
+           } 
+           else 
+           {
+               conexion.query(query,valoresEntrada,function(err) 
+               {
+                   if (err) 
+                   {
+                       console.error(err);
+                       callback(err);
+                   } 
+                   else 
+                   {
+                       callback(null);
+                       conexion.end();
+                   }
+               });
+           }      
+       });
+   }
+   else
+   {
+       callback(new Error("El horario no es valido"),null);
+   }
+}
+//Modifica un horario
+function actualizarHorario(horario,callback)
+{
+     var conexion = mysql.createConnection(config.conexionBBDD);
+    if(horario.IDCurso!==null && horario.IDCurso!==undefined)
+    {
+        if(horario.IDHorario!==null && horario.IDHorario!==undefined)
+        {
+            query="UPDATE horarios SET  Dia=?, Hora_Inicio=?, Hora_Fin=? WHERE ID_Curso= ? AND ID_Horario =?";
+            valoresEntrada=[horario.dia,horario.horaInicio,horario.horaFin,horario.IDCurso,horario.IDHorario];
+            //Conectamos con la consulta requerida
+            conexion.query(mysql.format(query,valoresEntrada),function(err) 
+            {
+                if (err) 
+                {
+                    console.error(err);
+                    callback(err);
+                } 
+                else 
+                {
+                    conexion.end();
+                }
+            });
+        }
+        else
+        {
+            callback(new Error("El ID de horario no es valido"));
+        }
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"));
+    }
+}
+//Borra un horario de la tabla
+function borrarHorario (IDCurso,IDHorario,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null && IDCurso!==undefined)
+    {
+        if(IDHorario!==null && IDHorario!==undefined)
+        {
+            query="DELETE FROM horarios WHERE ID_Curso= ? AND ID_Horario=?";
+            valoresEntrada=[IDCurso,IDHorario];
+            //Conectamos con la consulta requerida
+            conexion.query(mysql.format(query,valoresEntrada),function(err) 
+            {
+                if (err) 
+                {
+                    console.error(err);
+                    callback(err);
+                } 
+                else 
+                {
+                    conexion.end();
+                }
+            });
+        }
+        else
+        {
+            callback(new Error("El ID de horario no es valido"));
+        }
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"));
+    }
+}
+function mostrarHorario (IDCurso,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null)
+    {
+        query="SELECT * FROM horarios WHERE ID_Curso=?";
+        valoresEntrada=[IDCurso];
+        //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
+        {
+            if (err) 
+            {
+                console.error(err);
+                callback(err,null);
+            } 
+            else 
+            {
+                callback(null,rows);
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"),null);
+    }
+}
 /*==================================CONTROL DE CONEXION=================================*/
 function handleDisconnect(connection) {
   connection.on('error', function(err) {
