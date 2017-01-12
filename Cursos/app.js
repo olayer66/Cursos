@@ -16,10 +16,6 @@ var facMulter= multer({ storage: multer.memoryStorage() });
 var recEstaticos= path.join(__dirname, "static");
 var servidor= express();
 
-//Configuracion de Express
-servidor.set("view engine", "ejs");
-servidor.set("views","paginas");
-
 //Middleware
 servidor.use(express.static(recEstaticos));
 servidor.use(bodyParser.urlencoded({ extended: true }));
@@ -30,15 +26,19 @@ servidor.use(expressValidator());
 //Carga pagina inicio
 servidor.get("/",function(req,res)
 {
-    res.status(200);
-    if (req.session.IDUsuario===undefined)
-        res.render("login");
-    else
-        res.redirect("/");
+    fs.readFile('./paginas/index.html', function (err, html) 
+    {
+        if (err) {
+            throw err; 
+        }       
+        res.writeHeader(200, {"Content-Type": "text/html"});  
+        res.write(html);  
+        res.end();  
+    });
 });
 /*=========================================METODOS POST==================================================*/
 //Creacion de un nuevo curso
-servidor.post("/index/curso/nuevo",facMulter.single("imgCurso"), function(req, res) 
+servidor.post("/index/curso",facMulter.single("imgCurso"), function(req, res) 
 {
     //control de contenido    
         //Campos vacios
