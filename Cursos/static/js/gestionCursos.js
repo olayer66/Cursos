@@ -11,3 +11,8 @@ function crearFormNuevoCurso()
     $(".contenido").append(" <div class='cuadroTexto' id='titulo'></div>");
     $(".contenido").append(" <div class='cuadroTexto' id='titulo'></div>");
 }
+function cargarBusqueda()
+{
+    console.log("cargando busqueda");
+    $()
+}

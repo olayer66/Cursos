@@ -26,7 +26,7 @@ servidor.use(expressValidator());
 //Carga pagina inicio
 servidor.get("/",function(req,res)
 {
-    fs.readFile('./paginas/index.html', function (err, html) 
+    fs.readFile('./static/index.html', function (err, html) 
     {
         if (err) {
             throw err; 
@@ -76,12 +76,10 @@ servidor.post("/index/curso",facMulter.single("imgCurso"), function(req, res)
                 if(err)
                 {
                     res.status(400);
-                    res.render();
                 }
                 else
                 {
                     res.status(200);
-                    res.render();
                 }
             });
         } 

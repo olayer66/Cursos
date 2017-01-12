@@ -3,29 +3,34 @@ body{
 }
 .cabecera{
     height: 100px;
-    width: 90%;
+    width: 100%;
     background-color: #666666;
 }
 .imgLogo{
-    width: 20%;
     height: 100px;
-    background-image: url("../images/logo.png");
+    position: relative;
+    float: left;
 }
 .login{
     height: 100px;
-    width: 80%;
+    position: relative;
+    float: right;
+    border-left: 5px #666666 solid;
 }
 .menu{
-    height: 50px;
+    height: 47px;
     width: 90%;
     margin: 0px;
     padding: 0px;
     width: 100%;
     position:relative;
     float:left;
-    border-bottom: 2px #666666 outset;
+    border-bottom: 4px #666666 outset;
 }
-#boton{
+#menu{
+        margin-top: 0px;
+}
+.boton{
     background-color:#ffffff;
     position:relative;
     float: left;
@@ -33,8 +38,17 @@ body{
     width:auto;
     vertical-align:bottom;;
     padding-left: 20px;
-    border: 1px #000 solid;
+    border: 3px #000 outset;
+    border-radius: 10px;
     color: #000;
+    height: 35px;
+    text-align: center;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    font-size: 20px;
+    margin-right: 5px;
+    
 }
 #boton:hover{
     background-color:#999999;

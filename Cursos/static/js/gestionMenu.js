@@ -1,7 +1,9 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//carga ek menu sin estar logeado
+function menuSinLog()
+{
+    $("#menu").append("<li class='boton' id='buscarCurso'>Buscador</li>");
+    $("#login").append("<li class='boton' id='logearse'>Login</li>");
+    $("#login").append("<li class='boton' id='registrarse'>registrarse</li>");
+}
 
 
