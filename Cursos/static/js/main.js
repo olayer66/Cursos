@@ -4,13 +4,15 @@
     * Contiene las variables globales
  */
 $(document).ready(function() {
-        menuSinLog();
 	console.log("DOM inicializado");
         //cabecera
         //Menu
-        $("#buscarCurso").on("click",cargarBusqueda());
+        //$("#buscarCurso").on("click",cargarBusqueda());
         //contenido
-
+        $("botonBuscarCurso").on("click",function(event){
+            alert("Busqueda iniciada");
+            event.stopPropagation();
+        });
 });
 
 

@@ -3,16 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function crearFormNuevoCurso()
-{
-    $(".contenido").append(" <div class='cuadroTexto' id='titulo'></div>");
-    $(".contenido").append(" <div class='cuadroTexto' id='titulo'></div>");
-    $(".contenido").append(" <div class='cuadroTexto' id='titulo'></div>");
-    $(".contenido").append(" <div class='cuadroTexto' id='titulo'></div>");
-    $(".contenido").append(" <div class='cuadroTexto' id='titulo'></div>");
-}
+
 function cargarBusqueda()
 {
-    console.log("cargando busqueda");
-    $()
+    //console.log("cargando busqueda");
+    alert("hola");
 }

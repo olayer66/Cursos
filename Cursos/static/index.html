@@ -9,19 +9,30 @@
         <script src="js/main.js"></script>
         <script src="js/gestionCursos.js"></script>
         <script src="js/gestionUsuarios.js"></script>
-        <script src="js/gestionMenu.js"></script>
     </head>
     <body>
         <div class="cabecera">
             <img src="images/logo.png" class="imgLogo">
             <div class="login">
-                <ul id="login"></ul>
+                <ul id="login">
+                    <li class='boton' id='logearse'>Login</li>
+                    <li class='boton' id='registrarse'>Registrarse</li>
+                </ul>
             </div>
         </div>
         <div class="menu">
-            <ul id="menu"></ul>
+            <ul id="menu">
+                <li class='boton' id='buscarCurso'>Buscador</li>
+            </ul>
         </div>
         <div class="contenido">
+            <div id="buscador">
+                    <div id="titulo">
+                            <label>Buscar:</label>
+                            <input type="text" name="titulo" id="buscarTitulo" required>                         
+                    </div>
+                    <div class="botonMini" id="botonBuscarCurso">Buscar</div>
+            </div>
         </div>
     </body>
 </html>

@@ -7,6 +7,7 @@ body{
     background-color: #666666;
 }
 .imgLogo{
+    margin-left: 20px;
     height: 100px;
     position: relative;
     float: left;
@@ -16,6 +17,10 @@ body{
     position: relative;
     float: right;
     border-left: 5px #666666 solid;
+    vertical-align: bottom;
+}
+#logerase #resgistrarse{
+    margin-top: 15px;
 }
 .menu{
     height: 47px;
@@ -58,5 +63,23 @@ body{
     color: #ffffff;
 }
 .contenido{
-    background-color: #ffffff;
+    background-color: white;
+}
+.botonMini{
+    background-color:#ffffff;
+    position:relative;
+    float: left;
+    display:inline;
+    width:auto;
+    vertical-align:bottom;;
+    padding-left: 20px;
+    border: 3px #000 outset;
+    border-radius: 10px;
+    color: #000;
+    height: 20px;
+    text-align: center;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-right: 5px;
+    
 }
