@@ -17,15 +17,35 @@ module.exports={
 //Crear un curso
 function crearCurso(datos,callback)
 {
-    //Insertamos el curso
-    
-    //Insertamos los horarios
-    
+    if (datos!==null && datos!==undefined)
+    {
+        //Insertamos el curso
+        accBBDD.crearCurso(datos,function(err,IDCurso){
+            if(err)
+            {
+                callback(err,null);
+            }
+            else
+            {
+                //Insertamos los horarios
+                datos.horarios.forEach(function(horario){
+                    accBBDD.insertarHorario(horario,function(err){
+                        if(err)
+                        {
+                            callback(err,null);
+                        }
+                    });
+                });
+                //Si es correcto devolvemos el ID del Curso
+                callback(null,IDCurso);
+            }
+        });  
+    }
 }
 //Modificar un curso
-function modificarCurso(IDCurso,callback)
+function modificarCurso(IDCurso,datos,callback)
 {
-     //modificamos el curso
+    //modificamos el curso
     
     //modificamos los horarios
 }

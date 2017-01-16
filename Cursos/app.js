@@ -18,7 +18,7 @@ var servidor= express();
 
 //Middleware
 servidor.use(express.static(recEstaticos));
-servidor.use(bodyParser.urlencoded({ extended: true }));
+servidor.use(bodyParser.json());
 servidor.use(expressValidator());
 
 //funcionalidad del servidor
@@ -38,7 +38,7 @@ servidor.get("/",function(req,res)
 });
 /*=========================================METODOS POST==================================================*/
 //Creacion de un nuevo curso
-servidor.post("/index/curso",facMulter.single("imgCurso"), function(req, res) 
+servidor.post("/curso",facMulter.single("imgCurso"), function(req, res) 
 {
     //control de contenido    
         //Campos vacios
@@ -71,23 +71,29 @@ servidor.post("/index/curso",facMulter.single("imgCurso"), function(req, res)
                 req.body.imgCurso=null;
             }
             //Llamada a la funcion para crear el curso
-            cursos.crearCurso(req.body,function(err)
+            cursos.crearCurso(req.body,function(err,IDCurso)
             {
                 if(err)
                 {
+                    console.log(err);
                     res.status(400);
                 }
                 else
                 {
+                    console.log("Se ha creado el curso nº "+IDCurso);
                     res.status(200);
                 }
             });
         } 
         else 
         {
-             res.status(200);
-             res.render("nuevousuario",{errores:result.array()});
+            console.log("La validadion de los campos ha fallado:");
+            req.body.forEach(function(param){
+                console.log(param);
+            });
+            res.status(400);
         }
+        res.end();
     });
 });
 //Creacion de un nuevo usuario
@@ -121,23 +127,7 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
         //Carga de la imagen de perfil
         if (result.isEmpty()) 
         {
-            //Llamada a la BBDD
-            accBBDD.crearUsuario(req.body,function(err)
-            {
-                if(err)
-                {
-                    res.status(400);
-                    res.render("error",{cabecera:"400-Error al crear la cuenta",
-                                        mensaje: err.message,
-                                        pila: err.stack,
-                                        pagina:"volverusuario"});
-                }
-                else
-                {
-                    res.status(200);
-                    res.render("usuariocreado",{IDUsuario:null,nick:req.body.nick});
-                }
-            });
+           
         } 
         else 
         {
@@ -146,7 +136,107 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
         }
     });
 });
-
+/*=========================================METODOS GET===================================================*/
+//Busqueda de curso/s
+servidor.get("/curso/:busq",function(req,res){
+    var busq= req.params.busq
+    //La busq es valido
+    if(busq!==null && busq!==undefined)
+    {
+        //Si es un ID de curso
+        if(!isNaN(busq))
+        {
+            cursos.buscarCursoID(busq,function(err,respuesta){
+                if(err)
+                {
+                    console.log(err);
+                    res.status(500);
+                }
+                else
+                {
+                    console.log("Respuesta correcta");
+                    res.status(200);
+                    res.json(respuesta);
+                }
+            });
+        }
+        else //Si es un titulo
+        {
+            cursos.buscarCursoTitulo(busq,function(err,respuesta){
+                if(err)
+                {
+                    console.log(err);
+                    res.status(500);
+                }
+                else
+                {
+                    console.log("Respuesta correcta");
+                    res.status(200);
+                    res.json(respuesta);
+                }
+            });
+        }
+    }
+    else
+    {
+        console.log("No es un parametro de busqueda valido: " +busq);
+        res.status(404);
+    }
+    res.end();
+});
+/*=========================================METODOS PUT===================================================*/
+//Modificacion de un curso: ID por parametro y Datos en el cuerpo
+servidor.put("/curso/:id",function(req,res){
+    var datos= req.body;
+    var id= req.params.id;
+    if(id!==null && id!== undefined && !isNaN(id))
+    {
+        cursos.modificarCurso(id,datos,function(err){
+            if(err)
+            {
+                console.log(err);
+                res.status(500);
+            }
+            else
+            {
+                console.log("Modifcacion correcta del curso "+id);
+                res.status(500);
+            }
+        });
+    }
+    else
+    {
+        console.log("El ID de curso no es valido: "+id);
+        res.status(404);
+    }
+    res.end();
+});
+/*========================================METODOS DELETE=================================================*/
+//Eliminar un curso
+servidor.delete("/curso/:id",function(req,res){
+    var id= req.params.id;
+    if(id!==null && id!== undefined && !isNaN(id))
+    {
+        cursos.borrarCurso(id,function(err){
+            if(err)
+            {
+                console.log(err);
+                res.status(404);
+            }
+            else
+            {
+                console.log("Se ha borrado el curso "+ id);
+                res.status(200);
+            }       
+        });
+    }
+    else
+    {
+        console.log("El ID de curso no es valido: "+id);
+        res.status(404);
+    }
+    res.end();
+});
 /*======================================INICIO DEL SERVIDOR==============================================*/
 //Abrimos el servidor a la escucha por el puerto 3000
 servidor.listen(config.puerto, function(err) {

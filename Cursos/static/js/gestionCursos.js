@@ -9,3 +9,13 @@ function cargarBusqueda()
     //console.log("cargando busqueda");
     alert("hola");
 }
+//Carga en pantalla los cursos extraidos
+function mostrarCursos()
+{
+    
+}
+//Carga en pantala los horarios del curso escogido
+function mostrarHorarios()
+{
+    
+}

@@ -9,9 +9,19 @@ $(document).ready(function() {
         //Menu
         //$("#buscarCurso").on("click",cargarBusqueda());
         //contenido
-        $("botonBuscarCurso").on("click",function(event){
-            alert("Busqueda iniciada");
-            event.stopPropagation();
+        $("#botonBuscarCurso").on("click",function(){
+            var param=$("#buscarTitulo").val();
+            $.ajax({
+                type: "GET",
+                url:"/curso/" + param,
+                succes:function (data, textStatus, jqXHR) {
+                console.log(textStatus);
+                mostrarCursos(data);
+                },
+                error:function (jqXHR, textStatus, errorThrown) {
+                 alert("Se ha producido un error: " + errorThrown);
+                }
+            });
         });
 });
 
