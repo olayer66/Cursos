@@ -1,0 +1,1 @@
+localhost:3000/curso?titulo=cocina&descripcion=prueba_de_curso&localidad=Madrid&direccion=1234&plazas=20&fechaInicio=2017/01/01&fechaFin=2017/03/03

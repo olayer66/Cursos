@@ -19,6 +19,7 @@ var servidor= express();
 //Middleware
 servidor.use(express.static(recEstaticos));
 servidor.use(bodyParser.json());
+servidor.use(bodyParser.urlencoded({ extended: true }));
 servidor.use(expressValidator());
 
 //funcionalidad del servidor
@@ -42,19 +43,19 @@ servidor.post("/curso",facMulter.single("imgCurso"), function(req, res)
 {
     //control de contenido    
         //Campos vacios
-            req.checkBody("titulo","El titulo no puede estar vacio").notEmpty();
-            req.checkBody("descripcion","Debe de indicar una descripcion del curso").notEmpty();
-            req.checkBody("localidad","Debe de indicar la localidad donde se imparte el curso").notEmpty();
-            req.checkBody("direccion","Debe de Indicar la direccion de donde se imparte el curso").notEmpty();
-            req.checkBody("plazas","Debe de indicar el numero de plazas").notEmpty();
-            req.checkBody("fechaInicio","La fecha de inicio no puede estar en blanco").notEmpty();
-            req.checkBody("fechaFin","La fecha de fin no puede estar en blanco").notEmpty();
+            req.checkQuery("titulo","El titulo no puede estar vacio").notEmpty();
+            req.checkQuery("descripcion","Debe de indicar una descripcion del curso").notEmpty();
+            req.checkQuery("localidad","Debe de indicar la localidad donde se imparte el curso").notEmpty();
+            req.checkQuery("direccion","Debe de Indicar la direccion de donde se imparte el curso").notEmpty();
+            req.checkQuery("plazas","Debe de indicar el numero de plazas").notEmpty();
+            req.checkQuery("fechaInicio","La fecha de inicio no puede estar en blanco").notEmpty();
+            req.checkQuery("fechaFin","La fecha de fin no puede estar en blanco").notEmpty();
         //Control de tipos de datos
-            req.checkBody("titulo","El titulo solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
-            req.checkBody("descripcion","La descripcion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
-            req.checkBody("localidad","La localidad solo puede contener letras").matches(/^[A-Z\s]*$/i);
-            req.checkBody("direccion","La direccion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
-            req.checkBody("plazas","El numero de plazas solo puede ser numerico").matches(/^[0-9]*$/i);
+            req.checkQuery("titulo","El titulo solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
+            req.checkQuery("descripcion","La descripcion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
+            req.checkQuery("localidad","La localidad solo puede contener letras").matches(/^[A-Z\s]*$/i);
+            req.checkQuery("direccion","La direccion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
+            req.checkQuery("plazas","El numero de plazas solo puede ser numerico").matches(/^[0-9]*$/i);
             
     //Validacion del contenido
     req.getValidationResult().then(function(result) 
@@ -87,10 +88,8 @@ servidor.post("/curso",facMulter.single("imgCurso"), function(req, res)
         } 
         else 
         {
-            console.log("La validadion de los campos ha fallado:");
-            req.body.forEach(function(param){
-                console.log(param);
-            });
+            console.log("La validacion de los campos ha fallado:");
+            console.log("Titulo: "+req.params.titulo);
             res.status(400);
         }
         res.end();
@@ -139,7 +138,7 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
 /*=========================================METODOS GET===================================================*/
 //Busqueda de curso/s
 servidor.get("/curso/:busq",function(req,res){
-    var busq= req.params.busq
+    var busq= req.params.busq;
     //La busq es valido
     if(busq!==null && busq!==undefined)
     {
