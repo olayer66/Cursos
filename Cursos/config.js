@@ -10,7 +10,7 @@ module.exports={
     host:  "localhost",
     user:  "root",
     password: "root",
-    database: "saboteur"
+    database: "cursos"
 },
 puerto:3000 
 };

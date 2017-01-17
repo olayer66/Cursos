@@ -1,1 +1,14 @@
-localhost:3000/curso?titulo=cocina&descripcion=prueba_de_curso&localidad=Madrid&direccion=1234&plazas=20&fechaInicio=2017/01/01&fechaFin=2017/03/03
+crear curso:
+{"titulo":"prueb2",
+"descripcion":"esto es una prueba",
+"localidad":"Madrid",
+"direccion":"Calle falsa 1234",
+"plazas":20,
+"fechaInicio":"2017/01/01",
+"fechaFin":"2017/02/02",
+"horarios":[{"IDCurso":1,
+            "IDHorario":1,
+            "dia":"lunes",
+            "horaInicio":"12:00:00",
+            "horaFin":"13:00:00"}]
+}
