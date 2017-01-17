@@ -154,7 +154,7 @@ servidor.get("/curso/:busq",function(req,res){
         }
         else //Si es un titulo
         {
-            cursos.buscarCursoTitulo(busq,function(err,respuesta){
+            cursos.buscarCursoTitulo(busq,10,0,function(err,respuesta){
                 if(err)
                 {
                     console.log(err);

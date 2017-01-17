@@ -460,14 +460,14 @@ function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
 }
 /*=======================================HORARIOS=======================================*/
 //Inserta un horario en la tabla
-function insertarHorario (horario,callback)
+function insertarHorario (IDCurso,IDHorario,horario,callback)
 {
     var conexion = mysql.createConnection(config.conexionBBDD);
    if(horario!==null)
    {
        query="INSERT INTO horarios(ID_Curso,ID_Horario,Dia,Hora_Inicio,Hora_Fin)"+
              "VALUES (?,?,?,?,?)";
-       valoresEntrada=[horario.IDCurso,horario.IDHorario,horario.dia,horario.horaInicio,horario.horaFin];
+       valoresEntrada=[IDCurso,IDHorario,horario.dia,horario.horaInicio,horario.horaFin];
        //Conectamos con la consulta requerida
        conexion.connect(function(err)
        {

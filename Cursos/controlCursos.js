@@ -28,13 +28,21 @@ function crearCurso(datos,callback)
             else
             {
                 //Insertamos los horarios
+                var IDHorario=0;
                 datos.horarios.forEach(function(horario){
-                    accBBDD.insertarHorario(horario,function(err){
+                    accBBDD.insertarHorario(IDCurso,IDHorario,horario,function(err){
                         if(err)
                         {
+                            accBBDD.borrarCurso(IDCurso,function(err){
+                                if(err)
+                                {
+                                    callback(err,null);
+                                }
+                            });
                             callback(err,null);
                         }
                     });
+                    IDHorario++;
                 });
                 //Si es correcto devolvemos el ID del Curso
                 callback(null,IDCurso);
