@@ -453,7 +453,7 @@ function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
     if(titulo!==null && titulo!==undefined)
     {
         query="SELECT * FROM cursos WHERE Titulo RLIKE ? ORDER BY F_Inicio ASC LIMIT ? OFFSET ?";
-        valoresEntrada=[titulo,limite,posInicio];
+        valoresEntrada=[titulo,parseInt(limite),parseInt(posInicio)];
          //Conectamos con la consulta requerida
         conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
         {

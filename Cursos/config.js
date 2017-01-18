@@ -9,7 +9,7 @@ module.exports={
     port:"3306",
     host:  "localhost",
     user:  "root",
-    password: "root",
+    password: "",
     database: "cursos"
 },
 puerto:3000 

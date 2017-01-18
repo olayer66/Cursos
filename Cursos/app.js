@@ -130,9 +130,10 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
 });
 /*=========================================METODOS GET===================================================*/
 //Busqueda de curso/s
-servidor.get("/curso/:busq",function(req,res){
-    var busq= req.params.busq;
-    //La busq es valido
+servidor.get("/curso",function(req,res){
+    var busq= req.query.busq;
+    var limite=req.query.limite;
+    var posInicio=req.query.posInicio;
     if(busq!==null && busq!==undefined)
     {
         //Si es un ID de curso
@@ -155,20 +156,29 @@ servidor.get("/curso/:busq",function(req,res){
         }
         else //Si es un titulo
         {
-            cursos.buscarCursoTitulo(busq,5,0,function(err,respuesta){
-                if(err)
-                {
-                    console.log(err);
-                    res.status(500);
-                    res.end();
-                }
-                else
-                {
-                    console.log("Respuesta correcta");
-                    res.status(200);
-                    res.json(respuesta);
-                }
-            });
+            if(limite!==null && limite!==undefined && posInicio!==null && posInicio!==undefined)
+            {
+                cursos.buscarCursoTitulo(busq,limite,posInicio,function(err,respuesta){
+                    if(err)
+                    {
+                        console.log(err);
+                        res.status(500);
+                        res.end();
+                    }
+                    else
+                    {
+                        console.log("Respuesta correcta");
+                        res.status(200);
+                        res.json(respuesta);
+                    }
+                });
+            }
+            else
+            {
+                console.log("El limite " +limite+" o la posicion de inicio "+posInicio+" no son validos");
+                res.status(404);
+                res.end();
+            }
         }
     }
     else

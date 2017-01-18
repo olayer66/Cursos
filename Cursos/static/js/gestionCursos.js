@@ -10,20 +10,8 @@ function cargarBusqueda()
     alert("hola");
 }
 //Carga en pantalla los cursos extraidos
-function mostrarCursos()
+function mostrarCursos(horarios)
 {
-    
-}
-//Carga en pantala los horarios del curso escogido
-function mostrarHorarios(horarios)
-{
-    $(".tablaCursos").append("<tr>");
-    $(".tablaCursos").append("<td>Curso</td>");
-    $(".tablaCursos").append("<td>Lugar</td>");
-    $(".tablaCursos").append("<td>Fecha Inicio</td>");
-    $(".tablaCursos").append("<td>Fecha Fin</td>");
-    $(".tablaCursos").append("<td>Vacantes</td>");
-    $(".tablaCursos").append("</tr>");
     horarios.forEach(function(horario)
     {
         var vacantes=0;
