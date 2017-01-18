@@ -1,14 +1,49 @@
-crear curso:
-{"titulo":"prueb2",
-"descripcion":"esto es una prueba",
+CREAR CURSO
+====================================
+//localhost:3000/curso
+-------------------------------------
+{"titulo":"cocina Basica",
+"descripcion":"Curso de cocina basica",
 "localidad":"Madrid",
-"direccion":"Calle falsa 1234",
+"direccion":"Calle Preciados 4",
 "plazas":20,
-"fechaInicio":"2017/01/01",
-"fechaFin":"2017/02/02",
-"horarios":[{"IDCurso":1,
-            "IDHorario":1,
-            "dia":"lunes",
-            "horaInicio":"12:00:00",
-            "horaFin":"13:00:00"}]
+"fechaInicio":"2017/01/09",
+"fechaFin":"2017/02/01",
+"horarios":[{"dia":"lunes",
+            "horaInicio":"19:00:00",
+            "horaFin":"20:00:00"},
+            {"dia":"Miercoles",
+            "horaInicio":"19:00:00",
+            "horaFin":"20:00:00"},
+            {"dia":"Viernes",
+            "horaInicio":"18:00:00",
+            "horaFin":"19:00:00"}]
+}
+{"titulo":"cocina avanzada",
+"descripcion":"Curso de cocina para chefs caseros",
+"localidad":"Madrid",
+"direccion":"Calle Preciados 4",
+"plazas":20,
+"fechaInicio":"2017/03/15",
+"fechaFin":"2017/05/20",
+"horarios":[{"dia":"Martes",
+            "horaInicio":"17:00:00",
+            "horaFin":"19:00:00"},
+            {"dia":"Jueves",
+            "horaInicio":"19:00:00",
+            "horaFin":"21:00:00"}]
+}
+{"titulo":"Ganchillo",
+"descripcion":"Curso de ganchillo como el que hacia tu abuela",
+"localidad":"Madrid",
+"direccion":"Calle Preciados 4",
+"plazas":20,
+"fechaInicio":"2016/09/03",
+"fechaFin":"2017/05/25",
+"horarios":[{"dia":"Martes",
+            "horaInicio":"10:00:00",
+            "horaFin":"12:00:00"},
+            {"dia":"Miercoles",
+            "horaInicio":"10:00:00",
+            "horaFin":"12:00:00"}]
 }

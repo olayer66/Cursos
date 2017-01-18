@@ -44,7 +44,7 @@ function crearUsuario(valores,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -53,7 +53,7 @@ function crearUsuario(valores,callback)
                 {
                     if (err) 
                     {
-                        console.error(err);
+                        //console.error(err);
                         callback(err,null);
                     } 
                     else 
@@ -85,7 +85,7 @@ function modificarUsuario(IDUsuario,valores,callback)
             {
                 if (err) 
                 {
-                    console.error(err);
+                    //console.error(err);
                     callback(err);
                 } 
                 else 
@@ -117,7 +117,7 @@ function mostrarUsuario(ID,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -146,7 +146,7 @@ function conectar(datos,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -155,7 +155,7 @@ function conectar(datos,callback)
                 {
                     if (err) 
                     {
-                        console.error(err);
+                        //console.error(err);
                         callback(err,null);
                     } 
                     else 
@@ -186,7 +186,7 @@ function cursosDeUnUsuario(IDUsuario,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -214,7 +214,7 @@ function usuariosDeUnCurso(IDCurso,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -244,7 +244,7 @@ function añadirUsuarioCurso(IDUsuario,IDCurso,callback)
             {
                 if (err) 
                 {
-                    console.error(err);
+                    //console.error(err);
                     callback(err);
                 } 
                 else 
@@ -278,7 +278,7 @@ function quitarUsuarioCurso(IDUsuario,IDCurso,callback)
             {
                 if (err) 
                 {
-                    console.error(err);
+                    //console.error(err);
                     callback(err);
                 } 
                 else 
@@ -311,7 +311,7 @@ function crearCurso(valores,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -320,11 +320,27 @@ function crearCurso(valores,callback)
                 {
                     if (err) 
                     {
-                        console.error(err);
+                        //console.error(err);
                         callback(err,null);
                     } 
                     else 
-                    {
+                    {              
+                        //Insertamos los horarios
+                        valores.horarios.forEach(function(horario)
+                        {
+                            query="INSERT INTO horarios(ID_Curso,Dia,Hora_Inicio,Hora_Fin) VALUES (?,?,?,?)";
+                            valoresEntrada=[info.insertId,horario.dia,horario.horaInicio,horario.horaFin];
+                            conexion.query(query,valoresEntrada,function(err) 
+                            {
+                                if (err) 
+                                {
+                                    conexion.rollback(function() {
+                                        throw err;
+                                    });
+                                    callback(err,null);
+                                } 
+                            });
+                        });
                         callback(null,info.insertId);
                         conexion.end();
                     }
@@ -352,7 +368,7 @@ function modificarCurso(IDCurso,valores,callback)
             {
                 if (err) 
                 {
-                    console.error(err);
+                    //console.error(err);
                     callback(err);
                 } 
                 else 
@@ -384,7 +400,7 @@ function borrarCurso(IDCurso,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err);
             } 
             else 
@@ -411,7 +427,7 @@ function mostrarCurso(IDCurso,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -436,18 +452,19 @@ function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(titulo!==null && titulo!==undefined)
     {
-        query="SELECT * FROM cursos WHERE MATCH(Titulo) AGAINST(?) ORDER BY F_Inicio ASC LIMIT ? OFFSET ?";
+        query="SELECT * FROM cursos WHERE Titulo RLIKE ? ORDER BY F_Inicio ASC LIMIT ? OFFSET ?";
         valoresEntrada=[titulo,limite,posInicio];
          //Conectamos con la consulta requerida
         conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
             {
+                console.log("filas:"+rows);
                 callback(null,rows);
                 conexion.end();
             }
@@ -460,20 +477,20 @@ function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
 }
 /*=======================================HORARIOS=======================================*/
 //Inserta un horario en la tabla
-function insertarHorario (IDCurso,IDHorario,horario,callback)
+function insertarHorario (IDCurso,horario,callback)
 {
     var conexion = mysql.createConnection(config.conexionBBDD);
    if(horario!==null)
    {
-       query="INSERT INTO horarios(ID_Curso,ID_Horario,Dia,Hora_Inicio,Hora_Fin)"+
-             "VALUES (?,?,?,?,?)";
-       valoresEntrada=[IDCurso,IDHorario,horario.dia,horario.horaInicio,horario.horaFin];
+       query="INSERT INTO horarios(ID_Curso,Dia,Hora_Inicio,Hora_Fin)"+
+             "VALUES (?,?,?,?)";
+       valoresEntrada=[IDCurso,horario.dia,horario.horaInicio,horario.horaFin];
        //Conectamos con la consulta requerida
        conexion.connect(function(err)
        {
            if (err) 
            {
-               console.error(err);
+               //console.error(err);
                callback(err);
            } 
            else 
@@ -482,7 +499,7 @@ function insertarHorario (IDCurso,IDHorario,horario,callback)
                {
                    if (err) 
                    {
-                       console.error(err);
+                       //console.error(err);
                        callback(err);
                    } 
                    else 
@@ -514,7 +531,7 @@ function actualizarHorario(horario,callback)
             {
                 if (err) 
                 {
-                    console.error(err);
+                    //console.error(err);
                     callback(err);
                 } 
                 else 
@@ -548,7 +565,7 @@ function borrarHorario (IDCurso,IDHorario,callback)
             {
                 if (err) 
                 {
-                    console.error(err);
+                    //console.error(err);
                     callback(err);
                 } 
                 else 
@@ -579,7 +596,7 @@ function mostrarHorario (IDCurso,callback)
         {
             if (err) 
             {
-                console.error(err);
+                //console.error(err);
                 callback(err,null);
             } 
             else 
@@ -605,7 +622,7 @@ function handleDisconnect(connection) {
       throw err;
     }
 
-    console.log('Re-connecting lost connection: ' + err.stack);
+    //console.log('Re-connecting lost connection: ' + err.stack);
 
     connection = mysql.createConnection(connection.config);
     handleDisconnect(connection);

@@ -27,23 +27,6 @@ function crearCurso(datos,callback)
             }
             else
             {
-                //Insertamos los horarios
-                var IDHorario=0;
-                datos.horarios.forEach(function(horario){
-                    accBBDD.insertarHorario(IDCurso,IDHorario,horario,function(err){
-                        if(err)
-                        {
-                            accBBDD.borrarCurso(IDCurso,function(err){
-                                if(err)
-                                {
-                                    callback(err,null);
-                                }
-                            });
-                            callback(err,null);
-                        }
-                    });
-                    IDHorario++;
-                });
                 //Si es correcto devolvemos el ID del Curso
                 callback(null,IDCurso);
             }
@@ -89,7 +72,10 @@ function buscarCursoID(IDCurso,callback)
 //busqueda por titulo
 function buscarCursoTitulo(titulo,limite,posInicio,callback)
 {
-    accBBDD.mostrarCursoPorTitulo(titulo,limite,posInicio,function callback(err,datos){
+    console.log("Busqueda: " + titulo);
+    console.log("Limite: " + limite);
+    console.log("Posicion Inicio: " + posInicio);
+    accBBDD.mostrarCursoPorTitulo(titulo,limite,posInicio,function (err,datos){
         if(err)
         {
             callback(err,null);
