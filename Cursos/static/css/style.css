@@ -1,12 +1,12 @@
 body{
-    background-color: #999999;
+    background-color: #ccccff;
 }
 .cabecera{
     position: relative;
     float: left;
     height: 100px;
     width: 100%;
-    background-color: #666666;
+    background-color: #003366;
 }
 .imgLogo{
     margin-left: 20px;
@@ -38,7 +38,8 @@ body{
     position:relative;
     float:left;
     border-bottom: 4px #666666 outset;
-    background-color: white;
+    background-color: #9999ff;
+    color: white;
 }
 #menu{
         margin-top: 0px;
@@ -99,4 +100,79 @@ body{
 #botonBuscarCurso{
     position: relative;
     float: left;
+}
+
+#buscador{
+    padding-left: 20px;
+    padding-bottom: 30px;
+}
+
+#buscarCurso{
+    background-color:#3333ff;
+    color: white;
+}
+
+#buscarCurso:hover{
+    position: relative;
+    float: left;
+    background-color:#99ccff;
+    color: black;
+}
+
+#buscar{
+    background-color:#ccffcc;
+}
+
+#cargaCursos{
+    padding-top: 170px;
+}
+
+.tablaCursos{
+    display:table;
+    width:auto;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    text-align: left;
+    border: 2px solid black;
+    border-right: 0px;
+    border-spacing: 0px;
+}
+.tablaCursos tr:nth-child(even) {
+    background-color: #57b0fc;
+}
+
+.tablaCursos th {
+    padding: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    text-align: left;
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    border-right: 2px solid black;
+}
+
+.tablaCursos tr{
+    background-color: #99ccff;
+    padding-left: 5px;
+}
+
+.tablaCursos td{
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-right: 2px solid black;
+}
+
+.tablaCursos th{
+    text-align: center;
+    height: 30px;
+}
+
+.center{
+    text-align: center;
+}
+
+#paginacion{
+    width: 400px;
 }
