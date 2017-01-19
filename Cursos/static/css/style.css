@@ -100,3 +100,40 @@ body{
     position: relative;
     float: left;
 }
+
+#buscador{
+    padding-left: 10px;
+}
+
+#buscarCurso{
+    background-color:#33cc00;
+}
+
+#buscarCurso:hover{
+    position: relative;
+    float: left;
+    background-color:#66ff66;
+}
+
+#buscar{
+    background-color:#ccffcc;
+}
+
+#cargaCursos{
+    padding-top: 170px;
+}
+
+
+.tablaCursos{
+    display:table;
+    width:auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: left;
+}
+
+.tablaCursos td, #tablaPartidas th {
+    border: 1px solid #ddd;
+    padding: 0px;
+    text-align: center;
+}
