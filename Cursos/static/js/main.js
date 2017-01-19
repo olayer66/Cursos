@@ -25,7 +25,7 @@ $(document).ready(function()
                 {
                     if(total>5)
                     {
-                        insertarPaginacion(total);
+                        insertarPaginacion(total,busq);
                         $("#paginacion").show();
                     }
                     //Extraemos los cursos
@@ -47,6 +47,41 @@ $(document).ready(function()
                 }
             }        
         });  
+    });
+    //Boton de paginacion de uno hacia atras
+    $("#unoAtras").on("click",function(){
+        alert("cagada");
+        var busq=$("#unoAtras").data("busq");
+        var posInicio=$("#unoAtras").data("posInicio");
+        cambiarValorAtraAlante(false);
+        llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+        {
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                mostrarCursos(cursos);
+            }
+        });
+    });
+    //Boton de paginacion de uno hacia alante
+    $("#unoAlante").on("click",function (){
+        var busq=$("#unoAlante").data("busq");
+        var posInicio=$("#unoAlante").data("posInicio");
+        cambiarValorAtraAlante(true);
+        llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+        {
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                mostrarCursos(cursos);
+            }
+        });
     });
 });
 /*==========================FUNC. DE VISTA============================*/
@@ -85,7 +120,7 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
         data:{
             "busq":busq,
             "limite":"5",
-            "posInicio":"0"
+            "posInicio":posInicio
         },
         success:function (data, textStatus, jqXHR) 
         {

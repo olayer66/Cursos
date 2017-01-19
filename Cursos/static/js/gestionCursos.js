@@ -14,26 +14,25 @@ function mostrarCursos(cursos)
         var fila = $("<tr class='filaCurso'>");
         $(fila).append("<td >"+curso.Titulo+"</td>");
         $(fila).append("<td>"+curso.Localidad+"</td>");
-        $(fila).append("<td>"+extraerFecha(curso.F_Inicio)+"</td>");
-        $(fila).append("<td>"+extraerFecha(curso.F_Fin)+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Inicio)+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Fin)+"</td>");
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
-        $(fila).append("<td>"+vacantes+"</td>");
+        $(fila).append("<td class='center'>"+vacantes+"</td>");
         $(fila).append("</tr>");
         $(".tablaCursos").append(fila);
     });
 }
 //inserta tantos botones de paginas como sea necesario
-function insertarPaginacion(total)
+function insertarPaginacion(total,busq)
 {
     var numPags= Math.ceil(total/5);
-    alert(total+"|||"+numPags);
-    $("#menuPaginacion").append("<li class='botonMini' id='unoAtras'> << </li>");
+    $("#paginacion").append("<div class='botonMini' id='unoAtras' data-posInicio='"+0+"' data-busq='"+busq+"'> << </div>");
     for(var i=1;i<=numPags;i++)
     {
         var posInicio=(i-1)*5;
-        $("#menuPaginacion").append("<li class='botonMini' id='botonPagina' data-posInicio='"+posInicio+"'>"+i+"</li>");
+        $("#paginacion").append("<div class='botonMini botonPagina' data-posInicio='"+posInicio+"' data-busq='"+busq+"'>"+i+"</div>");
     }
-    $("#menuPaginacion").append("<li class='botonMini' id='unoAlante'> >> </li>");
+    $("#paginacion").append("<div class='botonMini' id='unoAlante' data-posInicio='"+5+"' data-busq='"+busq+"'> >> </div>");
 }
 /*==========================FUNCIONES AUXILIARES===========================*/
 //Extrae la fechea de una variable
@@ -47,4 +46,18 @@ function extraerFecha(fecha)
 function borrarTablaCursos()
 {
     $(".filaCurso").remove();
+}
+// modifica la posiciones de los valores de los boton de paginacion (una atras y una alante)
+function cambiarValorAtraAlante(direccion)
+{
+    if(direccion===true)
+    {
+        $("#unoAtras").data("number",$("#unoAtras").data("number") + 5);
+        $("#unoAlante").data("number",$("#unoAlante").data("number") + 5);
+    }
+    else
+    {
+        $("#unoAtras").data("number",$("#unoAtras").data("number") - 5);
+        $("#unoAlante").data("number",$("#unoAlante").data("number") - 5);
+    }
 }
