@@ -103,7 +103,8 @@ body{
 }
 
 #buscador{
-    padding-left: 10px;
+    padding-left: 20px;
+    padding-bottom: 30px;
 }
 
 #buscarCurso{
@@ -126,35 +127,52 @@ body{
     padding-top: 170px;
 }
 
-
 .tablaCursos{
     display:table;
     width:auto;
-    margin: auto;
+    margin-bottom: 10px;
+    margin-top: 20px;
     text-align: left;
     border: 2px solid black;
+    border-right: 0px;
+    border-spacing: 0px;
 }
-
-.tablaCursos td{
-    border: 1px solid #ddd;
-    padding: 0px;
-    text-align: left;
+.tablaCursos tr:nth-child(even) {
+    background-color: #57b0fc;
 }
 
 .tablaCursos th {
-    border: 1px solid #ddd;
-    padding: 0px;
+    padding: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    text-align: left;
+    background-color: #003366;
+    color: white;
     text-align: center;
+    border-right: 2px solid black;
 }
+
 .tablaCursos tr{
     background-color: #99ccff;
+    padding-left: 5px;
 }
 
-.encabezadoCursos{
-    background-color: #6666ff;
-    border-bottom: 2px solid black;
+.tablaCursos td{
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-right: 2px solid black;
 }
 
-.tablaCursos tr:nth-child(even) {
-    background-color: #9999ff;
+.tablaCursos th{
+    text-align: center;
+    height: 30px;
+}
+
+.center{
+    text-align: center;
+}
+
+#paginacion{
+    width: 400px;
 }
