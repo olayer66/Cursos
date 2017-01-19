@@ -1,12 +1,12 @@
 body{
-    background-color: #999999;
+    background-color: #ccccff;
 }
 .cabecera{
     position: relative;
     float: left;
     height: 100px;
     width: 100%;
-    background-color: #666666;
+    background-color: #003366;
 }
 .imgLogo{
     margin-left: 20px;
@@ -38,7 +38,8 @@ body{
     position:relative;
     float:left;
     border-bottom: 4px #666666 outset;
-    background-color: white;
+    background-color: #9999ff;
+    color: white;
 }
 #menu{
         margin-top: 0px;
@@ -106,13 +107,15 @@ body{
 }
 
 #buscarCurso{
-    background-color:#33cc00;
+    background-color:#3333ff;
+    color: white;
 }
 
 #buscarCurso:hover{
     position: relative;
     float: left;
-    background-color:#66ff66;
+    background-color:#99ccff;
+    color: black;
 }
 
 #buscar{
@@ -127,13 +130,31 @@ body{
 .tablaCursos{
     display:table;
     width:auto;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: auto;
+    text-align: left;
+    border: 2px solid black;
+}
+
+.tablaCursos td{
+    border: 1px solid #ddd;
+    padding: 0px;
     text-align: left;
 }
 
-.tablaCursos td, #tablaPartidas th {
+.tablaCursos th {
     border: 1px solid #ddd;
     padding: 0px;
     text-align: center;
+}
+.tablaCursos tr{
+    background-color: #99ccff;
+}
+
+.encabezadoCursos{
+    background-color: #6666ff;
+    border-bottom: 2px solid black;
+}
+
+.tablaCursos tr:nth-child(even) {
+    background-color: #9999ff;
 }
