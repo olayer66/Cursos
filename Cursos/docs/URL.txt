@@ -61,3 +61,45 @@ CREAR CURSO
             "horaInicio":"10:00:00",
             "horaFin":"13:00:00"}]
 }
+{"titulo":"como cocinar puerros",
+"descripcion":"Curso monografico sobre formas de cocinar este gran vegetal",
+"localidad":"Barcelona",
+"direccion":"la rambla 123",
+"plazas":50,
+"fechaInicio":"2017/03/01",
+"fechaFin":"2017/04/01",
+"horarios":[{"dia":"Jueves",
+            "horaInicio":"15:30:00",
+            "horaFin":"16:00:00"}]
+}
+{"titulo":"cocina de aprovechamiento",
+"descripcion":"Este curso provemiente de las misteriosas islas del pacifico nos muestra como los nativos aprovechan a los turistas despistados",
+"localidad":"Valencia",
+"direccion":"Calle carnaza 3",
+"plazas":10,
+"fechaInicio":"2017/10/01",
+"fechaFin":"2017/11/13",
+"horarios":[{"dia":"lunes",
+            "horaInicio":"19:00:00",
+            "horaFin":"20:00:00"},
+            {"dia":"Miercoles",
+            "horaInicio":"19:00:00",
+            "horaFin":"20:00:00"},
+            {"dia":"Viernes",
+            "horaInicio":"18:00:00",
+            "horaFin":"19:00:00"}]
+}
+{"titulo":"cocina con mama",
+"descripcion":"Dirigido a treintañeros que aun viven con su madre podran aprender las tecnicas de cocina junto a su madre harta de tenerle en casa",
+"localidad":"Bilbao",
+"direccion":"calle euskera",
+"plazas":100,
+"fechaInicio":"2017/06/01",
+"fechaFin":"2017/09/01",
+"horarios":[{"dia":"Sabado",
+            "horaInicio":"11:00:00",
+            "horaFin":"13:00:00"},
+            {"dia":"Domingo",
+            "horaInicio":"11:00:00",
+            "horaFin":"13:00:00"}]
+}
