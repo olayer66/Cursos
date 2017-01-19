@@ -26,6 +26,7 @@ $(document).ready(function()
                     if(total>5)
                     {
                         insertarPaginacion(total);
+                        $("#paginacion").show();
                     }
                     //Extraemos los cursos
                     llamadaExtraeCursos(busq,5,0,function(err,cursos){
@@ -35,13 +36,14 @@ $(document).ready(function()
                         }
                         else
                         {
-                            
+                            mostrarCursos(cursos);
+                            $("#cargaCursos").show();
                         }
                     });
                 }
                 else
                 {
-                    
+                    alert("No se han encontrado resultados");
                 }
             }        
         });  

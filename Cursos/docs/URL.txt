@@ -47,3 +47,17 @@ CREAR CURSO
             "horaInicio":"10:00:00",
             "horaFin":"12:00:00"}]
 }
+{"titulo":"cocina para noobs",
+"descripcion":"Si eres tan inutil que no eres capaz de encender el microondas este es tu curso",
+"localidad":"Barcelona",
+"direccion":"la rambla 123",
+"plazas":50,
+"fechaInicio":"2017/06/01",
+"fechaFin":"2017/09/01",
+"horarios":[{"dia":"Martes",
+            "horaInicio":"10:00:00",
+            "horaFin":"13:00:00"},
+            {"dia":"Jueves",
+            "horaInicio":"10:00:00",
+            "horaFin":"13:00:00"}]
+}
