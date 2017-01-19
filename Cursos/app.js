@@ -51,8 +51,8 @@ servidor.post("/curso", function(req, res)
             req.checkBody("fechaInicio","La fecha de inicio no puede estar en blanco").notEmpty();
             req.checkBody("fechaFin","La fecha de fin no puede estar en blanco").notEmpty();
         //Control de tipos de datos
-            req.checkBody("titulo","El titulo solo puede contener letras y numeros").matches(/^[A-Z0-9\s]*$/i);
-            req.checkBody("descripcion","La descripcion solo puede contener letras y numeros").matches(/^[A-Z0-9\s]*$/i);
+            req.checkBody("titulo","El titulo solo puede contener letras y numeros").matches(/^[A-Z0-9ñÑ\s]*$/i);
+            req.checkBody("descripcion","La descripcion solo puede contener letras y numeros").matches(/^[A-Z0-9ñÑ\s]*$/i);
             req.checkBody("localidad","La localidad solo puede contener letras").matches(/^[A-Z\s]*$/i);
             req.checkBody("direccion","La direccion solo puede contener letras y numeros").matches(/^[A-Z0-9\s]*$/i);
             req.checkBody("plazas","El numero de plazas solo puede ser numerico").matches(/^[0-9]*$/i);

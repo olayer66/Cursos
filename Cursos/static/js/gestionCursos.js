@@ -3,25 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-function cargarBusqueda()
-{
-    //console.log("cargando busqueda");
-    alert("hola");
-}
 //Carga en pantalla los cursos extraidos
 function mostrarCursos(cursos)
 {
+    borrarTablaCursos();
     cursos.forEach(function(curso)
     {
         var vacantes=0;
-        var fila = $("<tr>");
-        $(fila).append("<th>"+curso.Titulo+"</th>");
-        $(fila).append("<th>"+curso.Localidad+"</th>");
-        $(fila).append("<th>"+extraerFecha(curso.F_Inicio)+"</th>");
-        $(fila).append("<th>"+extraerFecha(curso.F_Fin)+"</th>");
+        var fila = $("<tr class='filaCurso'>");
+        $(fila).append("<td >"+curso.Titulo+"</td>");
+        $(fila).append("<td>"+curso.Localidad+"</td>");
+        $(fila).append("<td>"+extraerFecha(curso.F_Inicio)+"</td>");
+        $(fila).append("<td>"+extraerFecha(curso.F_Fin)+"</td>");
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
-        $(fila).append("<th>"+vacantes+"</th>");
+        $(fila).append("<td>"+vacantes+"</td>");
         $(fila).append("</tr>");
         $(".tablaCursos").append(fila);
     });
@@ -29,7 +24,7 @@ function mostrarCursos(cursos)
 //inserta tantos botones de paginas como sea necesario
 function insertarPaginacion(total)
 {
-    
+    alert("tenemos paginacion");
 }
 /*==========================FUNCIONES AUXILIARES===========================*/
 function extraerFecha(fecha)
@@ -37,4 +32,8 @@ function extraerFecha(fecha)
     var date= new Date(fecha);
     var mes=date.getMonth()+1;
     return date.getDate()+"/"+mes+"/"+date.getFullYear();
+}
+function borrarTablaCursos()
+{
+    $(".filaCurso").remove();
 }
