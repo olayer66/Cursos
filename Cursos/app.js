@@ -188,6 +188,32 @@ servidor.get("/curso",function(req,res){
         res.end();
     }
 });
+servidor.get("/curso/:busq",function(req,res){
+    var busq= req.params.busq;
+    if(busq!==null && busq!==undefined)
+    {
+            cursos.totalResultados(busq,function(err,total){
+                if(err)
+                {
+                    console.log(err);
+                    res.status(500);
+                    res.end();
+                }
+                else
+                {
+                    console.log("Respuesta correcta");
+                    res.status(200);
+                    res.json(total);
+                }
+            });
+    }
+    else
+    {
+        console.log("No es un parametro de busqueda valido: " +busq);
+        res.status(404);
+        res.end();
+    }
+});
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo
 servidor.put("/curso/:id",function(req,res){

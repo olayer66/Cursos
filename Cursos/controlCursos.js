@@ -11,6 +11,7 @@ module.exports={
     borrarCurso:borrarCurso,
     buscarCursoID:buscarCursoID,
     buscarCursoTitulo:buscarCursoTitulo,
+    totalResultados:totalResultados,
     //horarios
     extraerHorarios:extraerHorarios
 };
@@ -83,6 +84,21 @@ function buscarCursoTitulo(titulo,limite,posInicio,callback)
         else
         {
             callback(null,datos);
+        }
+    });
+}
+//Devuelve el numero de resultados conseguido en la busqueda
+function totalResultados(titulo,callback)
+{
+    console.log("Busqueda: " + titulo);
+    accBBDD.contarCursos(titulo,function (err,total){
+        if(err)
+        {
+            callback(err,null);
+        }
+        else
+        {
+            callback(null,total);
         }
     });
 }

@@ -10,18 +10,23 @@ function cargarBusqueda()
     alert("hola");
 }
 //Carga en pantalla los cursos extraidos
-function mostrarCursos(horarios)
+function mostrarCursos(cursos)
 {
-    horarios.forEach(function(horario)
+    cursos.forEach(function(curso)
     {
         var vacantes=0;
         $(".tablaCursos").append("<tr>");
-        $(".tablaCursos").append("<th>"+horario.Titulo+"</th>");
-        $(".tablaCursos").append("<th>"+horario.Localidad+"</th>");
-        $(".tablaCursos").append("<th>"+horario.F_Inicio+"</th>");
-        $(".tablaCursos").append("<th>"+horario.F_Fin+"</th>");
-        vacantes=horario.Plazas - horario.Plazas_Ocupadas;
+        $(".tablaCursos").append("<th>"+curso.Titulo+"</th>");
+        $(".tablaCursos").append("<th>"+curso.Localidad+"</th>");
+        $(".tablaCursos").append("<th>"+curso.F_Inicio+"</th>");
+        $(".tablaCursos").append("<th>"+curso.F_Fin+"</th>");
+        vacantes=curso.Plazas - curso.Plazas_Ocupadas;
         $(".tablaCursos").append("<th>"+vacantes+"</th>");
         $(".tablaCursos").append("</tr>");
     });
+}
+//inserta tantos botones de paginas como sea necesario
+function insertarPaginacion(total)
+{
+    
 }

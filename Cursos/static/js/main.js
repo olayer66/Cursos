@@ -7,43 +7,92 @@ var divActivo;
 $(document).ready(function() 
 {
     console.log("DOM inicializado");
-    //Ocultamos todos los div
-    ocultarDiv();
     //cabecera
-    $("#buscarCurso").on("click",function(){
-        if(divActivo!==undefined)
-            divActivo.hide();
-        divActivo=$("#buscador");
-        divActivo.show();
-    });
+    $("#buscarCurso").on("click",vistaBuscador());
     //contenido
     $("#botonBuscarCurso").on("click",function(){
-        var param=$("#buscarTitulo").val();
-        $.ajax({
-            type: "GET",
-            url:"/curso",
-            data:{
-                "busq":param,
-                "limite":"5",
-                "posInicio":"0"
-            },
-            success:function (data, textStatus, jqXHR) 
+        var busq=$("#buscarTitulo").val();
+        //Extraemos el nº de resultados
+        llamadaTotalCursos(busq, function (err,total){
+            if (err)
             {
-            console.log(textStatus);
-            if(divActivo!==undefined)
-                divActivo.hide();
-            divActivo=$("#cargaCursos");
-            divActivo.show();
-            mostrarCursos(data);
-            },
-            error:function (jqXHR, textStatus, errorThrown) 
-            {
-             alert("Se ha producido un error: " + errorThrown);
+                alert(err);
             }
-        });
+            else
+            {
+                //Si hay cursos que cumplan la condicion
+                if(total>0)
+                {
+                    if(total>5)
+                    {
+                        insertarPaginacion(total);
+                    }
+                    //Extraemos los cursos
+                    llamadaExtraeCursos(busq,5,0,function(err,cursos){
+                        if(err)
+                        {
+                            alert(err);
+                        }
+                        else
+                        {
+                            
+                        }
+                    });
+                }
+                else
+                {
+                    
+                }
+            }        
+        });  
     });
 });
-function ocultarDiv()
+/*==========================FUNC. DE VISTA============================*/
+function vistaBuscador()
 {
+    if(divActivo!==undefined)
+        divActivo.hide();
+    divActivo=$("#buscador");
+    $("#buscador").show();
+    $("#buscar").show();
     $("#cargaCursos").hide();
+    $("#paginacion").hide();
+}
+/*===========================FUNC. DE LLAMADA==========================*/
+function llamadaTotalCursos(busq,callback)
+{
+    $.ajax({
+        type: "GET",
+        url:"/curso/"+busq,
+        success:function (data, textStatus, jqXHR) 
+        {
+            console.log(textStatus);
+            callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la extraccion del total. Error: "+ errorThrown),null);
+        }
+    });   
+}
+function llamadaExtraeCursos(busq,limite,posInicio,callback)
+{
+    $.ajax({
+        type: "GET",
+        url:"/curso",
+        data:{
+            "busq":busq,
+            "limite":"5",
+            "posInicio":"0"
+        },
+        success:function (data, textStatus, jqXHR) 
+        {
+        console.log(textStatus);
+        callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la extraccion de los cursos. Error: "+ errorThrown),null);
+        }
+    });
 }

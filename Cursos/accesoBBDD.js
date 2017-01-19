@@ -23,6 +23,7 @@ module.exports={
     borrarCurso:borrarCurso,
     mostrarCurso: mostrarCurso,
     mostrarCursoPorTitulo:mostrarCursoPorTitulo,
+    contarCursos:contarCursos,
     //Horarios
     insertarHorario:insertarHorario,
     actualizarHorario:actualizarHorario,
@@ -464,8 +465,36 @@ function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
             } 
             else 
             {
-                console.log("filas:"+rows);
                 callback(null,rows);
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"),null);
+    }
+}
+//Extrae el numero de cursos que cumplen la condicion pasada por el titulo
+function contarCursos(titulo,callback)
+{
+      var conexion = mysql.createConnection(config.conexionBBDD);
+    if(titulo!==null && titulo!==undefined)
+    {
+        query="SELECT COUNT(ID_Curso) AS total FROM cursos WHERE Titulo RLIKE ?";
+        valoresEntrada=[titulo];
+         //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err,contador) 
+        {
+            if (err) 
+            {
+                //console.error(err);
+                callback(err,null);
+            } 
+            else 
+            {
+                console.log("Total de resultados: "+contador[0].total);
+                callback(null,contador[0].total);
                 conexion.end();
             }
         });

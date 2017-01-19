@@ -27,24 +27,31 @@
         </div>
         <div class="contenido">
             <div id="buscador">
+                <div id="buscar">
                     <div id="titulo">
                             <label>Buscar:</label>
                             <input type="text" name="titulo" id="buscarTitulo" required>                         
                     </div>
-                    <div class="botonMini" id="botonBuscarCurso">Buscar</div>
+                    <div class="botonMini" id="botonBuscarCurso">Buscar</div> 
+                </div>
+                <div id="cargaCursos">
+                    <h2>Resultado de la busqueda</h2>
+                    <table class="tablaCursos">
+                        <tr>
+                            <td>Curso</td>
+                            <td>Lugar</td>
+                            <td>Fecha Inicio</td>
+                            <td>Fecha Fin</td>
+                            <td>Vacantes</td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="paginacion">
+                    <ul id="menuPaginacion">
+                    
+                    </ul>
+                </div>
             </div>
-        </div>
-        <div id="cargaCursos">
-            <h2>Resultado de la busqueda</h2>
-            <table class="tablaCursos">
-                <tr>
-                    <td>Curso</td>
-                    <td>Lugar</td>
-                    <td>Fecha Inicio</td>
-                    <td>Fecha Fin</td>
-                    <td>Vacantes</td>
-                </tr>
-            </table>
         </div>
     </body>
 </html>
