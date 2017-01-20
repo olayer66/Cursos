@@ -26,7 +26,7 @@ function mostrarCursos(cursos)
 function insertarPaginacion(total,busq)
 {
     var numPags= Math.ceil(total/5);
-    $("#paginacion").append("<div class='botonMini' id='unoAtras' data-posinicio='"+0+"' data-busq='"+busq+"'> << </div>");
+    $("#paginacion").append("<div class='botonMini' id='unoAtras' data-posinicio='"+0+"' data-numpags='"+numPags+"' data-busq='"+busq+"'> << </div>");
     for(var i=1;i<=numPags;i++)
     {
         var posInicio=(i-1)*5;
@@ -47,46 +47,17 @@ function borrarTablaCursos()
 {
     $(".filaCurso").remove();
 }
-// modifica la posiciones de los valores de los boton de paginacion (una atras y una alante)
-function cambiarValorAtraAlante(direccion)
-{
-    if(direccion===true)
-    {
-        $("#unoAlante").data("posinicio",$("#unoAlante").data("posinicio") + 5);
-        if($("#unoAlante").data("posinicio")>10)
-        {
-            $("#unoAtras").data("posinicio",$("#unoAtras").data("posinicio") + 5);
-        }
-    }
-    else
-    {
-        if ($("#unoAtras").data("posinicio")>0)
-        {
-            $("#unoAtras").data("posinicio",$("#unoAtras").data("posinicio") - 5);
-        }
-        $("#unoAlante").data("posinicio",$("#unoAlante").data("posinicio") - 5);
-    }
-}
-//Cambia los valores
-function cambiarValoresPaginacion(total,posicion)
+//Cambia los valores de los botones de atras y alante con respecto a la posicion(pagina) donde estemos
+function cambiarValoresPaginacion(total,posicion,limite)
 {
     var alante=$("#unoAlante");
     var atras=$("#unoAtras");
-    var posActual=(alante.data("posinicio")-5);
-    if(posActual<posicion)
+    if(posicion<total)
     {
-        if(alante.data("posinicio")<total)
-        {
-            alante.data("posinicio",posicion+5);
-        }
-        atras.data("posinicio",posicion+5);
+        alante.data("posinicio",posicion+limite);
     }
-    else
+    if(posicion>0)
     {
-        alante.data("posinicio",posicion+5);
-        if(atras.data("posinicio")>0)
-        {
-            atras.data("posinicio",posicion+5);
-        }
+        atras.data("posinicio",posicion-limite);
     }
 }

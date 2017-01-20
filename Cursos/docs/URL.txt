@@ -1,4 +1,4 @@
-CREAR CURSO
+CREAR CURSO (POST)
 ====================================
 //localhost:3000/curso
 -------------------------------------
@@ -103,3 +103,21 @@ CREAR CURSO
             "horaInicio":"11:00:00",
             "horaFin":"13:00:00"}]
 }
+===========================================
+ACTUALIZAR CURSO (PUT)
+===========================================
+//localhost:3000/curso/:IDCurso
+----------------------------------
+{"titulo":"cocina con mama 2",
+"descripcion":"Dirigido a treintañeros que aun viven con su madre podran aprender las tecnicas de cocina junto a su madre harta de tenerle en casa",
+"localidad":"San Sebastian",
+"direccion":"calle euskera",
+"plazas":20,
+"fechaInicio":"2017/06/01",
+"fechaFin":"2017/09/01"
+}
+===========================================
+ELIMINAR CURSO (DELETE)
+===========================================
+//localhost:3000/curso/:IDCurso
+----------------------------------

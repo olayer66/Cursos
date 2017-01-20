@@ -24,6 +24,7 @@ module.exports={
     mostrarCurso: mostrarCurso,
     mostrarCursoPorTitulo:mostrarCursoPorTitulo,
     contarCursos:contarCursos,
+    cambiarImagenCurso:cambiarImagenCurso,
     //Horarios
     insertarHorario:insertarHorario,
     actualizarHorario:actualizarHorario,
@@ -502,6 +503,32 @@ function contarCursos(titulo,callback)
     else
     {
         callback(new Error("El ID de curso no es valido"),null);
+    }
+}
+function cambiarImagenCurso(IDCurso,imagen,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null)
+    {
+        query="UPDATE cursos SET Imagen=? WHERE ID_Curso= ?";
+        valoresEntrada=[imagen,IDCurso];
+        //Conectamos con la consulta requerida
+        conexion.query(mysql.format(query,valoresEntrada),function(err) 
+        {
+            if (err) 
+            {
+                //console.error(err);
+                callback(err);
+            } 
+            else 
+            {
+                conexion.end();
+            }
+        });
+    }
+    else
+    {
+        callback(new Error("El ID de curso no es valido"));
     }
 }
 /*=======================================HORARIOS=======================================*/

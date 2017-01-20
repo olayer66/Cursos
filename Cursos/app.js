@@ -23,20 +23,6 @@ servidor.use(bodyParser.urlencoded({ extended: true }));
 servidor.use(expressValidator());
 
 //funcionalidad del servidor
-/*==========================================METODOS GET==================================================*/
-//Carga pagina inicio
-servidor.get("/",function(req,res)
-{
-    fs.readFile('./static/index.html', function (err, html) 
-    {
-        if (err) {
-            throw err; 
-        }       
-        res.writeHeader(200, {"Content-Type": "text/html"});  
-        res.write(html);  
-        res.end();  
-    });
-});
 /*=========================================METODOS POST==================================================*/
 //Creacion de un nuevo curso
 servidor.post("/curso", function(req, res) 
@@ -129,6 +115,19 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
     });
 });
 /*=========================================METODOS GET===================================================*/
+//Carga pagina inicio
+servidor.get("/",function(req,res)
+{
+    fs.readFile('./static/index.html', function (err, html) 
+    {
+        if (err) {
+            throw err; 
+        }       
+        res.writeHeader(200, {"Content-Type": "text/html"});  
+        res.write(html);  
+        res.end();  
+    });
+});
 //Busqueda de curso/s
 servidor.get("/curso",function(req,res){
     var busq= req.query.busq;
@@ -230,7 +229,42 @@ servidor.put("/curso/:id",function(req,res){
             else
             {
                 console.log("Modifcacion correcta del curso "+id);
+                res.status(200);
+            }
+        });
+    }
+    else
+    {
+        console.log("El ID de curso no es valido: "+id);
+        res.status(404);
+    }
+    res.end();
+});
+//añade o modifica la imagen de un curso
+servidor.put("/curso/imagen/:id",facMulter.single("imagen"),function(req,res)
+{
+    var imagen;
+    var id= req.params.id;
+    if(id!==null && id!== undefined && !isNaN(id))
+    {
+        if (req.file)
+        {
+            imagen= req.file.buffer;
+        }
+        else
+        {
+            imagen=null;
+        }
+        cursos.cambiarImagenCurso(id,imagen,function(err){
+            if(err)
+            {
+                console.log(err);
                 res.status(500);
+            }
+            else
+            {
+                console.log("Modifcacion correcta del curso "+id);
+                res.status(200);
             }
         });
     }

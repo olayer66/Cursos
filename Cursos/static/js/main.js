@@ -4,6 +4,7 @@
     * Contiene las variables globales
  */
 var divActivo;
+var limite=5;
 $(document).ready(function() 
 {
     vistaBuscador();
@@ -55,10 +56,12 @@ $(document).ready(function()
     $("#paginacion").on("click","#unoAtras",function (){
         var busq=$("#unoAtras").data("busq");
         var posInicio=$("#unoAtras").data("posinicio");
+        var numPags=$("#unoAlante").data("numpags");
+        var total=numPags*limite;
         if(posInicio >=0)
         {
-            cambiarValorAtraAlante(false);
-            llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+            cambiarValoresPaginacion(total,posInicio,limite);
+            llamadaExtraeCursos(busq,limite,posInicio,function(err,cursos)
             {
                 if(err)
                 {
@@ -77,11 +80,11 @@ $(document).ready(function()
         var busq=$("#unoAlante").data("busq");
         var posInicio=$("#unoAlante").data("posinicio");
         var numPags=$("#unoAlante").data("numpags");
-        var total=numPags*5;
+        var total=numPags*limite;
         if(posInicio < total)
         {
-            cambiarValorAtraAlante(true);
-            llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+            cambiarValoresPaginacion(total,posInicio,limite);
+            llamadaExtraeCursos(busq,limite,posInicio,function(err,cursos)
             {
                 if(err)
                 {
@@ -100,10 +103,9 @@ $(document).ready(function()
         var busq=boton.data("busq");
         var posInicio=boton.data("posinicio");
         var numPags=$("#unoAlante").data("numpags");
-        var total=numPags*5;
-        alert("posinicio: "+posInicio);
-        cambiarValoresPaginacion(total,posInicio);
-        llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+        var total=numPags*limite;
+        cambiarValoresPaginacion(total,posInicio,limite);
+        llamadaExtraeCursos(busq,limite,posInicio,function(err,cursos)
         {
             if(err)
             {

@@ -12,6 +12,7 @@ module.exports={
     buscarCursoID:buscarCursoID,
     buscarCursoTitulo:buscarCursoTitulo,
     totalResultados:totalResultados,
+    cambiarImagenCurso:cambiarImagenCurso,
     //horarios
     extraerHorarios:extraerHorarios
 };
@@ -37,9 +38,20 @@ function crearCurso(datos,callback)
 //Modificar un curso
 function modificarCurso(IDCurso,datos,callback)
 {
-    //modificamos el curso
-    
-    //modificamos los horarios
+    if (datos!==null && datos!==undefined)
+    {
+        //modifcamos el curso
+        accBBDD.modificarCurso(IDCurso,datos,function(err){
+            if(err)
+            {
+                callback(err);
+            }
+            else
+            {
+                callback(null);
+            }
+        });  
+    }
 }
 //borrar un curso
 function borrarCurso(IDCurso,callback)
@@ -99,6 +111,20 @@ function totalResultados(titulo,callback)
         else
         {
             callback(null,total);
+        }
+    });
+}
+//Añade o modifica la imagen de un curso
+function cambiarImagenCurso(IDCurso,imagen,callback)
+{
+    accBBDD.cambiarImagenCurso(IDCurso,imagen,function(err){
+        if(err)
+        {
+            callback(err);
+        }
+        else
+        {
+            callback(null);
         }
     });
 }
