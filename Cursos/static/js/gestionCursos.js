@@ -32,7 +32,7 @@ function insertarPaginacion(total,busq)
         var posInicio=(i-1)*5;
         $("#paginacion").append("<div class='botonMini botonPagina' data-posInicio='"+posInicio+"' data-busq='"+busq+"'>"+i+"</div>");
     }
-    $("#paginacion").append("<div class='botonMini' id='unoAlante' data-posInicio='"+5+"' data-busq='"+busq+"'> >> </div>");
+    $("#paginacion").append("<div class='botonMini' id='unoAlante' data-posInicio='"+5+"' data-numPag='"+numPags+"' data-busq='"+busq+"'> >> </div>");
 }
 /*==========================FUNCIONES AUXILIARES===========================*/
 //Extrae la fechea de una variable

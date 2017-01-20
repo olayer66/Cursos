@@ -6,9 +6,12 @@
 var divActivo;
 $(document).ready(function() 
 {
+    vistaBuscador();
     console.log("DOM inicializado");
     //cabecera
-    $("#buscarCurso").on("click",vistaBuscador());
+    $("#buscarCurso").on("click",function(){
+        vistaBuscador();
+    });
     //contenido
     $("#botonBuscarCurso").on("click",function(){
         var busq=$("#buscarTitulo").val();
@@ -49,39 +52,48 @@ $(document).ready(function()
         });  
     });
     //Boton de paginacion de uno hacia atras
-    $("#unoAtras").on("click",function(){
+    $("#paginacion").on("click","#unoAtras",function (){
         alert("cagada");
         var busq=$("#unoAtras").data("busq");
         var posInicio=$("#unoAtras").data("posInicio");
-        cambiarValorAtraAlante(false);
-        llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+        if(posInicio!==0)
         {
-            if(err)
+            cambiarValorAtraAlante(false);
+            llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
             {
-                alert(err);
-            }
-            else
-            {
-                mostrarCursos(cursos);
-            }
-        });
+                if(err)
+                {
+                    alert(err);
+                }
+                else
+                {
+                    mostrarCursos(cursos);
+                }
+            });
+        }
     });
-    //Boton de paginacion de uno hacia alante
-    $("#unoAlante").on("click",function (){
+    //Boton de paginacion de uno hacia adelante
+    $("#paginacion").on("click","#unoAlante",function (){
+        
         var busq=$("#unoAlante").data("busq");
         var posInicio=$("#unoAlante").data("posInicio");
-        cambiarValorAtraAlante(true);
-        llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+        var numPags=$("#unoAlante").data("numPags");
+        alert("posInicio" + posInicio);
+        if(posInicio < (numPags*5))
         {
-            if(err)
+            cambiarValorAtraAlante(true);
+            llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
             {
-                alert(err);
-            }
-            else
-            {
-                mostrarCursos(cursos);
-            }
-        });
+                if(err)
+                {
+                    alert(err);
+                }
+                else
+                {
+                    mostrarCursos(cursos);
+                }
+            });
+        }
     });
 });
 /*==========================FUNC. DE VISTA============================*/
