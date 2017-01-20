@@ -53,10 +53,9 @@ $(document).ready(function()
     });
     //Boton de paginacion de uno hacia atras
     $("#paginacion").on("click","#unoAtras",function (){
-        alert("cagada");
         var busq=$("#unoAtras").data("busq");
-        var posInicio=$("#unoAtras").data("posInicio");
-        if(posInicio!==0)
+        var posInicio=$("#unoAtras").data("posinicio");
+        if(posInicio >=0)
         {
             cambiarValorAtraAlante(false);
             llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
@@ -76,10 +75,10 @@ $(document).ready(function()
     $("#paginacion").on("click","#unoAlante",function (){
         
         var busq=$("#unoAlante").data("busq");
-        var posInicio=$("#unoAlante").data("posInicio");
-        var numPags=$("#unoAlante").data("numPags");
-        alert("posInicio" + posInicio);
-        if(posInicio < (numPags*5))
+        var posInicio=$("#unoAlante").data("posinicio");
+        var numPags=$("#unoAlante").data("numpags");
+        var total=numPags*5;
+        if(posInicio < total)
         {
             cambiarValorAtraAlante(true);
             llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
@@ -94,6 +93,27 @@ $(document).ready(function()
                 }
             });
         }
+    });
+    $("#paginacion").on("click",".botonPagina",function (event)
+    {    
+        var boton=$(event.target);
+        var busq=boton.data("busq");
+        var posInicio=boton.data("posinicio");
+        var numPags=$("#unoAlante").data("numpags");
+        var total=numPags*5;
+        alert("posinicio: "+posInicio);
+        cambiarValoresPaginacion(total,posInicio);
+        llamadaExtraeCursos(busq,5,posInicio,function(err,cursos)
+        {
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                mostrarCursos(cursos);
+            }
+        });
     });
 });
 /*==========================FUNC. DE VISTA============================*/
