@@ -153,6 +153,7 @@ function vistaInicial()
     $("#loginConectado").hide();
     $("#usuarioConectado").hide();
     $("#loginUsuario").hide();
+    $("#datosUsuario").hide();
     
 }
 //Muestra la ventana de buscador
@@ -181,6 +182,12 @@ function vistaLoginUsuario()
 {
     divActivo.hide();
     divActivo=$("#loginUsuario");
+    divActivo.show();
+}
+function vistaDatosUsuario()
+{
+    divActivo.hide();
+    divActivo=$("#datosUsuario");
     divActivo.show();
 }
 /*===========================FUNC. DE LLAMADA==========================*/
