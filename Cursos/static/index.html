@@ -54,6 +54,49 @@
             <div id="resultado">
                 
             </div>
+            <div id="insertarUsuario">
+                <table id="tablaUsuario">
+                    <tr>
+                        <th><label>Correo *</label></th>
+                        <th><input type="text" name="correo" id="usuarioCorreo" required></th>
+                    </tr>
+                    <tr>
+                        <th><label>Nombre *</label></th>
+                        <th><input type="text" name="nombre" id="usuarioNombre" required></th>
+                        <th><label>Apellidos *</label></th>
+                        <th><input type="text" name="apellidos" id="usuarioApellidos" required></th>
+                    </tr>
+                    <tr>
+                        <th><label>Contraseña *</label></th>
+                        <th><input type="text" name="contra" id="usuarioContra" required></th>
+                        <th><label>Repetir *</label></th>
+                        <th><input type="text" name="contraRep" id="usuarioContraRep" required></th>
+                    </tr>
+                    <tr>
+                        <th><label>Fecha de nacimiento *</label></th>
+                        <th> 
+                            <select name="dia" id="usuarioDia">
+                            </select>
+                            <select name="mes" id="usuarioMes">
+                            </select>
+                            <select name="anio" id="usuarioAnio">
+                            </select>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th><label>Sexo *</label></th>
+                        <th>
+                            <input type="radio" name="sexo" value="H" id="formHombre" checked required>
+                            <label for="formHombre">Hombre</label>
+                            <input type="radio" name="sexo" value="M" id="formMujer">
+                            <label for="formMujer">Mujer</label>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"><div class="botonMini" id="botonCrearUsuario">Crear usuario</div></th>
+                    </tr>
+                </table>
+            </div>
         </div>
     </body>
 </html>

@@ -108,6 +108,8 @@ ACTUALIZAR CURSO (PUT)
 ===========================================
 //localhost:3000/curso/:IDCurso
 ----------------------------------
+IDCurso : El ID del curso que se quiere eliminar
+----------------------------------
 {"titulo":"cocina con mama 2",
 "descripcion":"Dirigido a treintañeros que aun viven con su madre podran aprender las tecnicas de cocina junto a su madre harta de tenerle en casa",
 "localidad":"San Sebastian",
@@ -120,4 +122,12 @@ ACTUALIZAR CURSO (PUT)
 ELIMINAR CURSO (DELETE)
 ===========================================
 //localhost:3000/curso/:IDCurso
-----------------------------------
+-------------------------------------------
+IDCurso : El ID del curso que se quiere eliminar
+===========================================
+AÑADIR/MODIFICAR IMAGEN DE UN CURSO (PUT)
+===========================================
+//localhost:3000/curso/imagen/:IDCurso
+-------------------------------------------
+IDCurso : El ID del curso que se quiere eliminar
+El nombre de parametro en el que tiene que ir la imagen debe de ser "imagen"

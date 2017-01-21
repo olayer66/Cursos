@@ -84,7 +84,9 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
             req.checkBody("apellidos","El/los apellidos no pueden estar vacios").notEmpty();
             req.checkBody("contra","La contraseña no puede estar vacia").notEmpty();
             req.checkBody("contraRep","La confirmacion de la contraseña no puede estar vacia").notEmpty();
-            req.checkBody("fechaNac","La fecha de nacimiento no puede estar vacia").notEmpty();
+            req.checkBody("fechaDia","La fecha de nacimiento no puede estar vacia").notEmpty();
+            req.checkBody("fechaMes","La fecha de nacimiento no puede estar vacia").notEmpty();
+            req.checkBody("fechaAño","La fecha de nacimiento no puede estar vacia").notEmpty();
             req.checkBody("sexo","Debe de seleccionar su sexo").notEmpty();
         //Control de tipos de datos
             req.checkBody("correo","El correo no tiene un formato correcto").isEmail();
@@ -92,13 +94,15 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
             req.checkBody("apellidos","El/los apellidos solo pueden contener letras").matches(/^[A-Z\s]*$/i);
             req.checkBody("contra","La contraseña solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
             req.checkBody("contraRep","La verificacion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
+            req.checkBody("fechaDia","La fecha de nacimiento no puede estar vacia").matches(/^[0-9]*$/i);
+            req.checkBody("fechaMes","La fecha de nacimiento no puede estar vacia").matches(/^[0-9]*$/i);
+            req.checkBody("fechaAño","La fecha de nacimiento no puede estar vacia").matches(/^[0-9]*$/i);
         //Control de contraseña (personalizado)
             req.checkBody("contra","El campo contraseña ha de tener entre 4 y 8 caracteres").isLength({ min: 4, max: 8 });
             req.checkBody("contraRep","El campo de confirmacion de contraseña ha de tener entre 4 y 8 caracteres").isLength({ min: 4, max: 8 });
             req.checkBody("contra","La verificacion de la contraseña no coincide").equals(req.body.contraRep);
         //Control de la fecha (personalizado)
-        //if(req.checkBody("fechaNac","El campo fecha de nacimiento no es valido").isDate())
-        //    req.checkBody("fechaNac","El campo fecha de nacimiento Debe ser anterior a lafecha actual").isBefore();
+            
     //Validacion del contenido
     req.getValidationResult().then(function(result) 
     {

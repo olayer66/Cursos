@@ -7,9 +7,14 @@ var divActivo;
 var limite=5;
 $(document).ready(function() 
 {
-    vistaBuscador();
     console.log("DOM inicializado");
+    //Carga de vista inicial
+    vistaInicial();
     //cabecera
+     $("#registrarse").on("click",function(){
+        vistaNuevoUsuario();
+    });
+    //Menu
     $("#buscarCurso").on("click",function(){
         vistaBuscador();
     });
@@ -119,15 +124,31 @@ $(document).ready(function()
     });
 });
 /*==========================FUNC. DE VISTA============================*/
+//Carga la vista inicial
+function vistaInicial()
+{
+    divActivo=$("#buscador");
+    vistaBuscador();
+    $("#insertarUsuario").hide();
+}
+//Muestra la ventana de buscador
 function vistaBuscador()
 {
-    if(divActivo!==undefined)
-        divActivo.hide();
+    divActivo.hide();
     divActivo=$("#buscador");
     $("#buscador").show();
     $("#buscar").show();
     $("#cargaCursos").hide();
     $("#paginacion").hide();
+}
+//Muestra la ventana de nuevo usuario
+function vistaNuevoUsuario()
+{
+    divActivo.hide();
+    divActivo=$("#insertarUsuario");
+    $(".borrarSelect").remove();
+    crearSelectFecha();
+    divActivo.show();
 }
 /*===========================FUNC. DE LLAMADA==========================*/
 function llamadaTotalCursos(busq,callback)
