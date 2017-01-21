@@ -1,7 +1,8 @@
 /*
  * Funcion main:
-    * Contiene la incializacion y las llamadas al DOM
-    * Contiene las variables globales
+    * La incializacion y las llamadas al servidor
+    * Las variables globales
+    * Las funciones de muestra y ocultacion de las direfentes ventanas
  */
 var divActivo;
 var limite=5;
@@ -11,8 +12,11 @@ $(document).ready(function()
     //Carga de vista inicial
     vistaInicial();
     //cabecera
-     $("#registrarse").on("click",function(){
+    $("#registrarse").on("click",function(){
         vistaNuevoUsuario();
+    });
+    $("#logearse").on("click",function(){
+        vistaLoginUsuario();
     });
     //Menu
     $("#buscarCurso").on("click",function(){
@@ -38,7 +42,7 @@ $(document).ready(function()
                         $("#paginacion").show();
                     }
                     //Extraemos los cursos
-                    llamadaExtraeCursos(busq,5,0,function(err,cursos){
+                    llamadaExtraeCursos(busq,limite,0,function(err,cursos){
                         if(err)
                         {
                             alert(err);
@@ -102,6 +106,7 @@ $(document).ready(function()
             });
         }
     });
+    //Botones de paginas en la paginacion de los cursos
     $("#paginacion").on("click",".botonPagina",function (event)
     {    
         var boton=$(event.target);
@@ -122,6 +127,20 @@ $(document).ready(function()
             }
         });
     });
+    //Boton de crear nuevo usuario
+    $("#botonCrearUsuario").on("click",function(){
+        llamadaInsertarUsuario(function(err){
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                $("#insercionUsuario").hide();
+                $("#insercionUsuarioCorrecta").show(); 
+            }
+        });
+    });
 });
 /*==========================FUNC. DE VISTA============================*/
 //Carga la vista inicial
@@ -129,14 +148,19 @@ function vistaInicial()
 {
     divActivo=$("#buscador");
     vistaBuscador();
+    $("#menuConSesion").hide();
     $("#insertarUsuario").hide();
+    $("#loginConectado").hide();
+    $("#usuarioConectado").hide();
+    $("#loginUsuario").hide();
+    
 }
 //Muestra la ventana de buscador
 function vistaBuscador()
 {
     divActivo.hide();
     divActivo=$("#buscador");
-    $("#buscador").show();
+    divActivo.show();
     $("#buscar").show();
     $("#cargaCursos").hide();
     $("#paginacion").hide();
@@ -148,6 +172,15 @@ function vistaNuevoUsuario()
     divActivo=$("#insertarUsuario");
     $(".borrarSelect").remove();
     crearSelectFecha();
+    divActivo.show();
+    $("#insercionUsuario").show();
+    $("#insercionUsuarioCorrecta").hide();
+}
+//Muestra la ventana de logeo
+function vistaLoginUsuario()
+{
+    divActivo.hide();
+    divActivo=$("#loginUsuario");
     divActivo.show();
 }
 /*===========================FUNC. DE LLAMADA==========================*/
@@ -174,7 +207,7 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
         url:"/curso",
         data:{
             "busq":busq,
-            "limite":"5",
+            "limite":limite,
             "posInicio":posInicio
         },
         success:function (data, textStatus, jqXHR) 
@@ -185,6 +218,34 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
         error:function (jqXHR, textStatus, errorThrown) 
         {
          callback(new Error("Fallo en la extraccion de los cursos. Error: "+ errorThrown),null);
+        }
+    });
+}
+//Inserta un nuevo usuario en la BBDD
+function llamadaInsertarUsuario(callback)
+{
+    $.ajax({
+        type: "POST",
+        url:"/usuario",
+        data:{
+            "correo":$("#usuarioCorreo").val(),
+            "nombre":$("#usuarioNombre").val(),
+            "apellidos":$("#usuarioApellidos").val(),
+            "contra":$("#usuarioContra").val(),
+            "contraRep":$("#usuarioContraRep").val(),
+            "dia":$("#usuarioDia").val(),
+            "mes":$("#usuarioMes").val(),
+            "anio":$("#usuarioAnio").val(),
+            "sexo":$('input[name=usuarioSexo]:checked').val()
+        },
+        success:function (data, textStatus, jqXHR) 
+        {
+        console.log(textStatus);
+        callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la insercion del usuario. Error: "+ errorThrown),null);
         }
     });
 }

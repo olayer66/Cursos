@@ -13,17 +13,26 @@
     <body>
         <div class="cabecera">
             <img src="images/logo.png" class="imgLogo" alt="logo">
+            <div id="usuarioConectado">
+                <span id="spanUsuarioConectado"></span>
+            </div>
             <div class="login">
-                <ul id="login">
-                    <li class='boton' id='logearse'>Login</li>
-                    <li class='boton' id='registrarse'>Registrarse</li>
-                </ul>
+                <div id="login">
+                    <div class='boton' id='logearse'>Login</div>
+                    <div class='boton' id='registrarse'>Registrarse</div>
+                </div>
+                <div id="loginConectado">
+                    <div class='boton' id='desconectar'>Desconectar</div>
+                </div>
             </div>
         </div>
         <div class="menu">
-            <ul id="menu">
-                <li class='boton' id='buscarCurso'>Buscador</li>
-            </ul>
+            <div id="menuSinSesion">
+                <div class='boton' id='buscarCurso'>Buscador</div>
+            </div>
+            <div id="menuConSesion">
+                <div class='boton' id='buscarCurso'>Mis Cursos</div>
+            </div>
         </div>
         <div class="contenido">
             <div id="buscador">
@@ -55,46 +64,68 @@
                 
             </div>
             <div id="insertarUsuario">
-                <table id="tablaUsuario">
-                    <tr>
-                        <th><label>Correo *</label></th>
-                        <th><input type="text" name="correo" id="usuarioCorreo" required></th>
-                    </tr>
-                    <tr>
-                        <th><label>Nombre *</label></th>
-                        <th><input type="text" name="nombre" id="usuarioNombre" required></th>
-                        <th><label>Apellidos *</label></th>
-                        <th><input type="text" name="apellidos" id="usuarioApellidos" required></th>
-                    </tr>
-                    <tr>
-                        <th><label>Contraseña *</label></th>
-                        <th><input type="text" name="contra" id="usuarioContra" required></th>
-                        <th><label>Repetir *</label></th>
-                        <th><input type="text" name="contraRep" id="usuarioContraRep" required></th>
-                    </tr>
-                    <tr>
-                        <th><label>Fecha de nacimiento *</label></th>
-                        <th> 
-                            <select name="dia" id="usuarioDia">
-                            </select>
-                            <select name="mes" id="usuarioMes">
-                            </select>
-                            <select name="anio" id="usuarioAnio">
-                            </select>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th><label>Sexo *</label></th>
-                        <th>
-                            <input type="radio" name="sexo" value="H" id="formHombre" checked required>
-                            <label for="formHombre">Hombre</label>
-                            <input type="radio" name="sexo" value="M" id="formMujer">
-                            <label for="formMujer">Mujer</label>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th colspan="2"><div class="botonMini" id="botonCrearUsuario">Crear usuario</div></th>
-                    </tr>
+                <div id="insercionUsuario">
+                    <table id="tablaUsuario">
+                        <tr>
+                            <th><label>Correo *</label></th>
+                            <th><input type="text" name="correo" id="usuarioCorreo" required></th>
+                        </tr>
+                        <tr>
+                            <th><label>Nombre *</label></th>
+                            <th><input type="text" name="nombre" id="usuarioNombre" required></th>
+                            <th><label>Apellidos *</label></th>
+                            <th><input type="text" name="apellidos" id="usuarioApellidos" required></th>
+                        </tr>
+                        <tr>
+                            <th><label>Contraseña *</label></th>
+                            <th><input type="text" name="contra" id="usuarioContra" required></th>
+                            <th><label>Repetir *</label></th>
+                            <th><input type="text" name="contraRep" id="usuarioContraRep" required></th>
+                        </tr>
+                        <tr>
+                            <th><label>Fecha de nacimiento *</label></th>
+                            <th> 
+                                <select name="dia" id="usuarioDia">
+                                </select>
+                                <select name="mes" id="usuarioMes">
+                                </select>
+                                <select name="anio" id="usuarioAnio">
+                                </select>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th><label>Sexo *</label></th>
+                            <th>
+                                <input type="radio" name="usuarioSexo" value="H" id="usuarioHombre" checked required>
+                                <label for="formHombre">Hombre</label>
+                                <input type="radio" name="usuarioSexo" value="M" id="usuarioMujer">
+                                <label for="formMujer">Mujer</label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><div class="botonMini" id="botonCrearUsuario">Crear usuario</div></th>
+                        </tr>
+                    </table>
+                    <span id="infoCrearUsuario"> Los campos marcados con un asterisco * son obligatorios</span>
+                </div>
+                <div id="insercionUsuarioCorrecta">
+                    <h2>Bienvenido a la aplicacion.</h2>
+                    <h3>Por favor inicia sesion para comenzar</h3>
+                </div>
+            </div>
+            <div id="loginUsuario">
+                <table id="tablaLogin">
+                        <tr>
+                            <th><label>Correo </label></th>
+                            <th><input type="text" name="loginCorreo" id="loginCorreo" required></th>
+                        </tr>
+                        <tr>
+                            <th><label>Contraseña </label></th>
+                            <th><input type="password" name="loginContra" id="loginContra" required></th>
+                        </tr>
+                        <tr>
+                            <th colspan="2"><div class="botonMini" id="botonLoginUsuario">Iniciar Sesion</div></th>
+                        </tr>
                 </table>
             </div>
         </div>
