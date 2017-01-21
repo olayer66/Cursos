@@ -38,9 +38,10 @@ function crearUsuario(valores,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(valores!==null)
     {
+        var fecha=valores.fechaAnio+"/"+valores.fechaMes+"/"+valores.fechaDia;
         query="INSERT INTO Usuarios(Correo,Nombre,Apellidos,Contraseña,F_Nacimiento,Sexo)"+
               "VALUES (?,?,?,?,?,?)";
-        valoresEntrada=[valores.correo,valores.nombre,valores.apellidos,valores.contra,valores.fechaNac,valores.sexo];
+        valoresEntrada=[valores.correo,valores.nombre,valores.apellidos,valores.contra,fecha,valores.sexo];
         //Conectamos con la consulta requerida
         conexion.connect(function(err)
         {
@@ -135,13 +136,13 @@ function mostrarUsuario(ID,callback)
     }
 }
 //Comprbar el login del usuario
-function conectar(datos,callback)
+function conectar(user,pass,callback)
 {
     var conexion = mysql.createConnection(config.conexionBBDD);
-    if(datos!==null)
+    if(user!==null && user!==undefined && pass!==null && pass!==undefined)
     {
         query="SELECT ID_Usuario FROM usuarios WHERE Correo=? AND Contraseña=?";
-        valoresEntrada=[datos.correoLog,datos.contraLog];
+        valoresEntrada=[user,pass];
         //Conectamos con la consulta requerida
         handleDisconnect(conexion);
         conexion.connect(function(err)
@@ -162,7 +163,7 @@ function conectar(datos,callback)
                     } 
                     else 
                     {
-                        callback(null,rows);
+                        callback(null,rows[0].ID_Usuario);
                         conexion.end();
                     }
                 }); 

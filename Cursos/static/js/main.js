@@ -107,8 +107,7 @@ $(document).ready(function()
         }
     });
     //Botones de paginas en la paginacion de los cursos
-    $("#paginacion").on("click",".botonPagina",function (event)
-    {    
+    $("#paginacion").on("click",".botonPagina",function (event){    
         var boton=$(event.target);
         var busq=boton.data("busq");
         var posInicio=boton.data("posinicio");
@@ -138,6 +137,21 @@ $(document).ready(function()
             {
                 $("#insercionUsuario").hide();
                 $("#insercionUsuarioCorrecta").show(); 
+            }
+        });
+    });
+    //Boton de iniciar sesion
+    $("#botonLoginUsuario").on("click",function(){
+        llamadaLoginUsuario(function(err,login){
+            if(err)
+            {
+                alert("paso 6");
+                alert(err);
+            }
+            else
+            {
+                alert("paso 7");
+                alert(login.permitido +": "+ login.IDUsuario);  
             }
         });
     });
@@ -231,6 +245,7 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
 //Inserta un nuevo usuario en la BBDD
 function llamadaInsertarUsuario(callback)
 {
+    alert($("#usuarioAnio").val()+"/"+$("#usuarioMes").val()+"/"+$("#usuarioDia").val())
     $.ajax({
         type: "POST",
         url:"/usuario",
@@ -240,9 +255,9 @@ function llamadaInsertarUsuario(callback)
             "apellidos":$("#usuarioApellidos").val(),
             "contra":$("#usuarioContra").val(),
             "contraRep":$("#usuarioContraRep").val(),
-            "dia":$("#usuarioDia").val(),
-            "mes":$("#usuarioMes").val(),
-            "anio":$("#usuarioAnio").val(),
+            "fechaDia":$("#usuarioDia").val(),
+            "fechaMes":$("#usuarioMes").val(),
+            "fechaAnio":$("#usuarioAnio").val(),
             "sexo":$('input[name=usuarioSexo]:checked').val()
         },
         success:function (data, textStatus, jqXHR) 
@@ -253,6 +268,34 @@ function llamadaInsertarUsuario(callback)
         error:function (jqXHR, textStatus, errorThrown) 
         {
          callback(new Error("Fallo en la insercion del usuario. Error: "+ errorThrown),null);
+        }
+    });
+}
+function llamadaLoginUsuario(callback)
+{
+    var user =$("#loginCorreo").val();
+    var pass =$("#loginContra").val();
+    alert("paso 1");
+    var cadenaBase64 = btoa(user + ":" + pass);
+    $.ajax({
+        type: "GET",
+        url:"/usuario/login",
+        beforeSend: function(req) {
+           // Añadimos la cabecera 'Authorization' con los datos
+           // de autenticación.
+           req.setRequestHeader("Authorization", 
+                                "Basic " + cadenaBase64);
+       },
+        success:function (data, textStatus, jqXHR) 
+        {
+        alert("paso 2");
+        console.log(textStatus);
+        callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         alert("paso 3");
+         callback(new Error("Fallo en en el login. Error: "+ errorThrown),null);
         }
     });
 }

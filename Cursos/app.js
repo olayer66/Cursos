@@ -7,20 +7,38 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var multer=require("multer");
 var expressValidator = require("express-validator");
-var mysqlSession = require("express-mysql-session");
+var passport = require("passport");
+var passportHTTP = require("passport-http");
 //Craga de modulos personalizados
 var config=require("./config");
 var cursos=require("./controlCursos");
+var usuarios=require("./controlUsuarios");
 //Variables
 var facMulter= multer({ storage: multer.memoryStorage() });
 var recEstaticos= path.join(__dirname, "static");
 var servidor= express();
-
+var estrategia=new passportHTTP.BasicStrategy(
+        { realm: 'Autenticacion requerida' },
+        function(user, pass, callback) {
+           usuarios.conectar(user,pass,function(err,IDUsuario){
+                if(err)
+                {
+                    callback(null, false);
+                }
+                else
+                {
+                    callback(null, { userId:IDUsuario });
+                }
+            });
+        }
+);
 //Middleware
 servidor.use(express.static(recEstaticos));
+servidor.use(passport.initialize());
 servidor.use(bodyParser.json());
 servidor.use(bodyParser.urlencoded({ extended: true }));
 servidor.use(expressValidator());
+passport.use(estrategia);
 
 //funcionalidad del servidor
 /*=========================================METODOS POST==================================================*/
@@ -68,14 +86,13 @@ servidor.post("/curso", function(req, res)
         {
             console.log("La validacion de los campos ha fallado:");
             console.log(result.array());
-            
             res.status(400);
         }
         res.end();
     });
 });
 //Creacion de un nuevo usuario
-servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res) 
+servidor.post("/usuario", function(req, res) 
 {
     //control de contenido    
         //Campos vacios
@@ -84,9 +101,9 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
             req.checkBody("apellidos","El/los apellidos no pueden estar vacios").notEmpty();
             req.checkBody("contra","La contraseña no puede estar vacia").notEmpty();
             req.checkBody("contraRep","La confirmacion de la contraseña no puede estar vacia").notEmpty();
-            req.checkBody("fechaDia","La fecha de nacimiento no puede estar vacia").notEmpty();
-            req.checkBody("fechaMes","La fecha de nacimiento no puede estar vacia").notEmpty();
-            req.checkBody("fechaAño","La fecha de nacimiento no puede estar vacia").notEmpty();
+            req.checkBody("fechaDia","El dia no puede estar vacio").notEmpty();
+            req.checkBody("fechaMes","El mes no puede estar vacio").notEmpty();
+            req.checkBody("fechaAnio","El año no puede estar vacio").notEmpty();
             req.checkBody("sexo","Debe de seleccionar su sexo").notEmpty();
         //Control de tipos de datos
             req.checkBody("correo","El correo no tiene un formato correcto").isEmail();
@@ -94,9 +111,9 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
             req.checkBody("apellidos","El/los apellidos solo pueden contener letras").matches(/^[A-Z\s]*$/i);
             req.checkBody("contra","La contraseña solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
             req.checkBody("contraRep","La verificacion solo puede contener letras y numeros").matches(/^[A-Z0-9]*$/i);
-            req.checkBody("fechaDia","La fecha de nacimiento no puede estar vacia").matches(/^[0-9]*$/i);
-            req.checkBody("fechaMes","La fecha de nacimiento no puede estar vacia").matches(/^[0-9]*$/i);
-            req.checkBody("fechaAño","La fecha de nacimiento no puede estar vacia").matches(/^[0-9]*$/i);
+            req.checkBody("fechaDia","El dia solo puede contener numeros").matches(/^[0-9]*$/i);
+            req.checkBody("fechaMes","El mes solo puede contener numeros").matches(/^[0-9]*$/i);
+            req.checkBody("fechaAnio","El año solo puede contener numeros").matches(/^[0-9]*$/i);
         //Control de contraseña (personalizado)
             req.checkBody("contra","El campo contraseña ha de tener entre 4 y 8 caracteres").isLength({ min: 4, max: 8 });
             req.checkBody("contraRep","El campo de confirmacion de contraseña ha de tener entre 4 y 8 caracteres").isLength({ min: 4, max: 8 });
@@ -109,19 +126,30 @@ servidor.post("/nuevousuario",facMulter.single("imgPerfil"), function(req, res)
         //Carga de la imagen de perfil
         if (result.isEmpty()) 
         {
-           
+            usuarios.crearUsuario(req.body,function(err){
+                if(err)
+                {
+                    console.log(err);
+                    res.status(400);
+                }
+                else
+                {
+                    console.log("Se ha creado el usuario");
+                    res.status(200);
+                }
+            });
         } 
         else 
         {
-             res.status(200);
-             res.render("nuevousuario",{errores:result.array()});
+            console.log("La validacion de los campos ha fallado:");
+            console.log(result.array());
+            res.status(400);
         }
     });
 });
 /*=========================================METODOS GET===================================================*/
 //Carga pagina inicio
-servidor.get("/",function(req,res)
-{
+servidor.get("/",function(req,res){
     fs.readFile('./static/index.html', function (err, html) 
     {
         if (err) {
@@ -191,6 +219,7 @@ servidor.get("/curso",function(req,res){
         res.end();
     }
 });
+//Devuelve el numero de resultados que contienen el parametro de busqueda
 servidor.get("/curso/:busq",function(req,res){
     var busq= req.params.busq;
     if(busq!==null && busq!==undefined)
@@ -216,6 +245,10 @@ servidor.get("/curso/:busq",function(req,res){
         res.status(404);
         res.end();
     }
+});
+//Devuelve si el usuario es valido(si lo es devuelve el ID de usuario, si no devuelve FALSE)
+servidor.get("/usuario/login",passport.authenticate('basic', {session: false}),function(req,res){
+     res.json({permitido: true, IDUsuario:????});
 });
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo
@@ -245,8 +278,7 @@ servidor.put("/curso/:id",function(req,res){
     res.end();
 });
 //añade o modifica la imagen de un curso
-servidor.put("/curso/imagen/:id",facMulter.single("imagen"),function(req,res)
-{
+servidor.put("/curso/imagen/:id",facMulter.single("imagen"),function(req,res){
     var imagen;
     var id= req.params.id;
     if(id!==null && id!== undefined && !isNaN(id))

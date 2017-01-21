@@ -1,7 +1,23 @@
 /*
  * Este modulo contiene las funciones se usuarios en jquery para el cliente
  */
-/*=======================FUNCIONES DE FORM INSCRIPCION========================*/
+/*======================FUNCIONES DE DATOS DEL USUARIO========================*/
+//Carga los datos de cursos del usuario
+function cargarDatosUsuario(IDUsuario)
+{
+    
+}
+//Inicia la sesion del usuario
+function conectar(IDUsuario)
+{
+    
+}
+//Cierra la sesion del usuario
+function desconectar()
+{
+    
+}
+/*======================FUNCIONES DEL FORM INSCRIPCION========================*/
 function crearSelectFecha()
 {
     //dias
