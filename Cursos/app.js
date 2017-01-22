@@ -3,6 +3,7 @@
 //Carga de modulos
 var express = require("express");
 var fs=require("fs");
+var https = require("https");
 var path = require("path");
 var bodyParser = require("body-parser");
 var multer=require("multer");
@@ -17,6 +18,11 @@ var usuarios=require("./controlUsuarios");
 var facMulter= multer({ storage: multer.memoryStorage() });
 var recEstaticos= path.join(__dirname, "static");
 var servidor= express();
+//Configuracion para el servidor de https
+var clavePrivada=fs.readFileSync("./mi_clave.pem");
+var certificado=fs.readFileSync("./certificado_firmado.crt");
+var servidorHTTPS = https.createServer(
+        { key: clavePrivada, cert: certificado }, servidor);
 var estrategia=new passportHTTP.BasicStrategy(
         { realm: 'Autenticacion requerida' },
         function(user, pass, callback) {
@@ -32,13 +38,18 @@ var estrategia=new passportHTTP.BasicStrategy(
             });
         }
 );
-//Middleware
-servidor.use(express.static(recEstaticos));
+/*=========================================MIDDELWARE==================================================*/
+//Configuracion https
 servidor.use(passport.initialize());
+passport.use(estrategia);
+//ficheros estaticos
+servidor.use(express.static(recEstaticos));
+//parseadores del cuerpo de la peticion
 servidor.use(bodyParser.json());
 servidor.use(bodyParser.urlencoded({ extended: true }));
+//validacion de capos
 servidor.use(expressValidator());
-passport.use(estrategia);
+
 
 //funcionalidad del servidor
 /*=========================================METODOS POST==================================================*/
@@ -248,7 +259,7 @@ servidor.get("/curso/:busq",function(req,res){
 });
 //Devuelve si el usuario es valido(si lo es devuelve el ID de usuario, si no devuelve FALSE)
 servidor.get("/usuario/login",passport.authenticate('basic', {session: false}),function(req,res){
-     res.json({permitido: true, IDUsuario:????});
+     res.json({permitido: true, IDUsuario:"paco"});
 });
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo
@@ -339,11 +350,20 @@ servidor.delete("/curso/:id",function(req,res){
 });
 /*======================================INICIO DEL SERVIDOR==============================================*/
 //Abrimos el servidor a la escucha por el puerto 3000
-servidor.listen(config.puerto, function(err) {
+//servidor.listen(config.puerto, function(err) {
+//    if (err) {
+//        console.log("Error al abrir el puerto "+config.puerto+": " + err);
+//    } else {
+//        console.log("Servidor escuchando en el puerto "+config.puerto+".");
+//    }
+//});
+
+//Abrimos el servidor https a la escucha por el puerto 5555
+servidorHTTPS.listen(config.puertoHTTPS, function(err) {
     if (err) {
-        console.log("Error al abrir el puerto "+config.puerto+": " + err);
+        console.log("Error al abrir el puerto "+config.puertoHTTPS+": " + err);
     } else {
-        console.log("Servidor escuchando en el puerto "+config.puerto+".");
+        console.log("Servidor escuchando en el puerto "+config.puertoHTTPS+".");
     }
 });
 

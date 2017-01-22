@@ -12,6 +12,7 @@ module.exports={
     password: "root",
     database: "cursos"
 },
-puerto:3000 
+puerto:3000,
+puertoHTTPS:5555
 };
 

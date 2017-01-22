@@ -1,3 +1,9 @@
+
+ATENCION!!!
+-----------
+si se usa el servior de https la direccion cambia de http://localhost:3000 a https://localhost:5555/
+
+====================================
 CREAR CURSO (POST)
 ====================================
 //localhost:3000/curso
