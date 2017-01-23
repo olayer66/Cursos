@@ -182,7 +182,7 @@ function cursosDeUnUsuario(IDUsuario,callback)
   var conexion = mysql.createConnection(config.conexionBBDD);
     if(IDUsuario!==null && IDUsuario!==undefined)
     {
-        query="SELECT * FROM asig_cursos WHERE ID_Usuario=?";
+        query="SELECT cursos.* FROM asig_cursos AS asig,cursos WHERE asig.ID_Usuario=? AND asig.ID_Curso=cursos.ID_Curso";
         valoresEntrada=[IDUsuario];
          //Conectamos con la consulta requerida
         conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 

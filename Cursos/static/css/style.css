@@ -14,6 +14,11 @@ body{
     position: relative;
     float: left;
 }
+#usuarioConectado{
+    height: 100px;
+    position: relative;
+    float: right;
+}
 .login{
     height: 100px;
     position: relative;
@@ -29,7 +34,12 @@ body{
 #loginConectado{
     padding-left: 020px;
     padding-right: 10px;
-    margin-top: 30px;
+    margin-top: 10px;
+}
+#loginConectado h3{
+    margin-top: 0px;
+    margin-bottom: 15px;
+    color: white;
 }
 #logerase #resgistrarse{
     margin-top: 15px;
@@ -118,6 +128,17 @@ body{
 }
 
 #buscarCurso:hover{
+    position: relative;
+    float: left;
+    background-color:#99ccff;
+    color: black;
+}
+#misCursos{
+    background-color:#3333ff;
+    color: white;
+}
+
+#misCursos:hover{
     position: relative;
     float: left;
     background-color:#99ccff;

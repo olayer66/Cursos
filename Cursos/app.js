@@ -259,7 +259,34 @@ servidor.get("/curso/:busq",function(req,res){
 });
 //Devuelve si el usuario es valido(si lo es devuelve el ID de usuario, si no devuelve FALSE)
 servidor.get("/usuario/login",passport.authenticate('basic', {session: false}),function(req,res){
-     res.json({permitido: true, IDUsuario:"paco"});
+     res.json({permitido: true, IDUsuario:req.user.userId});
+});
+//Devuelve los cursos de un usuario
+servidor.get("/usuario/:id",function(req,res){
+    var IDUsuario= req.params.id;
+    if(IDUsuario!==null && IDUsuario!==undefined && !isNaN(IDUsuario))
+    {
+        usuarios.extraerCursosUsuario(IDUsuario,function(err,cursosPasados,cursosProximos,cursosActuales){
+            if(err)
+            {
+                console.log(err);
+                res.status(500);
+                res.end();
+            }
+            else
+            {
+                console.log("Respuesta correcta");
+                res.status(200);
+                res.json({cursosPasados:cursosPasados,cursosProximos:cursosProximos, cursosActuales:cursosActuales});
+            }
+        });
+    }
+    else
+    {
+        console.log("No es un ID de usuario valido: " +IDUsuario);
+        res.status(404);
+        res.end();
+    }
 });
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo

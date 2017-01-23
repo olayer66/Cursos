@@ -19,7 +19,7 @@ function mostrarCursos(cursos)
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
         $(fila).append("<td class='center'>"+vacantes+"</td>");
         $(fila).append("</tr>");
-        $(".tablaCursos").append(fila);
+        $("#tablaCursos").append(fila);
     });
 }
 //inserta tantos botones de paginas como sea necesario
@@ -34,6 +34,13 @@ function insertarPaginacion(total,busq)
     }
     $("#paginacion").append("<div class='botonMini' id='unoAlante' data-posinicio='"+5+"' data-numpags='"+numPags+"' data-busq='"+busq+"'> >> </div>");
 }
+//Quitar los botones de paginacion
+function quitarPaginacion()
+{
+    $("#unoAtras").remove();
+    $("#unoAlante").remove();
+    $(".botonPagina").remove();
+}
 /*==========================FUNCIONES AUXILIARES===========================*/
 //Extrae la fechea de una variable
 function extraerFecha(fecha)
@@ -42,7 +49,7 @@ function extraerFecha(fecha)
     var mes=date.getMonth()+1;
     return date.getDate()+"/"+mes+"/"+date.getFullYear();
 }
-//borra los filas de la tabla de busyqeda de cursos
+//borra los filas de la tabla de busqueda de cursos
 function borrarTablaCursos()
 {
     $(".filaCurso").remove();

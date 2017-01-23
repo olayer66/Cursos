@@ -1,23 +1,88 @@
 /*
- * Este modulo contiene las funciones se usuarios en jquery para el cliente
+ * Este modulo contiene las funciones se usuarios en jquery para el usuario
  */
-/*======================FUNCIONES DE DATOS DEL USUARIO========================*/
-//Carga los datos de cursos del usuario
-function cargarDatosUsuario(IDUsuario)
-{
-    
-}
+/*==========================FUNCIONES DE DATOS=============================*/
 //Inicia la sesion del usuario
-function conectar(IDUsuario)
+function cargarDatosUsuario(cursos,callback)
 {
-    
+    //Eliminamos posibles resultados anteriores
+    eliminarDatosUsuario();
+    //Cargamos los cursos actuales
+    cargaCursosActuales(cursos.cursosActuales);
+    //cargamos cursos pasados
+    cargaCursosPasados(cursos.cursosPasados);
+    //cargamos cursos proximos
+    cargaCursosProximos(cursos.cursosProximos);
+    //Cargamos el horario(cursos.cursosActuales)(parte 4)
+    callback(null);
 }
-//Cierra la sesion del usuario
-function desconectar()
+//Elimina el contenido de los datos del usuario
+function eliminarDatosUsuario()
 {
-    
+    $(".filaCursoUsuario").remove();
+}
+function recuperarDatosUsuario(IDUsuario,callback)
+{
+    //Recuperamos los cursos
+    llamadaCursosUsuario(IDUsuario,function(err,cursos){
+        if(err)
+        {
+            callback(err,null);
+        }
+        else
+        {
+            callback(null,cursos);
+        }
+    });
+}
+/*========================FUNCIONES CARGA DE CURSOS===========================*/
+//Carga en la vista los cursos pasados del usuario
+function cargaCursosPasados(cursos)
+{
+    cursos.forEach(function(curso)
+    {
+        var vacantes=0;
+        var fila = $("<tr class='filaCursoUsuario' data-idcurso='"+curso.ID_Curso+"'>");
+        $(fila).append("<td >"+curso.Titulo+"</td>");
+        $(fila).append("<td>"+curso.Localidad+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Inicio)+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Fin)+"</td>");
+        $(fila).append("</tr>");
+        $("#tablaCursosPasados").append(fila);
+    });
+}
+//Carga en la vista los cursos proximos del usuario
+function cargaCursosProximos(cursos)
+{
+    cursos.forEach(function(curso)
+    {
+        var vacantes=0;
+        var fila = $("<tr class='filaCursoUsuario' data-idcurso='"+curso.ID_Curso+"'>");
+        $(fila).append("<td >"+curso.Titulo+"</td>");
+        $(fila).append("<td>"+curso.Localidad+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Inicio)+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Fin)+"</td>");
+        $(fila).append("</tr>");
+        $("#tablaCursosProximos").append(fila);
+    });
+}
+//Carga los cursos que se estan realizando en el momento
+function cargaCursosActuales(cursos)
+{
+    cursos.forEach(function(curso)
+    {
+        var vacantes=0;
+        var fila = $("<tr class='filaCursoUsuario' data-idcurso='"+curso.ID_Curso+"'>");
+        $(fila).append("<td >"+curso.Titulo+"</td>");
+        $(fila).append("<td>"+curso.Localidad+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Inicio)+"</td>");
+        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Fin)+"</td>");
+        $(fila).append("</tr>");
+        $("#tablaCursosPasados").append(fila);
+    });
 }
 /*======================FUNCIONES DEL FORM INSCRIPCION========================*/
+//Rellena los combobox de la fecha en el formulario de inscripcion
 function crearSelectFecha()
 {
     //dias

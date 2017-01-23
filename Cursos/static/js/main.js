@@ -6,6 +6,7 @@
  */
 var divActivo;
 var limite=5;
+var IDUsuarioLogin;
 $(document).ready(function() 
 {
     console.log("DOM inicializado");
@@ -18,9 +19,38 @@ $(document).ready(function()
     $("#logearse").on("click",function(){
         vistaLoginUsuario();
     });
+    //Boton de cerrar sesion
+    $("#desconectar").on("click",function(){
+        IDUsuarioLogin=undefined;
+        eliminarDatosUsuario();
+        vistaDesconexion();
+    });
     //Menu
     $("#buscarCurso").on("click",function(){
         vistaBuscador();
+    });
+    $("#misCursos").on("click",function(){
+        //Extraemos los datos del usuario
+        recuperarDatosUsuario(IDUsuarioLogin,function(err,cursos){
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                //Cargamos los datos extraidos
+                cargarDatosUsuario(cursos,function(err){
+                    if(err)
+                    {
+                        alert("err");
+                    }
+                    else
+                    {
+                        vistaDatosUsuario();
+                    }
+                });
+            }
+        });
     });
     //contenido
     $("#botonBuscarCurso").on("click",function(){
@@ -36,6 +66,7 @@ $(document).ready(function()
                 //Si hay cursos que cumplan la condicion
                 if(total>0)
                 {
+                    quitarPaginacion();
                     if(total>5)
                     {
                         insertarPaginacion(total,busq);
@@ -145,13 +176,37 @@ $(document).ready(function()
         llamadaLoginUsuario(function(err,login){
             if(err)
             {
-                alert("paso 6");
                 alert(err);
             }
             else
             {
-                alert("paso 7");
-                alert(login.permitido +": "+ login.IDUsuario);  
+                //login correcto
+                if(login.permitido===true)
+                {
+                    //Extraemos los datos del usuario
+                    recuperarDatosUsuario(login.IDUsuario,function(err,cursos){
+                        if(err)
+                        {
+                            alert(err);
+                        }
+                        else
+                        {
+                            //Cargamos los datos extraidos
+                            cargarDatosUsuario(cursos,function(err){
+                                if(err)
+                                {
+                                    alert("err");
+                                }
+                                else
+                                {
+                                    IDUsuarioLogin=login.IDUsuario;
+                                    $("#spanUsuarioConectado").text($("#loginCorreo").val());
+                                    vistaDatosUsuario();
+                                }
+                            });
+                        }
+                    });
+                }
             }
         });
     });
@@ -198,11 +253,23 @@ function vistaLoginUsuario()
     divActivo=$("#loginUsuario");
     divActivo.show();
 }
+//Muestra la ventana con los datos del usuario
 function vistaDatosUsuario()
 {
     divActivo.hide();
     divActivo=$("#datosUsuario");
     divActivo.show();
+    $("#menuConSesion").show();
+    $("#login").hide();
+    $("#loginConectado").show();
+}
+//Oculta los div de conectado y carga la vista del buscador
+function vistaDesconexion()
+{
+    $("#menuConSesion").hide();
+    $("#login").show();
+    $("#loginConectado").hide();
+    vistaBuscador();
 }
 /*===========================FUNC. DE LLAMADA==========================*/
 function llamadaTotalCursos(busq,callback)
@@ -245,7 +312,6 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
 //Inserta un nuevo usuario en la BBDD
 function llamadaInsertarUsuario(callback)
 {
-    alert($("#usuarioAnio").val()+"/"+$("#usuarioMes").val()+"/"+$("#usuarioDia").val())
     $.ajax({
         type: "POST",
         url:"/usuario",
@@ -275,7 +341,6 @@ function llamadaLoginUsuario(callback)
 {
     var user =$("#loginCorreo").val();
     var pass =$("#loginContra").val();
-    alert("paso 1");
     var cadenaBase64 = btoa(user + ":" + pass);
     $.ajax({
         type: "GET",
@@ -288,14 +353,29 @@ function llamadaLoginUsuario(callback)
        },
         success:function (data, textStatus, jqXHR) 
         {
-        alert("paso 2");
         console.log(textStatus);
         callback(null,data);
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {
-         alert("paso 3");
          callback(new Error("Fallo en en el login. Error: "+ errorThrown),null);
+        }
+    });
+}
+//Llama al servidor para extraer los cursos de un usuario
+function llamadaCursosUsuario(IDUsuario,callback)
+{
+    $.ajax({
+        type: "GET",
+        url:"/usuario/"+IDUsuario,
+        success:function (data, textStatus, jqXHR) 
+        {
+        console.log(textStatus);
+        callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la extraccion de los cursos proximos. Error: "+ errorThrown),null);
         }
     });
 }
