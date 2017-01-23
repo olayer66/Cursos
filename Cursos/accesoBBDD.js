@@ -364,8 +364,8 @@ function modificarCurso(IDCurso,valores,callback)
     {
         if(valores!==null)
         {
-            query="UPDATE cursos SET  Titulo=?, Localidad=?, Direccion=?, Plazas=?, F_Inicio=?, F_Fin=?, Imagen=? WHERE ID_Curso= ?";
-            valoresEntrada=[valores.titulo,valores.localidad,valores.direccion,valores.plazas,valores.fechaInicio,valores.fechaFin,valores.imagen,IDCurso];
+            query="UPDATE cursos SET  Titulo=?,Descripcion=?, Localidad=?, Direccion=?, Plazas=?, F_Inicio=?, F_Fin=?, Imagen=? WHERE ID_Curso= ?";
+            valoresEntrada=[valores.titulo,valores.descripcion,valores.localidad,valores.direccion,valores.plazas,valores.fechaInicio,valores.fechaFin,valores.imagen,IDCurso];
             //Conectamos con la consulta requerida
             conexion.query(mysql.format(query,valoresEntrada),function(err) 
             {
@@ -375,7 +375,31 @@ function modificarCurso(IDCurso,valores,callback)
                     callback(err);
                 } 
                 else 
-                {
+                {              
+                    valores.horarios.forEach(function(horario)
+                    {
+                        if(horario.IDHorario!==null && horario.IDHorario!==undefined)
+                        {
+                            query="UPDATE horarios SET  Dia=?, Hora_Inicio=?, Hora_Fin=? WHERE ID_Curso= ? AND ID_Horario =?";
+                            valoresEntrada=[horario.dia,horario.horaInicio,horario.horaFin,IDCurso,horario.IDHorario];
+                            //Conectamos con la consulta requerida
+                            conexion.query(mysql.format(query,valoresEntrada),function(err) 
+                            {
+                                if (err) 
+                                {
+                                    //console.error(err);
+                                    conexion.rollback(function() {
+                                        throw err;
+                                    });
+                                    callback(err);
+                                } 
+                            });
+                        }
+                        else
+                        {
+                            callback(new Error("El ID de horario no es valido"));
+                        }
+                    });
                     conexion.end();
                 }
             });

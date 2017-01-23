@@ -303,7 +303,7 @@ servidor.put("/curso/:id",function(req,res){
             }
             else
             {
-                console.log("Modifcacion correcta del curso "+id);
+                console.log("Modifcacion correcta del curso: "+id);
                 res.status(200);
             }
         });

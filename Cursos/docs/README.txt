@@ -1,7 +1,7 @@
-
 ATENCION!!!
 -----------
-si se usa el servior de https la direccion cambia de http://localhost:3000 a https://localhost:5555/
+- Para cambiar entre el servidor HTPP y el HTTPS solo hay que comentar y descomentar uno u otro.
+- Si se usa el servior de https la direccion cambia de http://localhost:3000 a https://localhost:5555/
 
 ====================================
 CREAR CURSO (POST)
@@ -116,13 +116,17 @@ ACTUALIZAR CURSO (PUT)
 ----------------------------------
 IDCurso : El ID del curso que se quiere eliminar
 ----------------------------------
-{"titulo":"cocina con mama 2",
-"descripcion":"Dirigido a treintañeros que aun viven con su madre podran aprender las tecnicas de cocina junto a su madre harta de tenerle en casa",
-"localidad":"San Sebastian",
+{"titulo":"cocina con mama 4",
+"descripcion":"Dirigido a cuarentones que aun viven con su madre podran aprender las tecnicas de cocina junto a su madre harta de tenerle en casa",
+"localidad":"Bilbao",
 "direccion":"calle euskera",
-"plazas":20,
+"plazas":80,
 "fechaInicio":"2017/06/01",
-"fechaFin":"2017/09/01"
+"fechaFin":"2017/09/01",
+"horarios":[{"IDHorario":34,
+            "dia":"Miercoles",
+            "horaInicio":"18:00:00",
+            "horaFin":"20:00:00"}]
 }
 ===========================================
 ELIMINAR CURSO (DELETE)
