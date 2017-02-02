@@ -576,7 +576,9 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
             } 
             else 
             {
-                conexion.query(query,valoresEntrada,function(err, info) 
+                query="SELECT COUNT(ID_Curso) AS total FROM asig_cursos WHERE ID_Curso RLIKE ? and ID_Usuario RLIKE ?";
+                valoresEntrada=[IDCurso, IDUsuario];
+                conexion.query(query,valoresEntrada,function(err, contador) 
                 {
                     if (err) 
                     {
@@ -585,9 +587,26 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
                     } 
                     else 
                     {
-                        console.log("Esta la info que devuelve al insertar: " + info);
-                        callback(null);
-                        conexion.end();
+                        if(contador[0].total === 0){
+                            query="INSERT INTO asig_cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
+                            conexion.query(query,valoresEntrada,function(err, info) 
+                            {
+                                if (err) 
+                                {
+                                    //console.error(err);
+                                    callback(err);
+                                } 
+                                else 
+                                {
+                                    console.log("Esta la info que devuelve al insertar: " + info);
+                                    callback(null);
+                                    conexion.end();
+                                }
+                            });
+                        }
+                        else{
+                            callback("El usuario ya esta registrado en ese curso");
+                        }
                     }
                 });
             }      
