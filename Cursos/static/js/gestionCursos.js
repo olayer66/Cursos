@@ -42,6 +42,7 @@ function quitarPaginacion()
 function mostrarInformacionCurso(curso, horarioCurso)
 {
     $("#infoCurso").remove();
+    $("#resultado").show();
 
     var fila = $("<div id='infoCurso' data-idcurso='"+curso.ID_Curso+"'>");
         $(fila).append("<h2>"+curso.Titulo+"</h2>");

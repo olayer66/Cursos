@@ -252,6 +252,7 @@ function vistaInicial()
     $("#usuarioConectado").hide();
     $("#loginUsuario").hide();
     $("#datosUsuario").hide();
+    $("#resultado").hide();
     
 }
 //Muestra la ventana de buscador
@@ -445,6 +446,28 @@ function llamadaExtraeHorariosCurso(IDCurso,callback)
         error:function (jqXHR, textStatus, errorThrown) 
         {
          callback(new Error("Fallo en la extraccion de los horarios del curso "+IDCurso+". Error: "+ errorThrown),null);
+        }
+    });
+}
+
+//Permite a un usuario registrarse en un curso seleccionado
+function inscribirseEnCurso(IDCurso, IDUsuario,callback)
+{
+    $.ajax({
+        type: "POST",
+        url:"/curso/inscripcion",
+        data:{
+            "idcurso":IDCurso,
+            "idusuario":IDUsuario
+        },
+        success:function (data, textStatus, jqXHR) 
+        {
+            console.log(textStatus);
+            callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la inscripcion del usuario "+IDUsuario+" en el curso "+IDCurso+". Error: "+ errorThrown),null);
         }
     });
 }
