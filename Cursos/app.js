@@ -162,8 +162,10 @@ servidor.post("/usuario", function(req, res)
 //Inscripcion de un usuario en un curso ------------------------------------------------------------------------------------------------------------------------------
 servidor.post("/curso/inscripcion", function(req, res) 
 {
-    var usuario = req.query.idUsuario;
-    var curso = req.query.idCurso;
+    var usuario = req.body.idUsuario;
+    var curso = req.body.idCurso;
+    
+    console.log("app.js - Se intenta insertar el usuario "+usuario+" en el curso "+curso);
     
     //Carga de la imagen de perfil
     if (usuario !== null && curso !== null) 

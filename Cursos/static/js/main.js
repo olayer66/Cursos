@@ -30,6 +30,8 @@ $(document).ready(function()
         vistaBuscador();
     });
     $("#misCursos").on("click",function(){
+        
+        
         //Extraemos los datos del usuario
         recuperarDatosUsuario(IDUsuarioLogin,function(err,cursos){
             if(err)
@@ -241,7 +243,7 @@ $(document).ready(function()
     });
     
     //Inscribe al usuario en el curso concreto ---------------------------------------------------------------------------------------------------------------------
-    $("#botonInscribirse").on("click", function (event){    
+    $("#resultado").on("click","#botonInscribirse", function (event){    
         
         var boton=$(event.target);
         var idcurso=boton.data("idcurso");
@@ -312,6 +314,8 @@ function vistaDatosUsuario()
     $("#menuConSesion").show();
     $("#login").hide();
     $("#loginConectado").show();
+    $("#resultado").hide();
+    
 }
 //Oculta los div de conectado y carga la vista del buscador
 function vistaDesconexion()
@@ -471,8 +475,9 @@ function llamadaExtraeHorariosCurso(IDCurso,callback)
 }
 
 //Permite a un usuario registrarse en un curso seleccionado ----------------------------------------------------------------------------------------------------------
-function inscribirseEnCurso(IDCurso, IDUsuario,callback)
+function inscribirseEnCurso(IDCurso, IDUsuario, callback)
 {
+    console.log("main.js - ajax - se trata de pasar el idCurso"+ IDCurso+ " con el usuario "+ IDUsuario);
     $.ajax({
         type: "POST",
         url:"/curso/inscripcion",
