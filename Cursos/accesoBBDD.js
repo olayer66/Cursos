@@ -25,6 +25,7 @@ module.exports={
     mostrarCursoPorTitulo:mostrarCursoPorTitulo,
     contarCursos:contarCursos,
     cambiarImagenCurso:cambiarImagenCurso,
+    inscribirUsuarioEnCurso:inscribirUsuarioEnCurso,
     //Horarios
     insertarHorario:insertarHorario,
     actualizarHorario:actualizarHorario,
@@ -556,6 +557,52 @@ function cambiarImagenCurso(IDCurso,imagen,callback)
         callback(new Error("El ID de curso no es valido"));
     }
 }
+
+//Inscripcion de un usuario en un curso -----------------------------------------------------------------------------------------------------------------------------
+function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDCurso!==null && IDUsuario!==null)
+    {
+        query="INSERT INTO asig_cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
+        valoresEntrada=[IDCurso, IDUsuario];
+        //Conectamos con la consulta requerida
+        conexion.connect(function(err)
+        {
+            if (err) 
+            {
+                //console.error(err);
+                callback(err);
+            } 
+            else 
+            {
+                conexion.query(query,valoresEntrada,function(err, info) 
+                {
+                    if (err) 
+                    {
+                        //console.error(err);
+                        callback(err);
+                    } 
+                    else 
+                    {
+                        console.log("Esta la info que devuelve al insertar: " + info);
+                        callback(null);
+                        conexion.end();
+                    }
+                });
+            }      
+        });
+    }
+    else
+    {
+        callback(new Error("Los valores no son validos"));
+    }
+}
+
+
+
+
+
 /*=======================================HORARIOS=======================================*/
 //Inserta un horario en la tabla
 function insertarHorario (IDCurso,horario,callback)

@@ -70,7 +70,7 @@ function mostrarInformacionCurso(curso, horarioCurso)
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
         $(fila).append("<p>"+curso.Plazas+" ("+vacantes+" vacantes)</td>");
         
-        $(fila).append("<div class='botonMini botoninscribirse' data-idcurso='"+curso.ID_Curso+"'>Inscribirse</div>");
+        $(fila).append("<div id='botonInscribirse' class='botonMini botoninscribirse' data-idcurso='"+curso.ID_Curso+"'>Inscribirse</div>");
        
     $("#resultado").append(fila);
 }

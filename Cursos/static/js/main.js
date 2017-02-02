@@ -239,6 +239,26 @@ $(document).ready(function()
             }
         });
     });
+    
+    //Inscribe al usuario en el curso concreto ---------------------------------------------------------------------------------------------------------------------
+    $("#botonInscribirse").on("click", function (event){    
+        
+        var boton=$(event.target);
+        var idcurso=boton.data("idcurso");
+        
+        console.log("main.js - reconoce querer meter el idcurso="+idcurso+" y el usuario "+ IDUsuarioLogin);
+        inscribirseEnCurso(idcurso, IDUsuarioLogin,function(err)
+        {
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                alert("se ha inscrito correctamente el usuario " + IDUsuarioLogin + " en el curso "+idcurso);
+            }
+        });
+    });
 });
 /*==========================FUNC. DE VISTA============================*/
 //Carga la vista inicial
@@ -450,15 +470,15 @@ function llamadaExtraeHorariosCurso(IDCurso,callback)
     });
 }
 
-//Permite a un usuario registrarse en un curso seleccionado
+//Permite a un usuario registrarse en un curso seleccionado ----------------------------------------------------------------------------------------------------------
 function inscribirseEnCurso(IDCurso, IDUsuario,callback)
 {
     $.ajax({
         type: "POST",
         url:"/curso/inscripcion",
         data:{
-            "idcurso":IDCurso,
-            "idusuario":IDUsuario
+            "idCurso":IDCurso,
+            "idUsuario":IDUsuario
         },
         success:function (data, textStatus, jqXHR) 
         {

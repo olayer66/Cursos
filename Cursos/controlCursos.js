@@ -13,6 +13,7 @@ module.exports={
     buscarCursoTitulo:buscarCursoTitulo,
     totalResultados:totalResultados,
     cambiarImagenCurso:cambiarImagenCurso,
+    inscripcionCurso:inscripcionCurso,
     //horarios
     extraerHorarios:extraerHorarios
 };
@@ -128,6 +129,21 @@ function cambiarImagenCurso(IDCurso,imagen,callback)
         }
     });
 }
+
+//Inscripcion de un usuario en un curso ---------------------------------------------------------------------------------------------------------------------
+function inscripcionCurso(IDCurso, IDUsuario,callback)
+{
+    accBBDD.inscribirUsuarioEnCurso(IDCurso, IDUsuario,function(err){
+        if(err)
+        {
+            callback(err);
+        }
+        else
+        {
+            callback(null);
+        }
+    });
+}
 /*====================================FUNCIONES SOBRE HORARIOS=================================*/
 //Extrae los horarios asociados a un curso
 function extraerHorarios(IDCurso,callback)
@@ -143,3 +159,4 @@ function extraerHorarios(IDCurso,callback)
         }
     });
 }
+
