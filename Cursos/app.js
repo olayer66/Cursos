@@ -257,6 +257,35 @@ servidor.get("/curso/:busq",function(req,res){
         res.end();
     }
 });
+
+//Devuelve la informacion del curso pasado por el parametro de id
+servidor.get("/curso/busqueda/:id",function(req,res){
+    var id= req.params.id;
+    if(id!==null && id!==undefined)
+    {
+            cursos.buscarCursoID(id,function(err,curso){
+                if(err)
+                {
+                    console.log(err);
+                    res.status(500);
+                    res.end();
+                }
+                else
+                {
+                    console.log("Respuesta correcta");
+                    res.status(200);
+                    res.json(curso);
+                }
+            });
+    }
+    else
+    {
+        console.log("No existe un curso con id: " +id);
+        res.status(404);
+        res.end();
+    }
+});
+
 //Devuelve si el usuario es valido(si lo es devuelve el ID de usuario, si no devuelve FALSE)
 servidor.get("/usuario/login",passport.authenticate('basic', {session: false}),function(req,res){
      res.json({permitido: true, IDUsuario:req.user.userId});
@@ -377,21 +406,21 @@ servidor.delete("/curso/:id",function(req,res){
 });
 /*======================================INICIO DEL SERVIDOR==============================================*/
 //Abrimos el servidor a la escucha por el puerto 3000
-//servidor.listen(config.puerto, function(err) {
-//    if (err) {
-//        console.log("Error al abrir el puerto "+config.puerto+": " + err);
-//    } else {
-//        console.log("Servidor escuchando en el puerto "+config.puerto+".");
-//    }
-//});
-
-//Abrimos el servidor https a la escucha por el puerto 5555
-servidorHTTPS.listen(config.puertoHTTPS, function(err) {
+servidor.listen(config.puerto, function(err) {
     if (err) {
-        console.log("Error al abrir el puerto "+config.puertoHTTPS+": " + err);
+        console.log("Error al abrir el puerto "+config.puerto+": " + err);
     } else {
-        console.log("Servidor escuchando en el puerto "+config.puertoHTTPS+".");
+        console.log("Servidor escuchando en el puerto "+config.puerto+".");
     }
 });
+
+//Abrimos el servidor https a la escucha por el puerto 5555
+//servidorHTTPS.listen(config.puertoHTTPS, function(err) {
+//    if (err) {
+//        console.log("Error al abrir el puerto "+config.puertoHTTPS+": " + err);
+//    } else {
+//        console.log("Servidor escuchando en el puerto "+config.puertoHTTPS+".");
+//    }
+//});
 
 
