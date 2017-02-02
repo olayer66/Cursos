@@ -178,26 +178,27 @@ servidor.get("/curso",function(req,res){
     var posInicio=req.query.posInicio;
     if(busq!==null && busq!==undefined)
     {
-        //Si es un ID de curso
-        if(!isNaN(busq))
-        {
-            cursos.buscarCursoID(busq,function(err,respuesta){
-                if(err)
-                {
-                    console.log(err);
-                    res.status(500);
-                    res.end();
-                }
-                else
-                {
-                    console.log("Respuesta correcta");
-                    res.status(200);
-                    res.json(respuesta);
-                }
-            });
-        }
-        else //Si es un titulo
-        {
+//        //Si es un ID de curso
+//        if(!isNaN(parseInt(""+busq)))
+//        {
+//            console.log("a"+busq);
+//            cursos.buscarCursoID(busq,function(err,respuesta){
+//                if(err)
+//                {
+//                    console.log(err);
+//                    res.status(500);
+//                    res.end();
+//                }
+//                else
+//                {
+//                    console.log("Respuesta correcta");
+//                    res.status(200);
+//                    res.json(respuesta);
+//                }
+//            });
+//        }
+//        else //Si es un titulo
+//        {
             if(limite!==null && limite!==undefined && posInicio!==null && posInicio!==undefined)
             {
                 cursos.buscarCursoTitulo(busq,limite,posInicio,function(err,respuesta){
@@ -221,7 +222,7 @@ servidor.get("/curso",function(req,res){
                 res.status(404);
                 res.end();
             }
-        }
+//        }
     }
     else
     {
@@ -317,6 +318,35 @@ servidor.get("/usuario/:id",function(req,res){
         res.end();
     }
 });
+
+//Peticion get que devuelve los horarios para un curso concreto ----------------------------------------------------------------------------------------------------
+servidor.get("/curso/horarioCurso/:id",function(req,res){
+    var id= req.params.id;
+    if(id!==null && id!==undefined)
+    {
+            cursos.extraerHorarios(id,function(err,horarios){
+                if(err)
+                {
+                    console.log(err);
+                    res.status(500);
+                    res.end();
+                }
+                else
+                {
+                    console.log("Respuesta correcta");
+                    res.status(200);
+                    res.json(horarios);
+                }
+            });
+    }
+    else
+    {
+        console.log("No existe un curso con id: " +id);
+        res.status(404);
+        res.end();
+    }
+});
+
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo
 servidor.put("/curso/:id",function(req,res){

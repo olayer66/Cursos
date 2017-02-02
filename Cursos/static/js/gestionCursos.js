@@ -1,8 +1,4 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 //Carga en pantalla los cursos extraidos
 function mostrarCursos(cursos)
 {
@@ -12,12 +8,12 @@ function mostrarCursos(cursos)
     {
         var vacantes=0;
         var fila = $("<tr class='filaCurso' data-idcurso='"+curso.ID_Curso+"'>");
-        $(fila).append("<td >"+curso.Titulo+"</td>");
-        $(fila).append("<td>"+curso.Localidad+"</td>");
-        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Inicio)+"</td>");
-        $(fila).append("<td class='center'>"+extraerFecha(curso.F_Fin)+"</td>");
+        $(fila).append("<td class='dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+curso.Titulo+"</td>");
+        $(fila).append("<td class='dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+curso.Localidad+"</td>");
+        $(fila).append("<td class='center dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+extraerFecha(curso.F_Inicio)+"</td>");
+        $(fila).append("<td class='center dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+extraerFecha(curso.F_Fin)+"</td>");
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
-        $(fila).append("<td class='center'>"+vacantes+"</td>");
+        $(fila).append("<td class='center dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+vacantes+"</td>");
         $(fila).append("</tr>");
         $("#tablaCursos").append(fila);
     });
@@ -41,6 +37,35 @@ function quitarPaginacion()
     $("#unoAlante").remove();
     $(".botonPagina").remove();
 }
+
+//Muestra la informacion del curso seleccionado en la tabla de cursos--------------------------------------------------------------------------------------------
+function mostrarInformacionCurso(curso, horarioCurso)
+{
+    $("#infoCurso").remove();
+
+    var fila = $("<div id='infoCurso' data-idcurso='"+curso.ID_Curso+"'>");
+        $(fila).append("<h2>"+curso.Titulo+"</h2>");
+        $(fila).append("<p>"+curso.Descripcion+"</p>");
+        
+        $(fila).append("<h3>Lugar de imparticion:</h3>");
+        $(fila).append("<p>"+curso.Direccion+"</p>");
+        
+         (fila).append("<h3>Ciudad:</h3>");
+        $(fila).append("<p>"+curso.Localidad+"</p>");
+        
+        $(fila).append("<h3>Duracion:</h3>");
+        $(fila).append("<p>"+extraerFecha(curso.F_Inicio)+"</td>");
+        $(fila).append("<p>"+extraerFecha(curso.F_Fin)+"</td>");
+        
+        $(fila).append("<h3>Horario:</h3>");
+        
+        $(fila).append("<h3>Numero de plazas:</h3>");
+        vacantes=curso.Plazas - curso.Plazas_Ocupadas;
+        $(fila).append("<p>"+curso.Plazas+"("+vacantes+" vacantes)</td>");
+       
+    $("#resultado").append(fila);
+}
+
 /*==========================FUNCIONES AUXILIARES===========================*/
 //Extrae la fechea de una variable
 function extraerFecha(fecha)

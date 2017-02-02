@@ -210,6 +210,37 @@ $(document).ready(function()
             }
         });
     });
+    
+    //Cada una de las filas de la tabla cursos ---------------------------------------------------------------------------------------------------------------------
+    $("#tablaCursos").on("click",".dataCurso", function (event){    
+        
+        var boton=$(event.target);
+        var id=boton.data("idcurso");
+        
+        console.log("data-curso: " + id);
+        
+        llamadaExtraeCurso(id,function(err,curso)
+        {
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                llamadaExtraeHorariosCurso(id,function(err,horario)
+                {
+                    if(err)
+                    {
+                        alert(err);
+                    }
+                    else
+                    {
+                        mostrarInformacionCurso(curso, horario);
+                    }
+                });
+            }
+        });
+    });
 });
 /*==========================FUNC. DE VISTA============================*/
 //Carga la vista inicial
@@ -309,6 +340,27 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
         }
     });
 }
+
+//Extrae los datos de un curso concreto (por id) --------------------------------------------------------------------------------------------------------------
+function llamadaExtraeCurso(id,callback)
+{
+    $.ajax({
+        type: "GET",
+        url:"/curso/busqueda",
+        data:{
+            "id":id
+        },
+        success:function (data, textStatus, jqXHR) 
+        {
+        console.log(textStatus);
+        callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la extraccion del curso. Error: "+ errorThrown),null);
+        }
+    });
+}
 //Inserta un nuevo usuario en la BBDD
 function llamadaInsertarUsuario(callback)
 {
@@ -376,6 +428,24 @@ function llamadaCursosUsuario(IDUsuario,callback)
         error:function (jqXHR, textStatus, errorThrown) 
         {
          callback(new Error("Fallo en la extraccion de los cursos proximos. Error: "+ errorThrown),null);
+        }
+    });
+}
+
+//Extrae los horarios de un curso concreto------------------------------------------------------------------------------------------------------------------------
+function llamadaExtraeHorariosCurso(IDCurso,callback)
+{
+    $.ajax({
+        type: "GET",
+        url:"/curso/horarioCurso/"+IDCurso,
+        success:function (data, textStatus, jqXHR) 
+        {
+        console.log(textStatus);
+        callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la extraccion de los horarios del curso "+IDCurso+". Error: "+ errorThrown),null);
         }
     });
 }
