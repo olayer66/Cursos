@@ -221,6 +221,7 @@ $(document).ready(function()
         
         llamadaExtraeCurso(id,function(err,curso)
         {
+            console.log("Estos son los datos del curso: "+curso.Titulo);
             if(err)
             {
                 alert(err);
@@ -344,16 +345,17 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
 //Extrae los datos de un curso concreto (por id) --------------------------------------------------------------------------------------------------------------
 function llamadaExtraeCurso(id,callback)
 {
+    console.log("Encontrado id= "+id);
     $.ajax({
         type: "GET",
-        url:"/curso/busqueda",
+        url:"/curso/busqueda/"+id,
         data:{
             "id":id
         },
         success:function (data, textStatus, jqXHR) 
         {
-        console.log(textStatus);
-        callback(null,data);
+            console.log(textStatus);
+            callback(null,data);
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {

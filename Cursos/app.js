@@ -259,7 +259,7 @@ servidor.get("/curso/:busq",function(req,res){
     }
 });
 
-//Devuelve la informacion del curso pasado por el parametro de id
+//Devuelve la informacion del curso pasado por el parametro de id------------------------------------------------------------------------------------------------
 servidor.get("/curso/busqueda/:id",function(req,res){
     var id= req.params.id;
     if(id!==null && id!==undefined)
@@ -273,7 +273,8 @@ servidor.get("/curso/busqueda/:id",function(req,res){
                 }
                 else
                 {
-                    console.log("Respuesta correcta");
+                    console.log("Respuesta correcta - id: "+ id);
+                    console.log("Respuesta correcta - curso: "+ curso.Titulo);
                     res.status(200);
                     res.json(curso);
                 }
