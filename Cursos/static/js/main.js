@@ -211,24 +211,21 @@ $(document).ready(function()
         });
     });
     
-    //Cada una de las filas de la tabla cursos ---------------------------------------------------------------------------------------------------------------------
+    //Cada una de las filas de la tabla cursos
     $("#tablaCursos").on("click",".dataCurso", function (event){    
         
         var boton=$(event.target);
         var id=boton.data("idcurso");
         
-        console.log("data-curso: " + id);
-        
         llamadaExtraeCurso(id,function(err,curso)
         {
-            console.log("Estos son los datos del curso: "+curso.Titulo);
             if(err)
             {
                 alert(err);
             }
             else
             {
-                llamadaExtraeHorariosCurso(id,function(err,horario)
+                llamadaExtraeHorariosCurso(id,function(err,horarios)
                 {
                     if(err)
                     {
@@ -236,7 +233,7 @@ $(document).ready(function()
                     }
                     else
                     {
-                        mostrarInformacionCurso(curso, horario);
+                        mostrarInformacionCurso(curso, horarios);
                     }
                 });
             }
@@ -332,8 +329,8 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
         },
         success:function (data, textStatus, jqXHR) 
         {
-        console.log(textStatus);
-        callback(null,data);
+            console.log(textStatus);
+            callback(null,data);
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {
@@ -342,7 +339,7 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
     });
 }
 
-//Extrae los datos de un curso concreto (por id) --------------------------------------------------------------------------------------------------------------
+//Extrae los datos de un curso concreto (por id)
 function llamadaExtraeCurso(id,callback)
 {
     console.log("Encontrado id= "+id);
@@ -382,8 +379,8 @@ function llamadaInsertarUsuario(callback)
         },
         success:function (data, textStatus, jqXHR) 
         {
-        console.log(textStatus);
-        callback(null,data);
+            console.log(textStatus);
+            callback(null,data);
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {
@@ -407,8 +404,8 @@ function llamadaLoginUsuario(callback)
        },
         success:function (data, textStatus, jqXHR) 
         {
-        console.log(textStatus);
-        callback(null,data);
+            console.log(textStatus);
+            callback(null,data);
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {
@@ -424,8 +421,8 @@ function llamadaCursosUsuario(IDUsuario,callback)
         url:"/usuario/"+IDUsuario,
         success:function (data, textStatus, jqXHR) 
         {
-        console.log(textStatus);
-        callback(null,data);
+            console.log(textStatus);
+            callback(null,data);
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {
@@ -434,7 +431,7 @@ function llamadaCursosUsuario(IDUsuario,callback)
     });
 }
 
-//Extrae los horarios de un curso concreto------------------------------------------------------------------------------------------------------------------------
+//Extrae los horarios de un curso concreto
 function llamadaExtraeHorariosCurso(IDCurso,callback)
 {
     $.ajax({
@@ -442,8 +439,8 @@ function llamadaExtraeHorariosCurso(IDCurso,callback)
         url:"/curso/horarioCurso/"+IDCurso,
         success:function (data, textStatus, jqXHR) 
         {
-        console.log(textStatus);
-        callback(null,data);
+            console.log(textStatus);
+            callback(null,data);
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {

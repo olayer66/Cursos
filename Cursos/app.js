@@ -210,7 +210,6 @@ servidor.get("/curso",function(req,res){
                     }
                     else
                     {
-                        console.log("Respuesta correcta");
                         res.status(200);
                         res.json(respuesta);
                     }
@@ -245,7 +244,6 @@ servidor.get("/curso/:busq",function(req,res){
                 }
                 else
                 {
-                    console.log("Respuesta correcta");
                     res.status(200);
                     res.json(total);
                 }
@@ -273,8 +271,6 @@ servidor.get("/curso/busqueda/:id",function(req,res){
                 }
                 else
                 {
-                    console.log("Respuesta correcta - id: "+ id);
-                    console.log("Respuesta correcta - curso: "+ curso.Titulo);
                     res.status(200);
                     res.json(curso);
                 }
@@ -306,7 +302,6 @@ servidor.get("/usuario/:id",function(req,res){
             }
             else
             {
-                console.log("Respuesta correcta");
                 res.status(200);
                 res.json({cursosPasados:cursosPasados,cursosProximos:cursosProximos, cursosActuales:cursosActuales});
             }
@@ -334,7 +329,6 @@ servidor.get("/curso/horarioCurso/:id",function(req,res){
                 }
                 else
                 {
-                    console.log("Respuesta correcta");
                     res.status(200);
                     res.json(horarios);
                 }

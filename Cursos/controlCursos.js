@@ -70,7 +70,6 @@ function borrarCurso(IDCurso,callback)
 //busqueda por ID
 function buscarCursoID(IDCurso,callback)
 {
-    console.log("Busqueda del id curso: " + IDCurso);
     accBBDD.mostrarCurso(IDCurso,function (err,datos)
     {
         if(err)
@@ -79,7 +78,6 @@ function buscarCursoID(IDCurso,callback)
         }
         else
         {
-            console.log(datos);
             callback(null,datos);
         }
     });
@@ -141,7 +139,7 @@ function extraerHorarios(IDCurso,callback)
         }
         else
         {
-            callback(null,err);
+            callback(null,datos);
         }
     });
 }

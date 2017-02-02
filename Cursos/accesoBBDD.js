@@ -459,7 +459,7 @@ function mostrarCurso(IDCurso,callback)
             } 
             else 
             {
-                callback(null,rows);
+                callback(null,rows[0]);
                 conexion.end();
             }
         });

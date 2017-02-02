@@ -54,14 +54,22 @@ function mostrarInformacionCurso(curso, horarioCurso)
         $(fila).append("<p>"+curso.Localidad+"</p>");
         
         $(fila).append("<h3>Duracion:</h3>");
-        $(fila).append("<p>"+extraerFecha(curso.F_Inicio)+"</td>");
-        $(fila).append("<p>"+extraerFecha(curso.F_Fin)+"</td>");
+        $(fila).append("<p>Desde el "+extraerFecha(curso.F_Inicio)+" hasta el "+extraerFecha(curso.F_Fin)+"</p>");
         
         $(fila).append("<h3>Horario:</h3>");
         
+        $(fila).append("<ul>");
+        horarioCurso.forEach(function(horario)
+        {
+             $(fila).append("<li>"+horario.Dia + ": " +horario.Hora_Inicio + " - " +horario.Hora_Fin +"</li>");
+        });
+        $(fila).append("</ul>");
+        
         $(fila).append("<h3>Numero de plazas:</h3>");
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
-        $(fila).append("<p>"+curso.Plazas+"("+vacantes+" vacantes)</td>");
+        $(fila).append("<p>"+curso.Plazas+" ("+vacantes+" vacantes)</td>");
+        
+        $(fila).append("<div class='botonMini botoninscribirse' data-idcurso='"+curso.ID_Curso+"'>Inscribirse</div>");
        
     $("#resultado").append(fila);
 }

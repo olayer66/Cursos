@@ -203,3 +203,35 @@ body{
     margin-left: auto;
     margin-right: auto;
 }
+
+#resultado{
+    margin: 20px;
+    text-align: justify;
+    padding-left: 10px;
+    border: 2px solid black;
+    background-color: #99ccff;
+}
+
+#resultado h2{
+    text-align: center;
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    
+    text-shadow: 3px 2px #57b0fc;
+}
+
+#resultado h3{
+    text-shadow: 3px 2px #57b0fc;
+    font-size: 1.5em;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 10em;
+    margin-right: 0;
+    padding-left: 40px;
+}
