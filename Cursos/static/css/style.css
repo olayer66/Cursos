@@ -163,9 +163,7 @@ body{
     border-right: 0px;
     border-spacing: 0px;
 }
-.tablaCursos tr:nth-child(even) {
-    background-color: #57b0fc;
-}
+
 
 .tablaCursos th {
     padding: 5px;
@@ -247,23 +245,18 @@ body{
     margin-left: 300px;
 }
 
-.finalizado{
+
+
+.tablaCursos tr.coloreada{
+    background-color: #57b0fc;
+    padding-left: 5px;
+}
+.tablaCursos tr.enCurso{
+    background-color: #ffff00;
+    color: black;
+}
+
+.tablaCursos tr.finalizado{
     background-color: #ff0000;
     color: white;
 }
-
-.enCurso{
-    background-color: #66cc00;
-    color: red;
-}
-
-.finalizado:nth-child(even){
-    background-color: #ff0000;
-    color: white;
-}
-
-.enCurso:nth-child(even){
-    background-color: #66cc00;
-    color: red;
-}
-
