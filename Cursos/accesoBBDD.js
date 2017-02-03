@@ -592,7 +592,6 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(IDCurso!==null && IDUsuario!==null)
     {
-        query="INSERT INTO asig_cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
         valoresEntrada=[IDCurso, IDUsuario];
         //Conectamos con la consulta requerida
         conexion.connect(function(err)
@@ -605,7 +604,6 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
             else 
             {
                 query="SELECT COUNT(ID_Curso) AS total FROM asig_cursos WHERE ID_Curso RLIKE ? and ID_Usuario RLIKE ?";
-                valoresEntrada=[IDCurso, IDUsuario];
                 conexion.query(query,valoresEntrada,function(err, contador) 
                 {
                     if (err) 
@@ -616,8 +614,9 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
                     else 
                     {
                         if(contador[0].total === 0){
-                            query="INSERT INTO asig_cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
-                            conexion.query(query,valoresEntrada,function(err, info) 
+                            
+                            query="SELECT * FROM cursos WHERE ID_Curso RLIKE ?";
+                            conexion.query(query,IDCurso,function(err, curso) 
                             {
                                 if (err) 
                                 {
@@ -626,11 +625,33 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
                                 } 
                                 else 
                                 {
-                                    console.log("Esta la info que devuelve al insertar: " + info);
-                                    callback(null);
-                                    conexion.end();
+                                    
+                                    var fechaActual= new Date();
+                                    fechaFin= new Date(curso[0].F_Fin);
+                                    
+                                    if(fechaFin.getTime()<fechaActual.getTime()) //El curso ya ha terminado
+                                    {
+                                        callback("El usuario no puede registrarse en un curso finalizado");
+                                    }
+                                    else
+                                    {
+                                        query="INSERT INTO asig_cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
+                                        conexion.query(query,valoresEntrada,function(err, info) 
+                                        {
+                                            if (err) 
+                                            {
+                                                callback(err);
+                                            } 
+                                            else 
+                                            {
+                                                console.log("Esta la info que devuelve al insertar: " + info);
+                                                callback(null);
+                                                conexion.end();
+                                            }
+                                        });
+                                    }
                                 }
-                            });
+                            });   
                         }
                         else{
                             callback("El usuario ya esta registrado en ese curso");

@@ -7,7 +7,19 @@ function mostrarCursos(cursos)
     cursos.forEach(function(curso)
     {
         var vacantes=0;
-        var fila = $("<tr class='filaCurso' data-idcurso='"+curso.ID_Curso+"'>");
+        var aux="";
+        var fechaActual= new Date();
+        fechaInicio=new Date(curso.F_Inicio);
+        fechaFin= new Date(curso.F_Fin);
+        if(fechaFin.getTime()<fechaActual.getTime())
+        {
+            aux = "finalizado";
+        }
+        else if(fechaFin.getTime()>fechaActual.getTime() && fechaInicio.getTime()<fechaActual.getTime()){
+            aux = "enCurso";
+        }
+        
+        var fila = $("<tr class='filaCurso " + aux + "' data-idcurso='"+curso.ID_Curso+"'>");
         $(fila).append("<td class='dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+curso.Titulo+"</td>");
         $(fila).append("<td class='dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+curso.Localidad+"</td>");
         $(fila).append("<td class='center dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+extraerFecha(curso.F_Inicio)+"</td>");
@@ -44,38 +56,38 @@ function mostrarInformacionCurso(curso, horarioCurso,imagen)
     borrarTablaDetalle();
     $("#tituloDetalle").text(curso.Titulo);
     var fila = $("<tr class='filaDetalle'>");
-            $(fila).append("<td class='cabeceraDetalle'>"+curso.Descripcion+"</td>");
-            if(imagen!==null)
-            {
-                var carga= "data:image/jpg;base64," + imagen;
-                $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
-            }
-    $(fila).append("</tr>");
-    $("#tablaDetalle").append(fila);
-    var fila = $("<tr class='filaDetalle'>");
-        $(fila).append("<td class='cabeceraDetalle'><h3>Direccion:</h3>"+curso.Direccion+"</td>");
-    $(fila).append("</tr>");
-    $("#tablaDetalle").append(fila);
-    var fila = $("<tr class='filaDetalle'>");
-        $(fila).append("<td class='cabeceraDetalle'><h3>Ciudad:</h3> "+curso.Localidad+"</td>");
-    $(fila).append("</tr>");
-    $("#tablaDetalle").append(fila);
-    var fila = $("<tr class='filaDetalle'>");
-        $(fila).append("<td class='cabeceraDetalle'><h3>Duracion:</h3> Desde el "+extraerFecha(curso.F_Inicio)+" hasta el "+extraerFecha(curso.F_Fin)+"</td>");
-    $(fila).append("</tr>");
-    $("#tablaDetalle").append(fila);
-    var fila = $("<tr class='filaDetalle'>");
-        $(fila).append("<td class='cabeceraDetalle'><h3>Horario:</h3></td>");
-    $(fila).append("</tr class='filaDetalle'>");
-    $("#tablaDetalle").append(fila);
-    var fila = $("<tr class='filaDetalle'>");  
-            horarioCurso.forEach(function(horario)
-            {
-                 $(fila).append("<span>"+horario.Dia + ": " +horario.Hora_Inicio + " - " +horario.Hora_Fin +"</span><br>");
-            });
+        $(fila).append("<td class='cabeceraDetalle'>"+curso.Descripcion+"</td>");
+        if(imagen!==null)
+        {
+            var carga= "data:image/jpg;base64," + imagen;
+            $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
+        }
         $(fila).append("</tr>");
-    $("#tablaDetalle").append(fila);
-    var fila = $("<tr class='filaDetalle'>");
+        $("#tablaDetalle").append(fila);
+        var fila = $("<tr class='filaDetalle'>");
+            $(fila).append("<td class='cabeceraDetalle'><h3>Direccion:</h3>"+curso.Direccion+"</td>");
+        $(fila).append("</tr>");
+        $("#tablaDetalle").append(fila);
+        var fila = $("<tr class='filaDetalle'>");
+            $(fila).append("<td class='cabeceraDetalle'><h3>Ciudad:</h3> "+curso.Localidad+"</td>");
+        $(fila).append("</tr>");
+        $("#tablaDetalle").append(fila);
+        var fila = $("<tr class='filaDetalle'>");
+            $(fila).append("<td class='cabeceraDetalle'><h3>Duracion:</h3> Desde el "+extraerFecha(curso.F_Inicio)+" hasta el "+extraerFecha(curso.F_Fin)+"</td>");
+        $(fila).append("</tr>");
+        $("#tablaDetalle").append(fila);
+        var fila = $("<tr class='filaDetalle'>");
+            $(fila).append("<td class='cabeceraDetalle'><h3>Horario:</h3></td>");
+        $(fila).append("</tr class='filaDetalle'>");
+        $("#tablaDetalle").append(fila);
+        var fila = $("<tr class='filaDetalle'>");  
+        horarioCurso.forEach(function(horario)
+        {
+             $(fila).append("<span>"+horario.Dia + ": " +horario.Hora_Inicio + " - " +horario.Hora_Fin +"</span><br>");
+        });
+        $(fila).append("</tr>");
+        $("#tablaDetalle").append(fila);
+        var fila = $("<tr class='filaDetalle'>");
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
         $(fila).append("<td class='cabeceraDetalle'><h3>Numero de plazas: </h3>"+curso.Plazas+" ("+vacantes+" vacantes)</td>");  
     $(fila).append("</tr>");

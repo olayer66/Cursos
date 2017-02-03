@@ -245,3 +245,12 @@ body{
 #botonInscribirse{
     margin-left: 300px;
 }
+
+.finalizado{
+    background-color: #ff0000;
+    color: white;
+}
+
+.enCurso{
+    background-color: #66cc00;
+}
