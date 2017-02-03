@@ -4,10 +4,12 @@ function mostrarCursos(cursos)
 {
     //INFORMACION: poner que dependiendo de la fecha de final se ponga de un color u otro
     borrarTablaCursos();
+    var coloreada = 0;
     cursos.forEach(function(curso)
     {
         var vacantes=0;
         var aux="";
+        var color ="";
         var fechaActual= new Date();
         fechaInicio=new Date(curso.F_Inicio);
         fechaFin= new Date(curso.F_Fin);
@@ -18,8 +20,13 @@ function mostrarCursos(cursos)
         else if(fechaFin.getTime()>fechaActual.getTime() && fechaInicio.getTime()<fechaActual.getTime()){
             aux = "enCurso";
         }
+        coloreada = coloreada +1;
         
-        var fila = $("<tr class='filaCurso " + aux + "' data-idcurso='"+curso.ID_Curso+"'>");
+        if(coloreada%2 === 0){ //par
+            color = "coloreada";
+        }
+        
+        var fila = $("<tr class='filaCurso " + aux + " "+ color+"' data-idcurso='"+curso.ID_Curso+"'>");
         $(fila).append("<td class='dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+curso.Titulo+"</td>");
         $(fila).append("<td class='dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+curso.Localidad+"</td>");
         $(fila).append("<td class='center dataCurso' data-idcurso='"+curso.ID_Curso+"'>"+extraerFecha(curso.F_Inicio)+"</td>");
