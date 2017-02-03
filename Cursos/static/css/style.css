@@ -245,18 +245,17 @@ body{
     margin-left: 300px;
 }
 
-
-
 .tablaCursos tr.coloreada{
     background-color: #57b0fc;
     padding-left: 5px;
 }
 .tablaCursos tr.enCurso{
-    background-color: #ffff00;
+    background-color: #99ff66;
     color: black;
 }
 
 .tablaCursos tr.finalizado{
-    background-color: #ff0000;
+    background-color: #ff6666;
     color: white;
+    
 }
