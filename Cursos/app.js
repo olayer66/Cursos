@@ -341,7 +341,23 @@ servidor.get("/curso/horarioCurso/:id",function(req,res){
         res.end();
     }
 });
-
+//devuleve la imagen del curso
+servidor.get("/curso/imagen/:id",function(req,res){
+    var IDCurso= req.params.id;
+    cursos.extraerImagen(IDCurso,function(err,imagen){
+        if(err)
+                {
+                    console.log(err);
+                    res.status(500);
+                    res.end();
+                }
+                else
+                {
+                    res.status(200);
+                    res.json(imagen);
+                }
+    });
+});
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo
 servidor.put("/curso/:id",function(req,res){

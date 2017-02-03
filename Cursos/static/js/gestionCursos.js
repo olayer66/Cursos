@@ -39,40 +39,51 @@ function quitarPaginacion()
 }
 
 //Muestra la informacion del curso seleccionado en la tabla de cursos--------------------------------------------------------------------------------------------
-function mostrarInformacionCurso(curso, horarioCurso)
+function mostrarInformacionCurso(curso, horarioCurso,imagen)
 {
-    $("#infoCurso").remove();
-    $("#resultado").show();
-
-    var fila = $("<div id='infoCurso' data-idcurso='"+curso.ID_Curso+"'>");
-        $(fila).append("<h2>"+curso.Titulo+"</h2>");
-        $(fila).append("<p>"+curso.Descripcion+"</p>");
-        
-        $(fila).append("<h3>Lugar de imparticion:</h3>");
-        $(fila).append("<p>"+curso.Direccion+"</p>");
-        
-         (fila).append("<h3>Ciudad:</h3>");
-        $(fila).append("<p>"+curso.Localidad+"</p>");
-        
-        $(fila).append("<h3>Duracion:</h3>");
-        $(fila).append("<p>Desde el "+extraerFecha(curso.F_Inicio)+" hasta el "+extraerFecha(curso.F_Fin)+"</p>");
-        
-        $(fila).append("<h3>Horario:</h3>");
-        
-        $(fila).append("<ul>");
-        horarioCurso.forEach(function(horario)
-        {
-             $(fila).append("<li>"+horario.Dia + ": " +horario.Hora_Inicio + " - " +horario.Hora_Fin +"</li>");
-        });
-        $(fila).append("</ul>");
-        
-        $(fila).append("<h3>Numero de plazas:</h3>");
+    borrarTablaDetalle();
+    $("#tituloDetalle").text(curso.Titulo);
+    var fila = $("<tr class='filaDetalle'>");
+            $(fila).append("<td class='cabeceraDetalle'>"+curso.Descripcion+"</td>");
+            if(imagen!==null)
+            {
+                var carga= "data:image/jpg;base64," + imagen;
+                $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
+            }
+    $(fila).append("</tr>");
+    $("#detalleCurso").append(fila);
+    var fila = $("<tr class='filaDetalle'>");
+        $(fila).append("<td class='cabeceraDetalle'><h3>Direccion:</h3>"+curso.Direccion+"</td>");
+    $(fila).append("</tr>");
+    $("#detalleCurso").append(fila);
+    var fila = $("<tr class='filaDetalle'>");
+        $(fila).append("<td class='cabeceraDetalle'><h3>Ciudad:</h3> "+curso.Localidad+"</td>");
+    $(fila).append("</tr>");
+    $("#detalleCurso").append(fila);
+    var fila = $("<tr class='filaDetalle'>");
+        $(fila).append("<td class='cabeceraDetalle'><h3>Duracion:</h3> Desde el "+extraerFecha(curso.F_Inicio)+" hasta el "+extraerFecha(curso.F_Fin)+"</td>");
+    $(fila).append("</tr>");
+    $("#detalleCurso").append(fila);
+    var fila = $("<tr class='filaDetalle'>");
+        $(fila).append("<td class='cabeceraDetalle'><h3>Horario:</h3></td>");
+    $(fila).append("</tr class='filaDetalle'>");
+    $("#detalleCurso").append(fila);
+    var fila = $("<tr class='filaDetalle'>");  
+            horarioCurso.forEach(function(horario)
+            {
+                 $(fila).append("<span>"+horario.Dia + ": " +horario.Hora_Inicio + " - " +horario.Hora_Fin +"</span><br>");
+            });
+        $(fila).append("</tr>");
+    $("#detalleCurso").append(fila);
+    var fila = $("<tr class='filaDetalle'>");
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
-        $(fila).append("<p>"+curso.Plazas+" ("+vacantes+" vacantes)</td>");
-        
-        $(fila).append("<div class='botonMini botoninscribirse' data-idcurso='"+curso.ID_Curso+"'>Inscribirse</div>");
-       
-    $("#resultado").append(fila);
+        $(fila).append("<td class='cabeceraDetalle'><h3>Numero de plazas: </h3>"+curso.Plazas+" ("+vacantes+" vacantes)</td>");  
+    $(fila).append("</tr>");
+    $("#detalleCurso").append(fila);
+    var fila = $("<tr class='filaDetalle'>");
+        $(fila).append("<td colspan='2'><div class='boton botoninscribirse' data-idcurso='"+curso.ID_Curso+"'>Inscribirse</div></td>");
+    $(fila).append("</tr>");
+    $("#detalleCurso").append(fila);
 }
 
 /*==========================FUNCIONES AUXILIARES===========================*/
@@ -83,10 +94,16 @@ function extraerFecha(fecha)
     var mes=date.getMonth()+1;
     return date.getDate()+"/"+mes+"/"+date.getFullYear();
 }
-//borra los filas de la tabla de busqueda de cursos
+//borra las filas de la tabla de busqueda de cursos
 function borrarTablaCursos()
 {
     $(".filaCurso").remove();
+}
+//borra las filas de la tabla de detalle del curso y la cabecera
+function borrarTablaDetalle()
+{
+    $(".cabeceraDetalle").remove();
+    $(".filaDetalle").remove();
 }
 //Cambia los valores de los botones de atras y alante con respecto a la posicion(pagina) donde estemos
 function cambiarValoresPaginacion(total,posicion,limite)

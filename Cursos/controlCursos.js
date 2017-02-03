@@ -13,6 +13,7 @@ module.exports={
     buscarCursoTitulo:buscarCursoTitulo,
     totalResultados:totalResultados,
     cambiarImagenCurso:cambiarImagenCurso,
+    extraerImagen:extraerImagen,
     //horarios
     extraerHorarios:extraerHorarios
 };
@@ -125,6 +126,29 @@ function cambiarImagenCurso(IDCurso,imagen,callback)
         else
         {
             callback(null);
+        }
+    });
+}
+//Extraemos la imagen del curso
+function extraerImagen(IDCurso,callback)
+{
+    accBBDD.extraerImagen(IDCurso,function(err,imagen){
+        if(err)
+        {
+            callback(err,null);
+        }
+        else
+        {
+            //Si tenemos una imagen
+            if(imagen!==undefined && imagen!==null)
+            {
+                
+                callback(null,imagen.toString('base64'));
+            }
+            else //Si no tenemos imagen
+            {
+                callback(new Error("La imagen no existe"),null);
+            }
         }
     });
 }

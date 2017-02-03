@@ -81,6 +81,7 @@ $(document).ready(function()
                         else
                         {
                             mostrarCursos(cursos);
+                            $("#detalleCurso").hide();
                             $("#cargaCursos").show();
                         }
                     });
@@ -233,11 +234,22 @@ $(document).ready(function()
                     }
                     else
                     {
-                        mostrarInformacionCurso(curso, horarios);
+                        llamadaExtraerImagen(id,function(err,imagen){
+                            if(err)
+                            {
+                                alert(err);
+                                mostrarInformacionCurso(curso, horarios,null);
+                            }
+                            else
+                            {
+                                 mostrarInformacionCurso(curso, horarios,imagen);
+                            }
+                        }); 
                     }
                 });
             }
         });
+        $("#detalleCurso").show();
     });
 });
 /*==========================FUNC. DE VISTA============================*/
@@ -252,7 +264,7 @@ function vistaInicial()
     $("#usuarioConectado").hide();
     $("#loginUsuario").hide();
     $("#datosUsuario").hide();
-    $("#resultado").hide();
+    $("#detalleCurso").hide();
     
 }
 //Muestra la ventana de buscador
@@ -468,6 +480,23 @@ function inscribirseEnCurso(IDCurso, IDUsuario,callback)
         error:function (jqXHR, textStatus, errorThrown) 
         {
          callback(new Error("Fallo en la inscripcion del usuario "+IDUsuario+" en el curso "+IDCurso+". Error: "+ errorThrown),null);
+        }
+    });
+}
+//Extrae la imagen de un curso
+function llamadaExtraerImagen(IDCurso,callback)
+{
+    $.ajax({
+        type: "GET",
+        url:"/curso/imagen/"+IDCurso,
+        success:function (data, textStatus, jqXHR) 
+        {
+            console.log(textStatus);
+            callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la extraccion de la imagen del curso "+IDCurso+". Error: "+ errorThrown),null);
         }
     });
 }
