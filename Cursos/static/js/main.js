@@ -186,28 +186,19 @@ $(document).ready(function()
                 //login correcto
                 if(login.permitido===true)
                 {
-                    //Extraemos los datos del usuario
-                    recuperarDatosUsuario(login.IDUsuario,function(err,cursos){
+                    //mostramos los datos del usuario
+                    cargarPantallaUsuario(login.IDUsuario,function(err)
+                    {
                         if(err)
                         {
-                            alert(err);
+                            alert("err");
                         }
                         else
                         {
-                            //Cargamos los datos extraidos
-                            cargarDatosUsuario(cursos,function(err){
-                                if(err)
-                                {
-                                    alert("err");
-                                }
-                                else
-                                {
-                                    IDUsuarioLogin=login.IDUsuario;
-                                    $("#spanUsuarioConectado").text($("#loginCorreo").val());
-                                    vistaDatosUsuario();
-                                }
-                            });
-                        }
+                            IDUsuarioLogin=login.IDUsuario;
+                            $("#spanUsuarioConectado").text($("#loginCorreo").val());
+                            vistaDatosUsuario();
+                        }  
                     });
                 }
             }
@@ -228,37 +219,19 @@ $(document).ready(function()
             }
             else
             {
-                llamadaExtraeHorariosCurso(id,function(err,horarios)
-                {
-                    if(err)
-                    {
-                        alert(err);
-                    }
-                    else
-                    {
-                        llamadaExtraerImagen(id,function(err,imagen){
-                            if(err)
-                            {
-                                alert(err);
-                            }
-                            else
-                            {
-                                 mostrarInformacionCurso(curso, horarios,imagen);
-                                 if(IDUsuarioLogin!==undefined)
-                                     insertarBotonLogin(curso.ID_Curso);
-                            }
-                        }); 
-                    }
-                });
+                
+                mostrarInformacionCurso(curso.datos,curso.horarios);
+                if(IDUsuarioLogin!==undefined)
+                    insertarBotonLogin(curso.ID_Curso);
+               
             }
         });
         $("#detalleCurso").show();
     });
     
     //Inscribe al usuario en el curso concreto ---------------------------------------------------------------------------------------------------------------------
-    $("#botonDetalle").on("click","#botonInscribirse", function (event){    
-        
-        alert("pulsado");
+    $("#botonDetalle").on("click","#botonInscribirse", function (event)
+    {    
         var boton=$(event.target);
         var idcurso=boton.data("idcurso");
         console.log("main.js - reconoce querer meter el idcurso="+idcurso+" y el usuario "+ IDUsuarioLogin);
@@ -270,7 +243,20 @@ $(document).ready(function()
             }
             else
             {
-                alert("se ha inscrito correctamente el usuario " + IDUsuarioLogin + " en el curso "+idcurso);
+                alert("se ha inscrito correctamente  en el curso");
+                alert("apui 1");
+                cargarPantallaUsuario(IDUsuarioLogin,function(err){
+                    if(err)
+                    {
+                        alert(err);
+                    }
+                    else
+                    {
+                        alert("aqui 2");
+                        vistaDatosUsuario();
+                    }
+                });
+                
             }
         });
     });
@@ -469,25 +455,6 @@ function llamadaCursosUsuario(IDUsuario,callback)
         }
     });
 }
-
-//Extrae los horarios de un curso concreto
-function llamadaExtraeHorariosCurso(IDCurso,callback)
-{
-    $.ajax({
-        type: "GET",
-        url:"/curso/horarioCurso/"+IDCurso,
-        success:function (data, textStatus, jqXHR) 
-        {
-            console.log(textStatus);
-            callback(null,data);
-        },
-        error:function (jqXHR, textStatus, errorThrown) 
-        {
-         callback(new Error("Fallo en la extraccion de los horarios del curso "+IDCurso+". Error: "+ errorThrown),null);
-        }
-    });
-}
-
 //Permite a un usuario registrarse en un curso seleccionado ----------------------------------------------------------------------------------------------------------
 function inscribirseEnCurso(IDCurso, IDUsuario, callback)
 {
@@ -510,23 +477,28 @@ function inscribirseEnCurso(IDCurso, IDUsuario, callback)
         }
     });
 }
-//Extrae la imagen de un curso
-function llamadaExtraerImagen(IDCurso,callback)
+/*=================================FUNCIONES CARGA PANTALLAS=======================================*/
+function cargarPantallaUsuario(IDUsuario,callback)
 {
-    $.ajax({
-        type: "GET",
-        url:"/curso/imagen/"+IDCurso,
-        success:function (data, textStatus, jqXHR) 
+    //Extraemos los datos del usuario
+    recuperarDatosUsuario(IDUsuario,function(err,cursos){
+        if(err)
         {
-            console.log(textStatus);
-            callback(null,data);
-        },
-        error:function (jqXHR, textStatus, errorThrown) 
+            alert(err);
+        }
+        else
         {
-            if(errorThrown==="Internal Server Error")
-                callback(new Error("Fallo en la extraccion de la imagen del curso "+IDCurso+". Error: "+ errorThrown),null);
-            else
-                callback(null,null);
+            //Cargamos los datos extraidos
+            cargarDatosUsuario(cursos,function(err){
+                if(err)
+                {
+                    callback(err);
+                }
+                else
+                {
+                    callback(null);
+                }
+            });
         }
     });
 }

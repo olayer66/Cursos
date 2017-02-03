@@ -58,15 +58,16 @@ function quitarPaginacion()
 }
 
 //Muestra la informacion del curso seleccionado en la tabla de cursos--------------------------------------------------------------------------------------------
-function mostrarInformacionCurso(curso, horarioCurso,imagen)
+function mostrarInformacionCurso(curso, horarioCurso)
 {
     borrarTablaDetalle();
     $("#tituloDetalle").text(curso.Titulo);
     var fila = $("<tr class='filaDetalle'>");
         $(fila).append("<td class='cabeceraDetalle'>"+curso.Descripcion+"</td>");
-        if(imagen!==null)
+        if(curso.Imagen!==null)
         {
-            var carga= "data:image/jpg;base64," + imagen;
+            var carga= "data:image/jpg;base64," + curso.Imagen;
+            alert(carga);
             $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
         }
         else

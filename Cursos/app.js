@@ -170,7 +170,7 @@ servidor.post("/curso/inscripcion", function(req, res)
     //Carga de la imagen de perfil
     if (usuario !== null && curso !== null) 
     {
-        cursos.inscripcionCurso(usuario, curso,function(err){
+        cursos.inscripcionCurso(curso, usuario,function(err){
             if(err)
             {
                 console.log(err);
@@ -211,50 +211,28 @@ servidor.get("/curso",function(req,res){
     var posInicio=req.query.posInicio;
     if(busq!==null && busq!==undefined)
     {
-//        //Si es un ID de curso
-//        if(!isNaN(parseInt(""+busq)))
-//        {
-//            console.log("a"+busq);
-//            cursos.buscarCursoID(busq,function(err,respuesta){
-//                if(err)
-//                {
-//                    console.log(err);
-//                    res.status(500);
-//                    res.end();
-//                }
-//                else
-//                {
-//                    console.log("Respuesta correcta");
-//                    res.status(200);
-//                    res.json(respuesta);
-//                }
-//            });
-//        }
-//        else //Si es un titulo
-//        {
-            if(limite!==null && limite!==undefined && posInicio!==null && posInicio!==undefined)
-            {
-                cursos.buscarCursoTitulo(busq,limite,posInicio,function(err,respuesta){
-                    if(err)
-                    {
-                        console.log(err);
-                        res.status(500);
-                        res.end();
-                    }
-                    else
-                    {
-                        res.status(200);
-                        res.json(respuesta);
-                    }
-                });
-            }
-            else
-            {
-                console.log("El limite " +limite+" o la posicion de inicio "+posInicio+" no son validos");
-                res.status(404);
-                res.end();
-            }
-//        }
+        if(limite!==null && limite!==undefined && posInicio!==null && posInicio!==undefined)
+        {
+            cursos.buscarCursoTitulo(busq,limite,posInicio,function(err,respuesta){
+                if(err)
+                {
+                    console.log(err);
+                    res.status(500);
+                    res.end();
+                }
+                else
+                {
+                    res.status(200);
+                    res.json(respuesta);
+                }
+            });
+        }
+        else
+        {
+            console.log("El limite " +limite+" o la posicion de inicio "+posInicio+" no son validos");
+            res.status(404);
+            res.end();
+        }
     }
     else
     {
@@ -304,8 +282,19 @@ servidor.get("/curso/busqueda/:id",function(req,res){
                 }
                 else
                 {
-                    res.status(200);
-                    res.json(curso);
+                    cursos.extraerHorarios(id,function(err,horarios){
+                        if(err)
+                        {
+                            console.log(err);
+                            res.status(500);
+                            res.end();
+                        }
+                        else
+                        {
+                            res.status(200);
+                            res.json({datos:curso,horarios:horarios});
+                        }
+                    });
                 }
             });
     }
@@ -346,59 +335,6 @@ servidor.get("/usuario/:id",function(req,res){
         res.status(404);
         res.end();
     }
-});
-
-//Peticion get que devuelve los horarios para un curso concreto ----------------------------------------------------------------------------------------------------
-servidor.get("/curso/horarioCurso/:id",function(req,res){
-    var id= req.params.id;
-    if(id!==null && id!==undefined)
-    {
-            cursos.extraerHorarios(id,function(err,horarios){
-                if(err)
-                {
-                    console.log(err);
-                    res.status(500);
-                    res.end();
-                }
-                else
-                {
-                    res.status(200);
-                    res.json(horarios);
-                }
-            });
-    }
-    else
-    {
-        console.log("No existe un curso con id: " +id);
-        res.status(404);
-        res.end();
-    }
-});
-//devuleve la imagen del curso
-servidor.get("/curso/imagen/:id",function(req,res){
-    var IDCurso= req.params.id;
-    cursos.extraerImagen(IDCurso,function(err,imagen){
-        if(err)
-        {
-            console.log(err);
-            res.status(500);
-            res.end();
-        }
-        else
-        {
-            if(imagen!==null)
-            {
-                res.status(200);
-                res.json(imagen);
-            }
-            else
-            {
-                console.log("La imagen no existe");
-                res.status(404);
-                res.end();
-            }
-        }
-    });
 });
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo
