@@ -109,6 +109,20 @@ CREAR CURSO (POST)
             "horaInicio":"11:00:00",
             "horaFin":"13:00:00"}]
 }
+{"titulo":"Mi programa de cocina mañanera",
+"descripcion":"Programa de cocina diseñado para establecer el gran gusto por el arte culinario a aquellas personas que desean aprender del mejor",
+"localidad":"Madrid",
+"direccion":"calle tejera",
+"plazas":100,
+"fechaInicio":"2017/01/01",
+"fechaFin":"2017/09/01",
+"horarios":[{"dia":"Sabado",
+            "horaInicio":"11:00:00",
+            "horaFin":"13:00:00"},
+            {"dia":"Domingo",
+            "horaInicio":"11:00:00",
+            "horaFin":"13:00:00"}]
+}
 ===========================================
 ACTUALIZAR CURSO (PUT)
 ===========================================
@@ -141,3 +155,10 @@ AÑADIR/MODIFICAR IMAGEN DE UN CURSO (PUT)
 -------------------------------------------
 IDCurso : El ID del curso que se quiere eliminar
 El nombre de parametro en el que tiene que ir la imagen debe de ser "imagen"
+
+BUSCAR LA INFO DE UN CURSO (GET)
+===========================================
+//localhost:3000/curso/busqueda/:IDCurso
+-------------------------------------------
+IDCurso : El ID del curso que se quiere eliminar
+===========================================
