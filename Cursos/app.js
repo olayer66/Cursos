@@ -190,8 +190,7 @@ servidor.post("/curso/inscripcion", function(req, res)
     } 
     else 
     {
-        console.log("La validacion de los campos ha fallado:");
-        console.log(result.array());
+        console.log("No existe el usuario o el curso");
         res.status(400);
     }
     
