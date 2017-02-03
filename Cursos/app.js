@@ -379,16 +379,25 @@ servidor.get("/curso/imagen/:id",function(req,res){
     var IDCurso= req.params.id;
     cursos.extraerImagen(IDCurso,function(err,imagen){
         if(err)
-                {
-                    console.log(err);
-                    res.status(500);
-                    res.end();
-                }
-                else
-                {
-                    res.status(200);
-                    res.json(imagen);
-                }
+        {
+            console.log(err);
+            res.status(500);
+            res.end();
+        }
+        else
+        {
+            if(imagen!==null)
+            {
+                res.status(200);
+                res.json(imagen);
+            }
+            else
+            {
+                console.log("La imagen no existe");
+                res.status(404);
+                res.end();
+            }
+        }
     });
 });
 /*=========================================METODOS PUT===================================================*/

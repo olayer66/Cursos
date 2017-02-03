@@ -62,6 +62,11 @@ function mostrarInformacionCurso(curso, horarioCurso,imagen)
             var carga= "data:image/jpg;base64," + imagen;
             $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
         }
+        else
+        {
+            var carga= "/images/Imagen_no_disponible.png";
+            $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
+        }
         $(fila).append("</tr>");
         $("#tablaDetalle").append(fila);
         var fila = $("<tr class='filaDetalle'>");

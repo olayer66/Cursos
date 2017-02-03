@@ -523,7 +523,10 @@ function llamadaExtraerImagen(IDCurso,callback)
         },
         error:function (jqXHR, textStatus, errorThrown) 
         {
-         callback(new Error("Fallo en la extraccion de la imagen del curso "+IDCurso+". Error: "+ errorThrown),null);
+            if(errorThrown==="Internal Server Error")
+                callback(new Error("Fallo en la extraccion de la imagen del curso "+IDCurso+". Error: "+ errorThrown),null);
+            else
+                callback(null,null);
         }
     });
 }

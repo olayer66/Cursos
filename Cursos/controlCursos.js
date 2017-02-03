@@ -148,7 +148,7 @@ function extraerImagen(IDCurso,callback)
             }
             else //Si no tenemos imagen
             {
-                callback(new Error("La imagen no existe"),null);
+                callback(null,null);
             }
         }
     });
