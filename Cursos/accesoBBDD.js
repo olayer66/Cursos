@@ -592,7 +592,8 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(IDCurso!==null && IDUsuario!==null)
     {
-        valoresEntrada=[IDCurso, IDUsuario];
+        var valoresEntrada=[IDCurso, IDUsuario];
+        var entrada=[IDCurso];
         //Conectamos con la consulta requerida
         conexion.connect(function(err)
         {
@@ -603,6 +604,7 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
             } 
             else 
             {
+                //Comprobamos que el usuario no este incrito ya en el curso
                 query="SELECT COUNT(ID_Curso) AS total FROM asig_cursos WHERE ID_Curso RLIKE ? and ID_Usuario RLIKE ?";
                 conexion.query(query,valoresEntrada,function(err, contador) 
                 {
@@ -614,9 +616,8 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
                     else 
                     {
                         if(contador[0].total === 0){
-                            
-                            query="SELECT F_Fin FROM cursos WHERE ID_Curso= ?";
-                            var entrada=[IDCurso];
+                            //Si no esta inscrito comprobamos que el curso no este finalizado y que tenga plazas libres
+                            query="SELECT F_Fin,Plazas,Plazas_Ocupadas FROM cursos WHERE ID_Curso= ?";
                             conexion.query(mysql.format(query,entrada),function(err, curso) 
                             {
                                 if (err) 
@@ -627,28 +628,51 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
                                 else 
                                 {
                                     var fechaActual= new Date();
-                                    var fechaFin= new Date(curso[0].F_Fin);                                   
-                                    if(fechaFin.getTime()<fechaActual.getTime()) //El curso ya ha terminado
+                                    var fechaFin= new Date(curso[0].F_Fin);
+                                    //Si no hay plazas libres
+                                    if(curso[0].Plazas_Ocupadas===curso[0].Plazas)
                                     {
-                                        callback("El usuario no puede registrarse en un curso finalizado");
+                                        callback(new Error("No quedan plazas libres en el curso"));
                                     }
                                     else
                                     {
-                                        query="INSERT INTO asig_cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
-                                        conexion.query(query,valoresEntrada,function(err, info) 
+                                        //Si ya esta finalizado
+                                        if(fechaFin.getTime()<fechaActual.getTime()) //El curso ya ha terminado
                                         {
-                                            if (err) 
+                                            callback(new Error("El usuario no puede registrarse en un curso finalizado"));
+                                        }
+                                        else
+                                        {
+                                            //Insertamos la relacion usuario/curso en la tabla
+                                            query="INSERT INTO asig_cursos(ID_Curso,ID_Usuario) VALUES (?,?)";
+                                            conexion.query(query,valoresEntrada,function(err) 
                                             {
-                                                callback(err);
-                                            } 
-                                            else 
-                                            {
-                                                console.log("Esta la info que devuelve al insertar: " + info);
-                                                callback(null);
-                                                conexion.end();
-                                            }
-                                        });
-                                    }
+                                                if (err) 
+                                                {
+                                                    callback(err);
+                                                } 
+                                                else 
+                                                {
+                                                    //Añadimos uno a las plazas ocupadas del curso
+                                                    query="UPDATE cursos SET Plazas_Ocupadas=Plazas_Ocupadas+1 WHERE ID_Curso= ?";
+                                                    conexion.query(mysql.format(query,entrada),function(err) 
+                                                    {
+                                                        if (err) 
+                                                        {
+                                                            conexion.rollback();
+                                                            callback(err);
+                                                        } 
+                                                        else 
+                                                        {
+
+                                                            callback(null);
+                                                            conexion.end();
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    }  
                                 }
                             });   
                         }
