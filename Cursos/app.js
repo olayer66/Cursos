@@ -142,11 +142,13 @@ servidor.post("/usuario", function(req, res)
                 {
                     console.log(err);
                     res.status(400);
+                    res.end();
                 }
                 else
                 {
                     console.log("Se ha creado el usuario");
                     res.status(200);
+                    res.end();
                 }
             });
         } 
@@ -155,6 +157,7 @@ servidor.post("/usuario", function(req, res)
             console.log("La validacion de los campos ha fallado:");
             console.log(result.array());
             res.status(400);
+            res.end();
         }
     });
 });
@@ -175,11 +178,13 @@ servidor.post("/curso/inscripcion", function(req, res)
             {
                 console.log(err);
                 res.status(400);
+                res.end();
             }
             else
             {
                 console.log("Se ha insertado el usuario "+usuario+" en el curso "+curso);
                 res.status(200);
+                res.end();
             }
         });
     } 

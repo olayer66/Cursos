@@ -67,7 +67,6 @@ function mostrarInformacionCurso(curso, horarioCurso)
         if(curso.Imagen!==null)
         {
             var carga= "data:image/jpg;base64," + curso.Imagen;
-            alert(carga);
             $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
         }
         else
