@@ -186,28 +186,19 @@ $(document).ready(function()
                 //login correcto
                 if(login.permitido===true)
                 {
-                    //Extraemos los datos del usuario
-                    recuperarDatosUsuario(login.IDUsuario,function(err,cursos){
+                    //mostramos los datos del usuario
+                    cargarPantallaUsuario(login.IDUsuario,function(err)
+                    {
                         if(err)
                         {
-                            alert(err);
+                            alert("err");
                         }
                         else
                         {
-                            //Cargamos los datos extraidos
-                            cargarDatosUsuario(cursos,function(err){
-                                if(err)
-                                {
-                                    alert("err");
-                                }
-                                else
-                                {
-                                    IDUsuarioLogin=login.IDUsuario;
-                                    $("#spanUsuarioConectado").text($("#loginCorreo").val());
-                                    vistaDatosUsuario();
-                                }
-                            });
-                        }
+                            IDUsuarioLogin=login.IDUsuario;
+                            $("#spanUsuarioConectado").text($("#loginCorreo").val());
+                            vistaDatosUsuario();
+                        }  
                     });
                 }
             }
@@ -270,7 +261,18 @@ $(document).ready(function()
             }
             else
             {
-                alert("se ha inscrito correctamente el usuario " + IDUsuarioLogin + " en el curso "+idcurso);
+                alert("se ha inscrito correctamente  en el curso");
+                cargarPantallaUsuario(IDUsuarioLogin,function(err){
+                    if(err)
+                    {
+                        alert(err);
+                    }
+                    else
+                    {
+                        vistaDatosUsuario();
+                    }
+                });
+                
             }
         });
     });
@@ -527,6 +529,31 @@ function llamadaExtraerImagen(IDCurso,callback)
                 callback(new Error("Fallo en la extraccion de la imagen del curso "+IDCurso+". Error: "+ errorThrown),null);
             else
                 callback(null,null);
+        }
+    });
+}
+/*=================================FUNCIONES CARGA PANTALLAS=======================================*/
+function cargarPantallaUsuario(IDUsuario,callback)
+{
+    //Extraemos los datos del usuario
+    recuperarDatosUsuario(IDUsuario,function(err,cursos){
+        if(err)
+        {
+            alert(err);
+        }
+        else
+        {
+            //Cargamos los datos extraidos
+            cargarDatosUsuario(cursos,function(err){
+                if(err)
+                {
+                    callback(err);
+                }
+                else
+                {
+                    callback(null);
+                }
+            });
         }
     });
 }

@@ -170,7 +170,7 @@ servidor.post("/curso/inscripcion", function(req, res)
     //Carga de la imagen de perfil
     if (usuario !== null && curso !== null) 
     {
-        cursos.inscripcionCurso(usuario, curso,function(err){
+        cursos.inscripcionCurso(curso, usuario,function(err){
             if(err)
             {
                 console.log(err);

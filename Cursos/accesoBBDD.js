@@ -615,8 +615,9 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
                     {
                         if(contador[0].total === 0){
                             
-                            query="SELECT * FROM cursos WHERE ID_Curso RLIKE ?";
-                            conexion.query(query,IDCurso,function(err, curso) 
+                            query="SELECT F_Fin FROM cursos WHERE ID_Curso= ?";
+                            var entrada=[IDCurso];
+                            conexion.query(mysql.format(query,entrada),function(err, curso) 
                             {
                                 if (err) 
                                 {
@@ -625,10 +626,8 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
                                 } 
                                 else 
                                 {
-                                    
                                     var fechaActual= new Date();
-                                    fechaFin= new Date(curso[0].F_Fin);
-                                    
+                                    var fechaFin= new Date(curso[0].F_Fin);                                   
                                     if(fechaFin.getTime()<fechaActual.getTime()) //El curso ya ha terminado
                                     {
                                         callback("El usuario no puede registrarse en un curso finalizado");
