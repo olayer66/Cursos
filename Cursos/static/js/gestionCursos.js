@@ -128,7 +128,7 @@ function borrarTablaDetalle()
 {
     $(".cabeceraDetalle").remove();
     $(".filaDetalle").remove();
-    $("#botoninscribirse").remove();
+    $("#botonInscribirse").remove();
 }
 //Cambia los valores de los botones de atras y alante con respecto a la posicion(pagina) donde estemos
 function cambiarValoresPaginacion(total,posicion,limite)
