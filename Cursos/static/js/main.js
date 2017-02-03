@@ -242,7 +242,7 @@ $(document).ready(function()
             }
             else
             {
-                alert("se ha inscrito correctamente  en el curso");
+                alert("Se ha inscrito correctamente  en el curso");
                 cargarPantallaUsuario(IDUsuarioLogin,function(err){
                     if(err)
                     {
