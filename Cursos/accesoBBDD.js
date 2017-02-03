@@ -592,6 +592,8 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(IDCurso!==null && IDUsuario!==null)
     {
+        console.log("el IDCurso es: "+IDCurso);
+        console.log("el IDUsuario es: "+IDUsuario);
         var valoresEntrada=[IDCurso, IDUsuario];
         var entrada=[IDCurso];
         //Conectamos con la consulta requerida

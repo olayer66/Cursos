@@ -222,7 +222,7 @@ $(document).ready(function()
                 
                 mostrarInformacionCurso(curso.datos,curso.horarios);
                 if(IDUsuarioLogin!==undefined)
-                    insertarBotonLogin(curso.ID_Curso);
+                    insertarBotonLogin(curso.datos.ID_Curso);
                
             }
         });
@@ -234,7 +234,6 @@ $(document).ready(function()
     {    
         var boton=$(event.target);
         var idcurso=boton.data("idcurso");
-        console.log("main.js - reconoce querer meter el idcurso="+idcurso+" y el usuario "+ IDUsuarioLogin);
         inscribirseEnCurso(idcurso, IDUsuarioLogin,function(err)
         {
             if(err)
@@ -244,7 +243,6 @@ $(document).ready(function()
             else
             {
                 alert("se ha inscrito correctamente  en el curso");
-                alert("apui 1");
                 cargarPantallaUsuario(IDUsuarioLogin,function(err){
                     if(err)
                     {
@@ -252,7 +250,6 @@ $(document).ready(function()
                     }
                     else
                     {
-                        alert("aqui 2");
                         vistaDatosUsuario();
                     }
                 });
@@ -458,7 +455,6 @@ function llamadaCursosUsuario(IDUsuario,callback)
 //Permite a un usuario registrarse en un curso seleccionado ----------------------------------------------------------------------------------------------------------
 function inscribirseEnCurso(IDCurso, IDUsuario, callback)
 {
-    console.log("main.js - ajax - se trata de pasar el idCurso"+ IDCurso+ " con el usuario "+ IDUsuario);
     $.ajax({
         type: "POST",
         url:"/curso/inscripcion",
