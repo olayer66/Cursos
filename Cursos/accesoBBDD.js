@@ -26,6 +26,7 @@ module.exports={
     contarCursos:contarCursos,
     cambiarImagenCurso:cambiarImagenCurso,
     extraerImagen:extraerImagen,
+    inscribirUsuarioEnCurso:inscribirUsuarioEnCurso,
     //Horarios
     insertarHorario:insertarHorario,
     actualizarHorario:actualizarHorario,

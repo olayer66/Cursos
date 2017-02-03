@@ -30,6 +30,8 @@ $(document).ready(function()
         vistaBuscador();
     });
     $("#misCursos").on("click",function(){
+        
+        
         //Extraemos los datos del usuario
         recuperarDatosUsuario(IDUsuarioLogin,function(err,cursos){
             if(err)
@@ -251,6 +253,26 @@ $(document).ready(function()
         });
         $("#detalleCurso").show();
     });
+    
+    //Inscribe al usuario en el curso concreto ---------------------------------------------------------------------------------------------------------------------
+    $("#resultado").on("click","#botonInscribirse", function (event){    
+        
+        var boton=$(event.target);
+        var idcurso=boton.data("idcurso");
+        
+        console.log("main.js - reconoce querer meter el idcurso="+idcurso+" y el usuario "+ IDUsuarioLogin);
+        inscribirseEnCurso(idcurso, IDUsuarioLogin,function(err)
+        {
+            if(err)
+            {
+                alert(err);
+            }
+            else
+            {
+                alert("se ha inscrito correctamente el usuario " + IDUsuarioLogin + " en el curso "+idcurso);
+            }
+        });
+    });
 });
 /*==========================FUNC. DE VISTA============================*/
 //Carga la vista inicial
@@ -304,6 +326,8 @@ function vistaDatosUsuario()
     $("#menuConSesion").show();
     $("#login").hide();
     $("#loginConectado").show();
+    $("#resultado").hide();
+    
 }
 //Oculta los div de conectado y carga la vista del buscador
 function vistaDesconexion()
@@ -462,15 +486,16 @@ function llamadaExtraeHorariosCurso(IDCurso,callback)
     });
 }
 
-//Permite a un usuario registrarse en un curso seleccionado
-function inscribirseEnCurso(IDCurso, IDUsuario,callback)
+//Permite a un usuario registrarse en un curso seleccionado ----------------------------------------------------------------------------------------------------------
+function inscribirseEnCurso(IDCurso, IDUsuario, callback)
 {
+    console.log("main.js - ajax - se trata de pasar el idCurso"+ IDCurso+ " con el usuario "+ IDUsuario);
     $.ajax({
         type: "POST",
         url:"/curso/inscripcion",
         data:{
-            "idcurso":IDCurso,
-            "idusuario":IDUsuario
+            "idCurso":IDCurso,
+            "idUsuario":IDUsuario
         },
         success:function (data, textStatus, jqXHR) 
         {

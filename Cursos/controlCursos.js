@@ -167,3 +167,4 @@ function extraerHorarios(IDCurso,callback)
         }
     });
 }
+

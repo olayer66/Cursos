@@ -158,6 +158,39 @@ servidor.post("/usuario", function(req, res)
         }
     });
 });
+
+//Inscripcion de un usuario en un curso ------------------------------------------------------------------------------------------------------------------------------
+servidor.post("/curso/inscripcion", function(req, res) 
+{
+    var usuario = req.body.idUsuario;
+    var curso = req.body.idCurso;
+    
+    console.log("app.js - Se intenta insertar el usuario "+usuario+" en el curso "+curso);
+    
+    //Carga de la imagen de perfil
+    if (usuario !== null && curso !== null) 
+    {
+        cursos.inscripcionCurso(usuario, curso,function(err){
+            if(err)
+            {
+                console.log(err);
+                res.status(400);
+            }
+            else
+            {
+                console.log("Se ha insertado el usuario "+usuario+" en el curso "+curso);
+                res.status(200);
+            }
+        });
+    } 
+    else 
+    {
+        console.log("La validacion de los campos ha fallado:");
+        console.log(result.array());
+        res.status(400);
+    }
+    
+});
 /*=========================================METODOS GET===================================================*/
 //Carga pagina inicio
 servidor.get("/",function(req,res){
