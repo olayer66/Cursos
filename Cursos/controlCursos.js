@@ -14,6 +14,7 @@ module.exports={
     totalResultados:totalResultados,
     cambiarImagenCurso:cambiarImagenCurso,
     extraerImagen:extraerImagen,
+    inscripcionCurso:inscripcionCurso,
     //horarios
     extraerHorarios:extraerHorarios
 };
@@ -149,6 +150,20 @@ function extraerImagen(IDCurso,callback)
             {
                 callback(new Error("La imagen no existe"),null);
             }
+        }
+    });
+}
+//Inserta los el usuario y el curso en la asignacion
+function inscripcionCurso(IDCurso, IDUsuario,callback)
+{
+    accBBDD.inscribirUsuarioEnCurso(IDCurso, IDUsuario,function(err){
+        if(err)
+        {
+            callback(err);
+        }
+        else
+        {
+            callback(null);
         }
     });
 }

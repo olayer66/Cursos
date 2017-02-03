@@ -237,9 +237,11 @@ body{
     height: 150px;
 }
 .cabeceraDetalle{
-    width: 400px;
+    width: 600px;
     vertical-align: text-top;
 }
-#tablaDetalle td, th{
-    border: 2px solid black;
+#tablaDetalle {
+}
+#botonInscribirse{
+    margin-left: 300px;
 }

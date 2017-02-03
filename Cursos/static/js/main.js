@@ -240,11 +240,12 @@ $(document).ready(function()
                             if(err)
                             {
                                 alert(err);
-                                mostrarInformacionCurso(curso, horarios,null);
                             }
                             else
                             {
                                  mostrarInformacionCurso(curso, horarios,imagen);
+                                 if(IDUsuarioLogin!==undefined)
+                                     insertarBotonLogin(curso.ID_Curso);
                             }
                         }); 
                     }
@@ -255,11 +256,11 @@ $(document).ready(function()
     });
     
     //Inscribe al usuario en el curso concreto ---------------------------------------------------------------------------------------------------------------------
-    $("#resultado").on("click","#botonInscribirse", function (event){    
+    $("#botonDetalle").on("click","#botonInscribirse", function (event){    
         
+        alert("pulsado");
         var boton=$(event.target);
         var idcurso=boton.data("idcurso");
-        
         console.log("main.js - reconoce querer meter el idcurso="+idcurso+" y el usuario "+ IDUsuarioLogin);
         inscribirseEnCurso(idcurso, IDUsuarioLogin,function(err)
         {
@@ -298,6 +299,7 @@ function vistaBuscador()
     $("#buscar").show();
     $("#cargaCursos").hide();
     $("#paginacion").hide();
+    $("#detalleCurso").hide();
 }
 //Muestra la ventana de nuevo usuario
 function vistaNuevoUsuario()

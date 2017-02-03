@@ -51,41 +51,41 @@ function mostrarInformacionCurso(curso, horarioCurso,imagen)
                 $(fila).append("<td><img id='imagenDetalle' src='"+carga+"' /></td>");
             }
     $(fila).append("</tr>");
-    $("#detalleCurso").append(fila);
+    $("#tablaDetalle").append(fila);
     var fila = $("<tr class='filaDetalle'>");
         $(fila).append("<td class='cabeceraDetalle'><h3>Direccion:</h3>"+curso.Direccion+"</td>");
     $(fila).append("</tr>");
-    $("#detalleCurso").append(fila);
+    $("#tablaDetalle").append(fila);
     var fila = $("<tr class='filaDetalle'>");
         $(fila).append("<td class='cabeceraDetalle'><h3>Ciudad:</h3> "+curso.Localidad+"</td>");
     $(fila).append("</tr>");
-    $("#detalleCurso").append(fila);
+    $("#tablaDetalle").append(fila);
     var fila = $("<tr class='filaDetalle'>");
         $(fila).append("<td class='cabeceraDetalle'><h3>Duracion:</h3> Desde el "+extraerFecha(curso.F_Inicio)+" hasta el "+extraerFecha(curso.F_Fin)+"</td>");
     $(fila).append("</tr>");
-    $("#detalleCurso").append(fila);
+    $("#tablaDetalle").append(fila);
     var fila = $("<tr class='filaDetalle'>");
         $(fila).append("<td class='cabeceraDetalle'><h3>Horario:</h3></td>");
     $(fila).append("</tr class='filaDetalle'>");
-    $("#detalleCurso").append(fila);
+    $("#tablaDetalle").append(fila);
     var fila = $("<tr class='filaDetalle'>");  
             horarioCurso.forEach(function(horario)
             {
                  $(fila).append("<span>"+horario.Dia + ": " +horario.Hora_Inicio + " - " +horario.Hora_Fin +"</span><br>");
             });
         $(fila).append("</tr>");
-    $("#detalleCurso").append(fila);
+    $("#tablaDetalle").append(fila);
     var fila = $("<tr class='filaDetalle'>");
         vacantes=curso.Plazas - curso.Plazas_Ocupadas;
         $(fila).append("<td class='cabeceraDetalle'><h3>Numero de plazas: </h3>"+curso.Plazas+" ("+vacantes+" vacantes)</td>");  
     $(fila).append("</tr>");
-    $("#detalleCurso").append(fila);
-    var fila = $("<tr class='filaDetalle'>");
-        $(fila).append("<td colspan='2'><div class='boton botoninscribirse' data-idcurso='"+curso.ID_Curso+"'>Inscribirse</div></td>");
-    $(fila).append("</tr>");
-    $("#detalleCurso").append(fila);
+    $("#tablaDetalle").append(fila);
 }
-
+//Inserta el boton de inscribirse en el caso de que el usuario este logeado
+function insertarBotonLogin(IDCurso)
+{
+    $("#botonDetalle").append("<div class='boton' id='botonInscribirse' data-idcurso='"+IDCurso+"'>Inscribirse</div>");
+}
 /*==========================FUNCIONES AUXILIARES===========================*/
 //Extrae la fechea de una variable
 function extraerFecha(fecha)
@@ -104,6 +104,7 @@ function borrarTablaDetalle()
 {
     $(".cabeceraDetalle").remove();
     $(".filaDetalle").remove();
+    $("#botoninscribirse").remove();
 }
 //Cambia los valores de los botones de atras y alante con respecto a la posicion(pagina) donde estemos
 function cambiarValoresPaginacion(total,posicion,limite)
