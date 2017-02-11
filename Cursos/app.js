@@ -26,14 +26,14 @@ var servidorHTTPS = https.createServer(
 var estrategia=new passportHTTP.BasicStrategy(
         { realm: 'Autenticacion requerida' },
         function(user, pass, callback) {
-           usuarios.conectar(user,pass,function(err,IDUsuario){
+           usuarios.conectar(user,pass,function(err,correcto,IDUsuario){
                 if(err)
                 {
-                    callback(null, false);
+                    callback(err, false);
                 }
                 else
                 {
-                    callback(null, { userId:IDUsuario });
+                    callback(null, {permitido:correcto, userId:IDUsuario });
                 }
             });
         }
@@ -54,8 +54,7 @@ servidor.use(expressValidator());
 //funcionalidad del servidor
 /*=========================================METODOS POST==================================================*/
 //Creacion de un nuevo curso
-servidor.post("/curso", function(req, res) 
-{
+servidor.post("/curso", function(req, res) {
     //control de contenido    
         //Campos vacios
             req.checkBody("titulo","El titulo no puede estar vacio").notEmpty();
@@ -103,8 +102,7 @@ servidor.post("/curso", function(req, res)
     });
 });
 //Creacion de un nuevo usuario
-servidor.post("/usuario", function(req, res) 
-{
+servidor.post("/usuario", function(req, res) {
     //control de contenido    
         //Campos vacios
             req.checkBody("correo","El e-mail no puede estar vacio").notEmpty();
@@ -161,10 +159,8 @@ servidor.post("/usuario", function(req, res)
         }
     });
 });
-
-//Inscripcion de un usuario en un curso ------------------------------------------------------------------------------------------------------------------------------
-servidor.post("/curso/inscripcion", function(req, res) 
-{
+//Inscripcion de un usuario en un curso 
+servidor.post("/curso/inscripcion", function(req, res) {
     var usuario = req.body.idUsuario;
     var curso = req.body.idCurso;
     
@@ -271,8 +267,7 @@ servidor.get("/curso/:busq",function(req,res){
         res.end();
     }
 });
-
-//Devuelve la informacion del curso pasado por el parametro de id------------------------------------------------------------------------------------------------
+//Devuelve la informacion del curso pasado por el parametro de id
 servidor.get("/curso/busqueda/:id",function(req,res){
     var id= req.params.id;
     if(id!==null && id!==undefined)
@@ -309,10 +304,9 @@ servidor.get("/curso/busqueda/:id",function(req,res){
         res.end();
     }
 });
-
 //Devuelve si el usuario es valido(si lo es devuelve el ID de usuario, si no devuelve FALSE)
 servidor.get("/usuario/login",passport.authenticate('basic', {session: false}),function(req,res){
-     res.json({permitido: true, IDUsuario:req.user.userId});
+     res.json({permitido: req.user.permitido, IDUsuario:req.user.userId});
 });
 //Devuelve los cursos de un usuario
 servidor.get("/usuario/:id",function(req,res){
@@ -429,21 +423,21 @@ servidor.delete("/curso/:id",function(req,res){
 });
 /*======================================INICIO DEL SERVIDOR==============================================*/
 //Abrimos el servidor a la escucha por el puerto 3000
-//servidor.listen(config.puerto, function(err) {
-//    if (err) {
-//        console.log("Error al abrir el puerto "+config.puerto+": " + err);
-//    } else {
-//        console.log("Servidor escuchando en el puerto "+config.puerto+".");
-//    }
-//});
-
-//Abrimos el servidor https a la escucha por el puerto 5555
-servidorHTTPS.listen(config.puertoHTTPS, function(err) {
+servidor.listen(config.puerto, function(err) {
     if (err) {
-        console.log("Error al abrir el puerto "+config.puertoHTTPS+": " + err);
+        console.log("Error al abrir el puerto "+config.puerto+": " + err);
     } else {
-        console.log("Servidor escuchando en el puerto "+config.puertoHTTPS+".");
+        console.log("Servidor escuchando en el puerto "+config.puerto+".");
     }
 });
+
+//Abrimos el servidor https a la escucha por el puerto 5555
+//servidorHTTPS.listen(config.puertoHTTPS, function(err) {
+//    if (err) {
+//        console.log("Error al abrir el puerto "+config.puertoHTTPS+": " + err);
+//    } else {
+//        console.log("Servidor escuchando en el puerto "+config.puertoHTTPS+".");
+//    }
+//});
 
 

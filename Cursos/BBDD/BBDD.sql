@@ -64,7 +64,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `cursos`.`usuarios` (
   `ID_Usuario` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `Correo` VARCHAR(45) NOT NULL,
-  `Contraseña` VARCHAR(8) NOT NULL,
+  `Contrasenia` VARCHAR(8) NOT NULL,
   `Nombre` VARCHAR(20) NOT NULL,
   `Apellidos` VARCHAR(45) NOT NULL,
   `Sexo` VARCHAR(1) NOT NULL,

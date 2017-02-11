@@ -41,7 +41,7 @@ function crearUsuario(valores,callback)
     if(valores!==null)
     {
         var fecha=valores.fechaAnio+"/"+valores.fechaMes+"/"+valores.fechaDia;
-        query="INSERT INTO Usuarios(Correo,Nombre,Apellidos,Contraseña,F_Nacimiento,Sexo)"+
+        query="INSERT INTO Usuarios(Correo,Nombre,Apellidos,Contrasenia,F_Nacimiento,Sexo)"+
               "VALUES (?,?,?,?,?,?)";
         valoresEntrada=[valores.correo,valores.nombre,valores.apellidos,valores.contra,fecha,valores.sexo];
         //Conectamos con la consulta requerida
@@ -83,7 +83,7 @@ function modificarUsuario(IDUsuario,valores,callback)
     {
         if(valores!==null)
         {
-            query="UPDATE Usuario SET  Correo=?, Nombre=?, Apellidos=?, Contraseña=?, F_Nacimiento=?, Sexo=? WHERE ID_Usuario= ?";
+            query="UPDATE Usuario SET  Correo=?, Nombre=?, Apellidos=?, Contrasenia=?, F_Nacimiento=?, Sexo=? WHERE ID_Usuario= ?";
             valoresEntrada=[valores.correo,valores.nombre,valores.apellidos,valores.contraseña,valores.fechaNac,valores.sexo,IDUsuario];
             //Conectamos con la consulta requerida
             conexion.query(mysql.format(query,valoresEntrada),function(err) 
@@ -143,7 +143,7 @@ function conectar(user,pass,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(user!==null && user!==undefined && pass!==null && pass!==undefined)
     {
-        query="SELECT ID_Usuario FROM usuarios WHERE Correo=? AND Contraseña=?";
+        query="SELECT ID_Usuario FROM usuarios WHERE Correo=? AND Contrasenia=?";
         valoresEntrada=[user,pass];
         //Conectamos con la consulta requerida
         handleDisconnect(conexion);
@@ -165,7 +165,7 @@ function conectar(user,pass,callback)
                     } 
                     else 
                     {
-                        callback(null,rows[0].ID_Usuario);
+                        callback(null,rows);
                         conexion.end();
                     }
                 }); 

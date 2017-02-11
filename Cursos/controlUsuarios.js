@@ -27,14 +27,14 @@ function conectar(user,pass,callback)
     accBBDD.conectar(user,pass,function(err,resultado){
         if(err)
         {
-            callback(err,null);
+            callback(err,null,null);
         }
         else
         {
-            if(resultado===undefined)
-                callback(null,false);
+            if(resultado[0]===undefined)
+                callback(null,false,null);
             else
-                callback(null,resultado);
+                callback(null,true,resultado[0].ID_Usuario);
         }
     });
 }

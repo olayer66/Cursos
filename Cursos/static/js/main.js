@@ -201,6 +201,10 @@ $(document).ready(function()
                         }  
                     });
                 }
+                else
+                {
+                    alert("El usuario o la contraseña no son validos");
+                }
             }
         });
     });
@@ -229,9 +233,8 @@ $(document).ready(function()
         $("#detalleCurso").show();
     });
     
-    //Inscribe al usuario en el curso concreto ---------------------------------------------------------------------------------------------------------------------
-    $("#botonDetalle").on("click","#botonInscribirse", function (event)
-    {    
+    //Inscribe al usuario en el curso concreto
+    $("#botonDetalle").on("click","#botonInscribirse", function (event){    
         var boton=$(event.target);
         var idcurso=boton.data("idcurso");
         inscribirseEnCurso(idcurso, IDUsuarioLogin,function(err)

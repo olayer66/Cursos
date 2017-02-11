@@ -259,3 +259,54 @@ body{
     color: white;
     
 }
+.tablaHorario{
+    display:table;
+    width:auto;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    text-align: left;
+    border: 2px solid black;
+    border-right: 0px;
+    border-spacing: 0px;
+}
+
+
+.tablaHorario th {
+    padding: 5px;
+    padding-left: 50px;
+    padding-right: 50px;
+    text-align: left;
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    border-right: 2px solid black;
+}
+
+.tablaHorario tr{
+    background-color: #99ccff;
+    padding-left: 5px;
+}
+
+.tablaHorario td{
+    padding-left: 5px;
+    padding-right: 5px;
+    border-right: 2px solid black;
+}
+
+.tablaHorario th{
+    text-align: center;
+    height: 30px;
+}
+#pieHorario{
+    padding-left: 335px;
+}
+#botonSemanaAnt{
+    margin-right: 30px;
+}
+#botonSemanaSig{
+    margin-left: 30px;
+}
+#ragoFechasHorario{
+    font-size: 18px;
+    font-weight: bold;
+}

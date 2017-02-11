@@ -13,16 +13,17 @@ function cargarDatosUsuario(cursos,callback)
     cargaCursosPasados(cursos.cursosPasados);
     //cargamos cursos proximos
     cargaCursosProximos(cursos.cursosProximos);
-    //Cargamos el horario(cursos.cursosActuales)(parte 4)
+    //Iniciamos las fecha de los botones
+    cambiaFechaBotones(new Date());
+    //Cargamos el horario
+    cargaHorario(cursos.cursosActuales);
     callback(null);
 }
 //Elimina el contenido de los datos del usuario
-function eliminarDatosUsuario()
-{
+function eliminarDatosUsuario(){
     $(".filaCursoUsuario").remove();
 }
-function recuperarDatosUsuario(IDUsuario,callback)
-{
+function recuperarDatosUsuario(IDUsuario,callback){
     //Recuperamos los cursos
     llamadaCursosUsuario(IDUsuario,function(err,cursos){
         if(err)
@@ -37,8 +38,7 @@ function recuperarDatosUsuario(IDUsuario,callback)
 }
 /*========================FUNCIONES CARGA DE CURSOS===========================*/
 //Carga en la vista los cursos pasados del usuario
-function cargaCursosPasados(cursos)
-{
+function cargaCursosPasados(cursos){
     cursos.forEach(function(curso)
     {
         var vacantes=0;
@@ -52,8 +52,7 @@ function cargaCursosPasados(cursos)
     });
 }
 //Carga en la vista los cursos proximos del usuario
-function cargaCursosProximos(cursos)
-{
+function cargaCursosProximos(cursos){
     cursos.forEach(function(curso)
     {
         var vacantes=0;
@@ -67,8 +66,7 @@ function cargaCursosProximos(cursos)
     });
 }
 //Carga los cursos que se estan realizando en el momento
-function cargaCursosActuales(cursos)
-{
+function cargaCursosActuales(cursos){
     cursos.forEach(function(curso)
     {
         var vacantes=0;
@@ -81,10 +79,25 @@ function cargaCursosActuales(cursos)
         $("#tablaCursosPasados").append(fila);
     });
 }
+//Carga dela tabla del horario de la semana actual
+function cargaHorario(cursos)
+{
+    //Extraemos el rango de fecha a mostrar 
+    
+    //Insertamos las fechas en el cuadro
+    
+    //Extraemos los cursos del usuario en el rango de fechas
+    
+    //Primera fila de 00:00:00 a inicial del primer curso menos 1
+    
+    //Filas centrales
+    
+    //ultima fila de final ultimo curso a 24:00:00
+    
+}
 /*======================FUNCIONES DEL FORM INSCRIPCION========================*/
 //Rellena los combobox de la fecha en el formulario de inscripcion
-function crearSelectFecha()
-{
+function crearSelectFecha(){
     //dias
     for (var i=1;i<=31;i++)
     {
@@ -102,4 +115,25 @@ function crearSelectFecha()
     }
 }
 
-
+/*===========================FUNCIONES AUXILIARES=============================*/
+//Calcula el rango de fecha a mostrar en el horario
+function calculaRangoFechas(fecha,callback)
+{
+    var fechAnt=new Date();
+    var fechSig=new Date();
+    fechAnt.setDate(fechAnt.getDate()-7);
+    fechSig.setDate(fechSig.getDate()+7);
+}
+function cambiaFechaBotones(fecha)
+{
+    var fechAnt=new Date();
+    var fechSig=new Date();
+    fechAnt.setDate(fecha.getDate()-7);
+    fechSig.setDate(fecha.getDate()+7);
+    alert("Ant: " +fechAnt.toLocaleString() +"|| sig: " +fechSig.toLocaleString());
+    fechAnt=fechAnt.getDate()+"/"+fechAnt.getMonth()+"/"+fechAnt.getFullYear();
+    fechSig=fechSig.getDate()+"/"+fechSig.getMonth()+"/"+fechSig.getFullYear();
+    alert("Ant: " +fechAnt +"|| sig: " +fechSig);
+    $("#botonSemanaAnt").data("fechant",fechAnt);
+    $("#botonSemanaSig").data("fechsig",fechSig);
+}
