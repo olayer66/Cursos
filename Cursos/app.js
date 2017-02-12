@@ -334,6 +334,52 @@ servidor.get("/usuario/:id",function(req,res){
         res.end();
     }
 });
+//Devuelve los horarios del usuario dentro del rango dado
+servidor.get("/usuario/horarios/:id",function(req,res){
+    var IDUsuario= req.params.id;
+    var lunes=req.query.fechLunes;
+    var domingo=req.query.fechDomingo;
+    if(IDUsuario!==null && IDUsuario!==undefined && !isNaN(IDUsuario))
+    {
+        if(lunes!==null && lunes!== undefined)
+        {
+            if(domingo!==null && domingo!== undefined)
+            {
+                 usuarios.extraerHorariosUsuario(IDUsuario,lunes,domingo,function(err,horarios){
+                    if(err)
+                    {
+                        console.log(err);
+                        res.status(500);
+                        res.end();
+                    }
+                    else
+                    {
+                        res.status(200);
+                        res.json(horarios);
+                    }
+                });
+            }
+            else
+            {
+                console.log("La fecha dada para el lunes no es valida: " +lunes);
+                res.status(400);
+                res.end();
+            }
+        }
+        else
+        {
+            console.log("La fecha dada para el domingo no es valida: " +domingo);
+            res.status(400);
+            res.end();
+        }
+    }
+    else
+    {
+        console.log("No es un ID de usuario valido: " +IDUsuario);
+        res.status(400);
+        res.end();
+    }
+});
 /*=========================================METODOS PUT===================================================*/
 //Modificacion de un curso: ID por parametro y Datos en el cuerpo
 servidor.put("/curso/:id",function(req,res){

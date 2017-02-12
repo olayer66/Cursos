@@ -31,7 +31,8 @@ module.exports={
     insertarHorario:insertarHorario,
     actualizarHorario:actualizarHorario,
     borrarHorario:borrarHorario,
-    mostrarHorario:mostrarHorario
+    mostrarHorario:mostrarHorario,
+    extraerHorariosUsuario:extraerHorariosUsuario
 };
 /*=======================================USUARIOS=======================================*/
 //Crear un usuario
@@ -586,7 +587,7 @@ function extraerImagen(IDCurso,callback)
         callback(new Error("El ID de curso no es valido"),null);
     }
 }
-//Inscripcion de un usuario en un curso -----------------------------------------------------------------------------------------------------------------------------
+//Inscripcion de un usuario en un curso
 function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
 {
     var conexion = mysql.createConnection(config.conexionBBDD);
@@ -826,6 +827,48 @@ function mostrarHorario (IDCurso,callback)
     else
     {
         callback(new Error("El ID de curso no es valido"),null);
+    }
+}
+//Extrae de ls BBDD los horarios del usuario dentro del rango dado
+function extraerHorariosUsuario(IDUsuario,fechLunes,fechDomingo,callback)
+{
+    var conexion = mysql.createConnection(config.conexionBBDD);
+    if(IDUsuario!==null && IDUsuario!==undefined)
+    {
+        if(fechLunes!==null && fechLunes!==undefined)
+        {
+            if(fechDomingo!==null && fechDomingo!==undefined)
+            {
+                query="SELECT CU.Titulo, HO.Dia, HO.Hora_Inicio, HO.Hora_Fin FROM asig_cursos AS AC, cursos AS CU, horarios AS HO WHERE AC.ID_Curso=CU.ID_Curso AND AC.ID_Curso=HO.ID_Curso AND AC.ID_Usuario=?  AND CU.F_Inicio<=? AND CU.F_Fin>=? ORDER BY HO.Hora_Inicio ASC";
+                valoresEntrada=[IDUsuario,fechLunes,fechDomingo];
+                //Conectamos con la consulta requerida
+                conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
+                {
+                    if (err) 
+                    {
+                        //console.error(err);
+                        callback(err,null);
+                    } 
+                    else 
+                    {
+                        callback(null,rows);
+                        conexion.end();
+                    }
+                });
+            }
+            else
+            {
+                callback(new Error("El ID de curso no es valido"),null);
+            }
+        }
+        else
+        {
+            callback(new Error("El ID de curso no es valido"),null);
+        }
+    }
+    else
+    {
+        callback(new Error("El ID de usuario no es valido"),null);
     }
 }
 /*==================================CONTROL DE CONEXION=================================*/

@@ -32,6 +32,7 @@ function cargarDatosUsuario(cursos,callback)
 function eliminarDatosUsuario(){
     $(".filaCursoUsuario").remove();
 }
+//Recupera los cursos del usuario pasado
 function recuperarDatosUsuario(IDUsuario,callback){
     //Recuperamos los cursos
     llamadaCursosUsuario(IDUsuario,function(err,cursos){
@@ -91,21 +92,119 @@ function cargaCursosActuales(cursos){
 //Carga dela tabla del horario de la semana actual
 function cargaHorario(fecha,callback)
 {
+    var lunes;
+    var domingo;
+    var fila;
     //Extraemos el rango de fecha a mostrar 
     calculaRangoFechas(fecha,function(fechLunes,fechDomingo){
         //Insertamos las fechas en el cuadro
         $("#fechaIniHorario").text(fechLunes.getDate()+"/"+fechLunes.getMonth()+"/"+fechLunes.getFullYear());
         $("#fechaFinHorario").text(fechDomingo.getDate()+"/"+fechDomingo.getMonth()+"/"+fechDomingo.getFullYear());
         //Extraemos los cursos del usuario en el rango de fechas
+        lunes=fechLunes.getFullYear()+"-"+(fechLunes.getMonth()+1)+"-"+fechLunes.getDate();
+        domingo=fechDomingo.getFullYear()+"-"+(fechDomingo.getMonth()+1)+"-"+fechDomingo.getDate();
+        llamadaExtraerHorario(lunes,domingo,function(err,horarios){
+            if(err)
+            {
+                callback(err);
+            }
+            else
+            { 
+                //Primera fila de 00:00:00 a inicial del primer curso menos 1
+                insertaPrimeraFila(horarios[0].Hora_Inicio,function(fila){
+                    $(".tablaHorario").append(fila);
+                });
+                //Filas centrales
+                
+                //ultima fila de final ultimo curso a 24:00:00
 
-        //Primera fila de 00:00:00 a inicial del primer curso menos 1
-
-        //Filas centrales
-
-        //ultima fila de final ultimo curso a 24:00:00
-        
-        callback(null);
+                callback(null);
+            }
+        });
     }); 
+}
+/*=============================FUNCIONES HORARIO==============================*/
+//Carga dela tabla del horario de la semana actual
+function cargaHorario(fecha,callback){
+    var lunes;
+    var domingo;
+    var fila;
+    //Extraemos el rango de fecha a mostrar 
+    calculaRangoFechas(fecha,function(fechLunes,fechDomingo){
+        //Insertamos las fechas en el cuadro
+        $("#fechaIniHorario").text(fechLunes.getDate()+"/"+fechLunes.getMonth()+"/"+fechLunes.getFullYear());
+        $("#fechaFinHorario").text(fechDomingo.getDate()+"/"+fechDomingo.getMonth()+"/"+fechDomingo.getFullYear());
+        //Extraemos los cursos del usuario en el rango de fechas
+        lunes=fechLunes.getFullYear()+"-"+(fechLunes.getMonth()+1)+"-"+fechLunes.getDate();
+        domingo=fechDomingo.getFullYear()+"-"+(fechDomingo.getMonth()+1)+"-"+fechDomingo.getDate();
+        llamadaExtraerHorario(lunes,domingo,function(err,horarios){
+            if(err)
+            {
+                callback(err);
+            }
+            else
+            { 
+                //Primera fila de 00:00:00 a inicial del primer curso menos 1
+                insertaPrimeraFila(horarios[0].Hora_Inicio,function(fila){
+                    if(fila!==null)
+                        $(".tablaHorario").append(fila);
+                });
+                //Filas centrales
+                
+                //ultima fila de final ultimo curso a 24:00:00
+                insertaUltimaFila(horarios,function(fila){
+                    if(fila!==null)
+                        $(".tablaHorario").append(fila);
+                });
+                callback(null);
+            }
+        });
+    }); 
+}
+//Inserta la primera fila de la tabla del horario
+function insertaPrimeraFila(hora,callback){
+    if(hora>"00:00:00")
+    {
+        fila=$("<tr class='filaHorario'>");
+        $(fila).append("<td>00:00:00 - "+hora+"</td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("</tr>");
+        callback(fila);
+    }
+    else
+    {
+        callback(null);
+    }
+}
+//Inserta la ultima fila de la tabla del horario
+function insertaUltimaFila(horarios,callback){
+    if(horarios[horarios.length-1].Hora_Fin<"24.00.00")
+    {
+        var ultimaHora=horarios[0].Hora_Fin;
+        horarios.forEach(function(horario){
+            if(horario.Hora_Fin>ultimaHora)
+                ultimaHora=horario.Hora_Fin;
+        });
+        fila=$("<tr class='filaHorario'>");
+        $(fila).append("<td>"+ultimaHora+" - 24:00:00</td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("<td></td>");
+        $(fila).append("</tr>");
+        callback(fila);
+    }
+    else
+        callback(null);
 }
 /*======================FUNCIONES DEL FORM INSCRIPCION========================*/
 //Rellena los combobox de la fecha en el formulario de inscripcion
@@ -126,11 +225,9 @@ function crearSelectFecha(){
         $("#usuarioAnio").append("<option value='"+i+"' class='borrarSelect'>"+i+"</option>");
     }
 }
-
 /*===========================FUNCIONES AUXILIARES=============================*/
 //Calcula el rango de fecha a mostrar en el horario
-function calculaRangoFechas(fecha,callback)
-{
+function calculaRangoFechas(fecha,callback){
     var fechDomingo;
     var fechLunes;
     var dia= fecha.getDay();
@@ -158,8 +255,7 @@ function calculaRangoFechas(fecha,callback)
     callback(fechLunes,fechDomingo);
 }
 //Cambia la fecha de los botones de paginacion del horario dependiendo de la fecha pasada
-function cambiaFechaBotones(fecha)
-{
+function cambiaFechaBotones(fecha){
     var fechAnt=new Date();
     var fechSig=new Date();
     fechAnt.setDate(fecha.getDate()-7);

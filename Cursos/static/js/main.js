@@ -186,6 +186,7 @@ $(document).ready(function()
                 //login correcto
                 if(login.permitido===true)
                 {
+                    IDUsuarioLogin=login.IDUsuario;
                     //mostramos los datos del usuario
                     cargarPantallaUsuario(login.IDUsuario,function(err)
                     {
@@ -195,7 +196,7 @@ $(document).ready(function()
                         }
                         else
                         {
-                            IDUsuarioLogin=login.IDUsuario;
+                            
                             $("#spanUsuarioConectado").text($("#loginCorreo").val());
                             vistaDatosUsuario();
                         }  
@@ -207,8 +208,7 @@ $(document).ready(function()
                 }
             }
         });
-    });
-    
+    });  
     //Cada una de las filas de la tabla cursos
     $("#tablaCursos").on("click",".dataCurso", function (event){    
         
@@ -232,7 +232,6 @@ $(document).ready(function()
         });
         $("#detalleCurso").show();
     });
-    
     //Inscribe al usuario en el curso concreto
     $("#botonDetalle").on("click","#botonInscribirse", function (event){    
         var boton=$(event.target);
@@ -263,8 +262,7 @@ $(document).ready(function()
 });
 /*==========================FUNC. DE VISTA============================*/
 //Carga la vista inicial
-function vistaInicial()
-{
+function vistaInicial(){
     divActivo=$("#buscador");
     vistaBuscador();
     $("#menuConSesion").hide();
@@ -277,8 +275,7 @@ function vistaInicial()
     
 }
 //Muestra la ventana de buscador
-function vistaBuscador()
-{
+function vistaBuscador(){
     divActivo.hide();
     divActivo=$("#buscador");
     divActivo.show();
@@ -288,8 +285,7 @@ function vistaBuscador()
     $("#detalleCurso").hide();
 }
 //Muestra la ventana de nuevo usuario
-function vistaNuevoUsuario()
-{
+function vistaNuevoUsuario(){
     divActivo.hide();
     divActivo=$("#insertarUsuario");
     $(".borrarSelect").remove();
@@ -299,15 +295,13 @@ function vistaNuevoUsuario()
     $("#insercionUsuarioCorrecta").hide();
 }
 //Muestra la ventana de logeo
-function vistaLoginUsuario()
-{
+function vistaLoginUsuario(){
     divActivo.hide();
     divActivo=$("#loginUsuario");
     divActivo.show();
 }
 //Muestra la ventana con los datos del usuario
-function vistaDatosUsuario()
-{
+function vistaDatosUsuario(){
     divActivo.hide();
     divActivo=$("#datosUsuario");
     divActivo.show();
@@ -318,16 +312,14 @@ function vistaDatosUsuario()
     
 }
 //Oculta los div de conectado y carga la vista del buscador
-function vistaDesconexion()
-{
+function vistaDesconexion(){
     $("#menuConSesion").hide();
     $("#login").show();
     $("#loginConectado").hide();
     vistaBuscador();
 }
 /*===========================FUNC. DE LLAMADA==========================*/
-function llamadaTotalCursos(busq,callback)
-{
+function llamadaTotalCursos(busq,callback){
     $.ajax({
         type: "GET",
         url:"/curso/"+busq,
@@ -342,8 +334,8 @@ function llamadaTotalCursos(busq,callback)
         }
     });   
 }
-function llamadaExtraeCursos(busq,limite,posInicio,callback)
-{
+//Extrae los cursos por el titulo
+function llamadaExtraeCursos(busq,limite,posInicio,callback){
     $.ajax({
         type: "GET",
         url:"/curso",
@@ -363,10 +355,8 @@ function llamadaExtraeCursos(busq,limite,posInicio,callback)
         }
     });
 }
-
 //Extrae los datos de un curso concreto (por id)
-function llamadaExtraeCurso(id,callback)
-{
+function llamadaExtraeCurso(id,callback){
     console.log("Encontrado id= "+id);
     $.ajax({
         type: "GET",
@@ -386,8 +376,7 @@ function llamadaExtraeCurso(id,callback)
     });
 }
 //Inserta un nuevo usuario en la BBDD
-function llamadaInsertarUsuario(callback)
-{
+function llamadaInsertarUsuario(callback){
     $.ajax({
         type: "POST",
         url:"/usuario",
@@ -413,8 +402,7 @@ function llamadaInsertarUsuario(callback)
         }
     });
 }
-function llamadaLoginUsuario(callback)
-{
+function llamadaLoginUsuario(callback){
     var user =$("#loginCorreo").val();
     var pass =$("#loginContra").val();
     var cadenaBase64 = btoa(user + ":" + pass);
@@ -439,8 +427,7 @@ function llamadaLoginUsuario(callback)
     });
 }
 //Llama al servidor para extraer los cursos de un usuario
-function llamadaCursosUsuario(IDUsuario,callback)
-{
+function llamadaCursosUsuario(IDUsuario,callback){
     $.ajax({
         type: "GET",
         url:"/usuario/"+IDUsuario,
@@ -456,8 +443,7 @@ function llamadaCursosUsuario(IDUsuario,callback)
     });
 }
 //Permite a un usuario registrarse en un curso seleccionado ----------------------------------------------------------------------------------------------------------
-function inscribirseEnCurso(IDCurso, IDUsuario, callback)
-{
+function inscribirseEnCurso(IDCurso, IDUsuario, callback){
     $.ajax({
         type: "POST",
         url:"/curso/inscripcion",
@@ -476,9 +462,29 @@ function inscribirseEnCurso(IDCurso, IDUsuario, callback)
         }
     });
 }
-/*=================================FUNCIONES CARGA PANTALLAS=======================================*/
-function cargarPantallaUsuario(IDUsuario,callback)
+function llamadaExtraerHorario(fechLunes,fechDomingo,callback)
 {
+    
+     $.ajax({
+        type: "GET",
+        url:"/usuario/horarios/"+IDUsuarioLogin,
+        data:{
+            "fechLunes":fechLunes,
+            "fechDomingo":fechDomingo
+        },
+        success:function (data, textStatus, jqXHR) 
+        {
+            console.log(textStatus);
+            callback(null,data);
+        },
+        error:function (jqXHR, textStatus, errorThrown) 
+        {
+         callback(new Error("Fallo en la extraccion del horario entre los dias"+fechLunes+" y "+fechDomingo+" del usuario "+IDUsuarioLogin+". Error: "+ errorThrown),null);
+        }
+    });
+}
+/*=================================FUNCIONES CARGA PANTALLAS=======================================*/
+function cargarPantallaUsuario(IDUsuario,callback){
     //Extraemos los datos del usuario
     recuperarDatosUsuario(IDUsuario,function(err,cursos){
         if(err)

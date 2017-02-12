@@ -5,7 +5,8 @@ var accBBDD =require("./accesoBBDD");
 module.exports={
     crearUsuario:crearUsuario,
     conectar:conectar,
-    extraerCursosUsuario:extraerCursosUsuario
+    extraerCursosUsuario:extraerCursosUsuario,
+    extraerHorariosUsuario:extraerHorariosUsuario
 };
 //Crear un usuario
 function crearUsuario(usuario,callback)
@@ -73,6 +74,24 @@ function extraerCursosUsuario(IDUsuario,callback)
                 }
             });
             callback(null,cursosPasados,cursosProximos,cursosActuales);
+        }
+    });
+}
+//Extrae los horarios del usuario dentro del rango dado
+function extraerHorariosUsuario(IDUsuario,fechLunes,fechDomingo,callback)
+{
+    accBBDD.extraerHorariosUsuario(IDUsuario,fechLunes,fechDomingo,function(err,horarios){
+        if(err)
+        {
+            callback(err,null);
+        }
+        else
+        {
+            console.log("Horario:");
+            horarios.forEach(function(horario){
+                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
+            });
+            callback(null,horarios);
         }
     });
 }
