@@ -16,8 +16,17 @@ function cargarDatosUsuario(cursos,callback)
     //Iniciamos las fecha de los botones
     cambiaFechaBotones(new Date());
     //Cargamos el horario
-    cargaHorario(cursos.cursosActuales);
-    callback(null);
+    cargaHorario(new Date(),function(err){
+        if (err)
+        {
+            callback(err);
+        }
+        else
+        {
+            
+            callback(null);
+        }
+    });
 }
 //Elimina el contenido de los datos del usuario
 function eliminarDatosUsuario(){
@@ -80,20 +89,23 @@ function cargaCursosActuales(cursos){
     });
 }
 //Carga dela tabla del horario de la semana actual
-function cargaHorario(cursos)
+function cargaHorario(fecha,callback)
 {
     //Extraemos el rango de fecha a mostrar 
-    
-    //Insertamos las fechas en el cuadro
-    
-    //Extraemos los cursos del usuario en el rango de fechas
-    
-    //Primera fila de 00:00:00 a inicial del primer curso menos 1
-    
-    //Filas centrales
-    
-    //ultima fila de final ultimo curso a 24:00:00
-    
+    calculaRangoFechas(fecha,function(fechLunes,fechDomingo){
+        //Insertamos las fechas en el cuadro
+        $("#fechaIniHorario").text(fechLunes.getDate()+"/"+fechLunes.getMonth()+"/"+fechLunes.getFullYear());
+        $("#fechaFinHorario").text(fechDomingo.getDate()+"/"+fechDomingo.getMonth()+"/"+fechDomingo.getFullYear());
+        //Extraemos los cursos del usuario en el rango de fechas
+
+        //Primera fila de 00:00:00 a inicial del primer curso menos 1
+
+        //Filas centrales
+
+        //ultima fila de final ultimo curso a 24:00:00
+        
+        callback(null);
+    }); 
 }
 /*======================FUNCIONES DEL FORM INSCRIPCION========================*/
 //Rellena los combobox de la fecha en el formulario de inscripcion
@@ -119,21 +131,42 @@ function crearSelectFecha(){
 //Calcula el rango de fecha a mostrar en el horario
 function calculaRangoFechas(fecha,callback)
 {
-    var fechAnt=new Date();
-    var fechSig=new Date();
-    fechAnt.setDate(fechAnt.getDate()-7);
-    fechSig.setDate(fechSig.getDate()+7);
+    var fechDomingo;
+    var fechLunes;
+    var dia= fecha.getDay();
+    var diaAux;
+    if(dia===0)
+    {   
+        fechDomingo=fecha;
+        fechLunes=new Date(fecha);
+        fechLunes.setDate(fechLunes.getDate()-6);
+    }
+    else if(dia===1)
+    {
+        fechLunes=new Date(fecha);
+        fecha.setDate(fecha.getDate()+6);
+        fechDomingo=fecha;
+    }
+    else
+    {
+        diaAux=dia-1;
+        fecha.setDate(fecha.getDate()-Number(diaAux));
+        fechLunes=new Date(fecha);
+        fecha.setDate(fecha.getDate()+6);
+        fechDomingo=fecha;
+    }
+    callback(fechLunes,fechDomingo);
 }
+//Cambia la fecha de los botones de paginacion del horario dependiendo de la fecha pasada
 function cambiaFechaBotones(fecha)
 {
     var fechAnt=new Date();
     var fechSig=new Date();
     fechAnt.setDate(fecha.getDate()-7);
     fechSig.setDate(fecha.getDate()+7);
-    alert("Ant: " +fechAnt.toLocaleString() +"|| sig: " +fechSig.toLocaleString());
     fechAnt=fechAnt.getDate()+"/"+fechAnt.getMonth()+"/"+fechAnt.getFullYear();
     fechSig=fechSig.getDate()+"/"+fechSig.getMonth()+"/"+fechSig.getFullYear();
-    alert("Ant: " +fechAnt +"|| sig: " +fechSig);
-    $("#botonSemanaAnt").data("fechant",fechAnt);
-    $("#botonSemanaSig").data("fechsig",fechSig);
+    //Se que no esta bien del todo pero el .data() no he consguido que funcionara no cambia los valores
+    $("#botonSemanaAnt").attr("data-fech",fechAnt);
+    $("#botonSemanaSig").attr("data-fech",fechSig);
 }
