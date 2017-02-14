@@ -144,13 +144,15 @@ function cargaHorario(fecha,callback){
             }
             else
             { 
+                //Transformamos las horas  a formato Date
+                //transformaHoras(horarios);
                 //Primera fila de 00:00:00 a inicial del primer curso menos 1
                 insertaPrimeraFila(horarios[0].Hora_Inicio,function(fila){
                     if(fila!==null)
                         $(".tablaHorario").append(fila);
                 });
                 //Filas centrales
-                
+                cargaFilasHorario(horarios);
                 //ultima fila de final ultimo curso a 24:00:00
                 insertaUltimaFila(horarios,function(fila){
                     if(fila!==null)
@@ -160,6 +162,11 @@ function cargaHorario(fecha,callback){
             }
         });
     }); 
+}
+//Carga en la tabla el horario
+function cargaFilasHorario(horarios)
+{
+    
 }
 //Inserta la primera fila de la tabla del horario
 function insertaPrimeraFila(hora,callback){
@@ -265,4 +272,28 @@ function cambiaFechaBotones(fecha){
     //Se que no esta bien del todo pero el .data() no he consguido que funcionara no cambia los valores
     $("#botonSemanaAnt").attr("data-fech",fechAnt);
     $("#botonSemanaSig").attr("data-fech",fechSig);
+}
+//Suma 1  a la hora pasada
+function sumaHora(hora,callback){
+    var aux=hora.split(":");
+    var cambioHora=new Date();
+    cambioHora.setHours(aux[0],aux[1],aux[2]);
+    cambioHora.setHours(cambioHora.getHours() + 1);
+    callback(cambioHora.getHours()+":"+cambioHora.getMinutes()+":"+cambioHora.getSeconds());
+}
+//Transforma las hora a formato date
+function transformaHoras(horarios)
+{
+    var aux;
+    var hIni=new Date();
+    var hFin=new Date();
+    horarios.forEach(function(horario){
+        aux=horario.Hora_Inicio.split(":");
+        hIni.setHours(aux[0],aux[1],aux[2]);
+        horario.Hora_Inicio=hIni;
+        aux=horario.Hora_Fin.split(":");
+        hFin.setHours(aux[0],aux[1],aux[2]);
+        horario.Hora_Fin=hFin;
+        console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
+    });
 }
