@@ -145,7 +145,7 @@ function cargaHorario(fecha,callback){
             else
             { 
                 //Transformamos las horas  a formato Date
-                //transformaHoras(horarios);
+                transformaHoras(horarios);
                 //Primera fila de 00:00:00 a inicial del primer curso menos 1
                 insertaPrimeraFila(horarios[0].Hora_Inicio,function(fila){
                     if(fila!==null)
@@ -166,14 +166,23 @@ function cargaHorario(fecha,callback){
 //Carga en la tabla el horario
 function cargaFilasHorario(horarios)
 {
-    
+    var horaActual;
+    //Separamos los horarios que tengan mas de una hora seguida
+    separarHorarios(horarios);
+    //insertamos los horarios en las filas
+    for(var i=0;i<horarios.length;i++)
+    {
+        //creamos la fila (con ID indetificativo para cada celda[fila-dia])
+        
+        //insertamos el titulo del elemento en la celda correspondiente por dia mientras la hora de inicio sea la misma
+    }
 }
 //Inserta la primera fila de la tabla del horario
 function insertaPrimeraFila(hora,callback){
-    if(hora>"00:00:00")
+    if(hora.toLocaleTimeString()>"00:00:00")
     {
         fila=$("<tr class='filaHorario'>");
-        $(fila).append("<td>00:00:00 - "+hora+"</td>");
+        $(fila).append("<td>00:00:00 - "+hora.toLocaleTimeString()+"</td>");
         $(fila).append("<td></td>");
         $(fila).append("<td></td>");
         $(fila).append("<td></td>");
@@ -191,7 +200,8 @@ function insertaPrimeraFila(hora,callback){
 }
 //Inserta la ultima fila de la tabla del horario
 function insertaUltimaFila(horarios,callback){
-    if(horarios[horarios.length-1].Hora_Fin<"24.00.00")
+    var hora=horarios[horarios.length-1].Hora_Fin;
+    if(hora.toLocaleTimeString()<"24.00.00")
     {
         var ultimaHora=horarios[0].Hora_Fin;
         horarios.forEach(function(horario){
@@ -199,7 +209,7 @@ function insertaUltimaFila(horarios,callback){
                 ultimaHora=horario.Hora_Fin;
         });
         fila=$("<tr class='filaHorario'>");
-        $(fila).append("<td>"+ultimaHora+" - 24:00:00</td>");
+        $(fila).append("<td>"+ultimaHora.toLocaleTimeString()+" - 24:00:00</td>");
         $(fila).append("<td></td>");
         $(fila).append("<td></td>");
         $(fila).append("<td></td>");
@@ -282,18 +292,56 @@ function sumaHora(hora,callback){
     callback(cambioHora.getHours()+":"+cambioHora.getMinutes()+":"+cambioHora.getSeconds());
 }
 //Transforma las hora a formato date
-function transformaHoras(horarios)
-{
+function transformaHoras(horarios){
     var aux;
-    var hIni=new Date();
-    var hFin=new Date();
     horarios.forEach(function(horario){
+        var hIni=new Date();
+        var hFin=new Date();
         aux=horario.Hora_Inicio.split(":");
         hIni.setHours(aux[0],aux[1],aux[2]);
         horario.Hora_Inicio=hIni;
         aux=horario.Hora_Fin.split(":");
         hFin.setHours(aux[0],aux[1],aux[2]);
         horario.Hora_Fin=hFin;
-        console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
     });
+}
+//Divide los horarios que sean de dos o mas horas
+function separarHorarios(horarios)
+{
+    var timeDiff;
+    var diffDays;
+    horarios.forEach(function(horario){
+        
+        timeDiff = Math.abs(horario.Hora_Fin.getTime() - horario.Hora_Inicio.getTime());
+        diffDays = Math.ceil(timeDiff / (1000 * 3600));
+        while(diffDays>1)
+        {  
+            var auxHora= new Date(horario.Hora_Fin);
+            var auxFin= new Date(horario.Hora_Fin);
+            auxHora.setHours(auxHora.getHours()-1);
+            var nuevoHorario={
+            Titulo: horario.Titulo,
+            Dia: horario.Dia,
+            Hora_Inicio:auxHora,
+            Hora_Fin:auxFin
+            };
+            horarios.push(nuevoHorario);
+            horario.Hora_Fin.setHours(horario.Hora_Fin.getHours()-1);
+            timeDiff = Math.abs(horario.Hora_Fin.getTime() - horario.Hora_Inicio.getTime());
+            diffDays = Math.ceil(timeDiff / (1000 * 3600));
+        }
+        //console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
+    });
+    //ordenamos el array en funcion de la hora de inicio del curso
+    horarios.sort(function (a,b){
+        if (a.Hora_Inicio < b.Hora_Inicio)
+            return -1;
+        if (a.Hora_Inicio > b.Hora_Inicio)
+            return 1;
+        return 0;
+    });
+    horarios.forEach(function(horario){
+                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
+            });
+    console.log("TOTAL: " +horarios.length);
 }
