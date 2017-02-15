@@ -12,7 +12,7 @@ $(document).ready(function()
     console.log("DOM inicializado");
     //Carga de vista inicial
     vistaInicial();
-    //cabecera
+    /*-----------------CABECERA-----------------------*/
     $("#registrarse").on("click",function(){
         vistaNuevoUsuario();
     });
@@ -25,7 +25,7 @@ $(document).ready(function()
         eliminarDatosUsuario();
         vistaDesconexion();
     });
-    //Menu
+    /*-------------------MENU--------------------------*/
     $("#buscarCurso").on("click",function(){
         vistaBuscador();
     });
@@ -54,7 +54,8 @@ $(document).ready(function()
             }
         });
     });
-    //contenido
+    /*-----------------CONTENIDO-----------------------*/
+    //Boton para buscar cursos por titulo
     $("#botonBuscarCurso").on("click",function(){
         var busq=$("#buscarTitulo").val();
         //Extraemos el nº de resultados
@@ -256,6 +257,26 @@ $(document).ready(function()
                     }
                 });
                 
+            }
+        });
+    });
+    //Boton de paginacion de curso hacia atras
+    $("#botonSemanaAnt").on("click",function (){
+        var fecha=$("#botonSemanaAnt").data("fech");
+        cambiarHorario(fecha,function(err){
+            if(err)
+            {
+                alert(err);
+            }
+        });
+    });
+    //Boton de paginacion de curso hacia alante
+    $("#botonSemanaSig").on("click",function (){
+        var fecha=$("#botonSemanaSig").data("fech");
+        cambiarHorario(fecha,function(err){
+            if(err)
+            {
+                alert(err);
             }
         });
     });

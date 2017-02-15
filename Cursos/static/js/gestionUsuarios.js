@@ -3,8 +3,7 @@
  */
 /*==========================FUNCIONES DE DATOS=============================*/
 //Inicia la sesion del usuario
-function cargarDatosUsuario(cursos,callback)
-{
+function cargarDatosUsuario(cursos,callback){
     //Eliminamos posibles resultados anteriores
     eliminarDatosUsuario();
     //Cargamos los cursos actuales
@@ -89,46 +88,11 @@ function cargaCursosActuales(cursos){
         $("#tablaCursosPasados").append(fila);
     });
 }
-//Carga dela tabla del horario de la semana actual
-function cargaHorario(fecha,callback)
-{
-    var lunes;
-    var domingo;
-    var fila;
-    //Extraemos el rango de fecha a mostrar 
-    calculaRangoFechas(fecha,function(fechLunes,fechDomingo){
-        //Insertamos las fechas en el cuadro
-        $("#fechaIniHorario").text(fechLunes.getDate()+"/"+fechLunes.getMonth()+"/"+fechLunes.getFullYear());
-        $("#fechaFinHorario").text(fechDomingo.getDate()+"/"+fechDomingo.getMonth()+"/"+fechDomingo.getFullYear());
-        //Extraemos los cursos del usuario en el rango de fechas
-        lunes=fechLunes.getFullYear()+"-"+(fechLunes.getMonth()+1)+"-"+fechLunes.getDate();
-        domingo=fechDomingo.getFullYear()+"-"+(fechDomingo.getMonth()+1)+"-"+fechDomingo.getDate();
-        llamadaExtraerHorario(lunes,domingo,function(err,horarios){
-            if(err)
-            {
-                callback(err);
-            }
-            else
-            { 
-                //Primera fila de 00:00:00 a inicial del primer curso menos 1
-                insertaPrimeraFila(horarios[0].Hora_Inicio,function(fila){
-                    $(".tablaHorario").append(fila);
-                });
-                //Filas centrales
-                
-                //ultima fila de final ultimo curso a 24:00:00
-
-                callback(null);
-            }
-        });
-    }); 
-}
 /*=============================FUNCIONES HORARIO==============================*/
 //Carga dela tabla del horario de la semana actual
 function cargaHorario(fecha,callback){
     var lunes;
     var domingo;
-    var fila;
     //Extraemos el rango de fecha a mostrar 
     calculaRangoFechas(fecha,function(fechLunes,fechDomingo){
         //Insertamos las fechas en el cuadro
@@ -164,12 +128,12 @@ function cargaHorario(fecha,callback){
     }); 
 }
 //Carga en la tabla el horario
-function cargaFilasHorario(horarios)
-{
+function cargaFilasHorario(horarios){
     var pos=0;
     var horaInicio;
     var horaFin;
     var celda;
+    var texto;
     //Separamos los horarios que tengan mas de una hora seguida
     separarHorarios(horarios);
     //insertamos los horarios en las filas
@@ -189,44 +153,40 @@ function cargaFilasHorario(horarios)
             switch (dia)
             {
                 case "lunes":
-                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_0";
-                    $(celda).addClass("celdaVerde");
-                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    insertarEnCelda(horarios[pos].Hora_Inicio.getHours(),horarios[pos].Titulo,0);
                     break;
                 case "martes":
-                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_1";
-                    $(celda).addClass("celdaVerde");
-                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    insertarEnCelda(horarios[pos].Hora_Inicio.getHours(),horarios[pos].Titulo,1);
                     break;
                 case "miercoles":
-                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_2";
-                    $(celda).addClass("celdaVerde");
-                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    insertarEnCelda(horarios[pos].Hora_Inicio.getHours(),horarios[pos].Titulo,2);
                     break;
                 case "jueves":
-                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_3";
-                    $(celda).addClass("celdaVerde");
-                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    insertarEnCelda(horarios[pos].Hora_Inicio.getHours(),horarios[pos].Titulo,3);
                     break;
                 case "viernes":
-                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_4";
-                    $(celda).addClass("celdaVerde");
-                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    insertarEnCelda(horarios[pos].Hora_Inicio.getHours(),horarios[pos].Titulo,4);
                     break;
                 case "sabado":
-                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_5";
-                    $(celda).addClass("celdaVerde");
-                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    insertarEnCelda(horarios[pos].Hora_Inicio.getHours(),horarios[pos].Titulo,5);
                     break;
                 case "domingo":
-                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_6";
-                    $(celda).addClass("celdaVerde");
-                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    insertarEnCelda(horarios[pos].Hora_Inicio.getHours(),horarios[pos].Titulo,6);
                     break;
             }
             pos++;         
         }
         while(pos<horarios.length && horarios[pos].Hora_Inicio.toLocaleTimeString()===horaInicio.toLocaleTimeString()) 
+        if(pos<horarios.length-2)
+        {  
+            if(horarios[pos-1].Hora_Fin.toLocaleTimeString()!==horarios[pos].Hora_Inicio.toLocaleTimeString())
+            {  
+                creaFila(horarios[pos-1].Hora_Fin,horarios[pos].Hora_Inicio,function(fila){
+                if(fila!==null)
+                    $(".tablaHorario").append(fila);
+                }); 
+            }
+        }
     }
 }
 //Crea una fila del horario
@@ -288,6 +248,11 @@ function insertaUltimaFila(horarios,callback){
     }
     else
         callback(null);
+}
+//Cambia la vista del horario al pulsar la paginacion
+function cambiarHorario(fecha,callback)
+{
+    alert("pulsado: "+ fecha);
 }
 /*======================FUNCIONES DEL FORM INSCRIPCION========================*/
 //Rellena los combobox de la fecha en el formulario de inscripcion
@@ -409,4 +374,21 @@ function separarHorarios(horarios){
                 console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
             });
     console.log("TOTAL: " +horarios.length);
+}
+//Inserta el texto en la celda corresponciente
+function insertarEnCelda(horaInicio,titulo,posicion)
+{
+    var celda="#"+horaInicio+"_"+posicion;
+    var texto=$(celda).text();
+    if(texto==="")
+    {
+        $(celda).addClass("celdaVerde");
+        $(celda).text(titulo);
+    }
+    else
+    {
+        $(celda).removeClass("celdaVerde");
+        $(celda).addClass("celdaNaranja");
+        $(celda).html(texto+"<br>"+titulo);
+    }
 }
