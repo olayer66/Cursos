@@ -166,16 +166,77 @@ function cargaHorario(fecha,callback){
 //Carga en la tabla el horario
 function cargaFilasHorario(horarios)
 {
-    var horaActual;
+    var pos=0;
+    var horaInicio;
+    var horaFin;
+    var celda;
     //Separamos los horarios que tengan mas de una hora seguida
     separarHorarios(horarios);
     //insertamos los horarios en las filas
-    for(var i=0;i<horarios.length;i++)
+    while(pos<horarios.length)
     {
+        horaInicio=horarios[pos].Hora_Inicio;
+        horaFin=horarios[pos].Hora_Fin;
         //creamos la fila (con ID indetificativo para cada celda[fila-dia])
-        
-        //insertamos el titulo del elemento en la celda correspondiente por dia mientras la hora de inicio sea la misma
+        creaFila(horaInicio,horaFin,function(fila){
+            if(fila!==null)
+                $(".tablaHorario").append(fila);
+        });
+        //insertamos el titulo del elemento en la celda correspondiente por dia
+        do
+        {
+            dia=horarios[pos].Dia.toLowerCase();
+            switch (dia)
+            {
+                case "lunes":
+                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_0";
+                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    break;
+                case "martes":
+                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_1";
+                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    break;
+                case "miercoles":
+                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_2";
+                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    break;
+                case "jueves":
+                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_3";
+                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    break;
+                case "viernes":
+                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_4";
+                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    break;
+                case "sabado":
+                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_5";
+                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    break;
+                case "domingo":
+                    celda="#"+horarios[pos].Hora_Inicio.getHours()+"_6";
+                    $(celda).text($(celda).val()+horarios[pos].Titulo);
+                    break;
+            }
+            pos++;
+            
+        }
+        while(pos<horarios.length && horarios[pos].Hora_Inicio===horaInicio) 
     }
+}
+//Crea una fila del horario
+function creaFila(inicio,fin,callback)
+{
+    fila=$("<tr class='filaHorario'>");
+        $(fila).append("<td>"+inicio.toLocaleTimeString()+" - "+fin.toLocaleTimeString()+"</td>");
+        $(fila).append("<td id='"+inicio.getHours()+"_0'></td>");
+        $(fila).append("<td id='"+inicio.getHours()+"_1'></td>");
+        $(fila).append("<td id='"+inicio.getHours()+"_2'></td>");
+        $(fila).append("<td id='"+inicio.getHours()+"_3'></td>");
+        $(fila).append("<td id='"+inicio.getHours()+"_4'></td>");
+        $(fila).append("<td id='"+inicio.getHours()+"_5'></td>");
+        $(fila).append("<td id='"+inicio.getHours()+"_6'></td>");
+        $(fila).append("</tr>");
+        callback(fila);
 }
 //Inserta la primera fila de la tabla del horario
 function insertaPrimeraFila(hora,callback){
@@ -340,8 +401,8 @@ function separarHorarios(horarios)
             return 1;
         return 0;
     });
-    horarios.forEach(function(horario){
-                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
-            });
-    console.log("TOTAL: " +horarios.length);
+//    horarios.forEach(function(horario){
+//                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
+//            });
+//    console.log("TOTAL: " +horarios.length);
 }
