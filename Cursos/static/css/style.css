@@ -311,3 +311,8 @@ body{
     font-size: 18px;
     font-weight: bold;
 }
+.celdaVerde{
+    background-color: #f3f000;
+    font-weight: bold;
+    font-size: 18px;
+}

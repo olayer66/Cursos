@@ -190,42 +190,47 @@ function cargaFilasHorario(horarios)
             {
                 case "lunes":
                     celda="#"+horarios[pos].Hora_Inicio.getHours()+"_0";
+                    $(celda).addClass("celdaVerde");
                     $(celda).text($(celda).val()+horarios[pos].Titulo);
                     break;
                 case "martes":
                     celda="#"+horarios[pos].Hora_Inicio.getHours()+"_1";
+                    $(celda).addClass("celdaVerde");
                     $(celda).text($(celda).val()+horarios[pos].Titulo);
                     break;
                 case "miercoles":
                     celda="#"+horarios[pos].Hora_Inicio.getHours()+"_2";
+                    $(celda).addClass("celdaVerde");
                     $(celda).text($(celda).val()+horarios[pos].Titulo);
                     break;
                 case "jueves":
                     celda="#"+horarios[pos].Hora_Inicio.getHours()+"_3";
+                    $(celda).addClass("celdaVerde");
                     $(celda).text($(celda).val()+horarios[pos].Titulo);
                     break;
                 case "viernes":
                     celda="#"+horarios[pos].Hora_Inicio.getHours()+"_4";
+                    $(celda).addClass("celdaVerde");
                     $(celda).text($(celda).val()+horarios[pos].Titulo);
                     break;
                 case "sabado":
                     celda="#"+horarios[pos].Hora_Inicio.getHours()+"_5";
+                    $(celda).addClass("celdaVerde");
                     $(celda).text($(celda).val()+horarios[pos].Titulo);
                     break;
                 case "domingo":
                     celda="#"+horarios[pos].Hora_Inicio.getHours()+"_6";
+                    $(celda).addClass("celdaVerde");
                     $(celda).text($(celda).val()+horarios[pos].Titulo);
                     break;
             }
-            pos++;
-            
+            pos++;         
         }
-        while(pos<horarios.length && horarios[pos].Hora_Inicio===horaInicio) 
+        while(pos<horarios.length && horarios[pos].Hora_Inicio.toLocaleTimeString()===horaInicio.toLocaleTimeString()) 
     }
 }
 //Crea una fila del horario
-function creaFila(inicio,fin,callback)
-{
+function creaFila(inicio,fin,callback){
     fila=$("<tr class='filaHorario'>");
         $(fila).append("<td>"+inicio.toLocaleTimeString()+" - "+fin.toLocaleTimeString()+"</td>");
         $(fila).append("<td id='"+inicio.getHours()+"_0'></td>");
@@ -367,8 +372,7 @@ function transformaHoras(horarios){
     });
 }
 //Divide los horarios que sean de dos o mas horas
-function separarHorarios(horarios)
-{
+function separarHorarios(horarios){
     var timeDiff;
     var diffDays;
     horarios.forEach(function(horario){
@@ -401,8 +405,8 @@ function separarHorarios(horarios)
             return 1;
         return 0;
     });
-//    horarios.forEach(function(horario){
-//                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
-//            });
-//    console.log("TOTAL: " +horarios.length);
+    horarios.forEach(function(horario){
+                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
+            });
+    console.log("TOTAL: " +horarios.length);
 }
