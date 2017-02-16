@@ -7,11 +7,14 @@ function cargarDatosUsuario(cursos,callback){
     //Eliminamos posibles resultados anteriores
     eliminarDatosUsuario();
     //Cargamos los cursos actuales
-    cargaCursosActuales(cursos.cursosActuales);
+    if(cursos.cursosActuales.length>0)
+        cargaCursosActuales(cursos.cursosActuales);
     //cargamos cursos pasados
-    cargaCursosPasados(cursos.cursosPasados);
+    if(cursos.cursosPasados.length>0)
+        cargaCursosPasados(cursos.cursosPasados);
     //cargamos cursos proximos
-    cargaCursosProximos(cursos.cursosProximos);
+    if(cursos.cursosProximos.length>0)
+        cargaCursosProximos(cursos.cursosProximos);
     //Iniciamos las fecha de los botones
     cambiaFechaBotones(new Date());
     //Cargamos el horario
@@ -124,22 +127,25 @@ function cargaHorario(fecha,callback){
             }
             else
             { 
-                //Eliminamos las filas de la tabla si existen
-                $(".filaHorario").remove();
-                //Transformamos las horas  a formato Date
-                transformaHoras(horarios);
-                //Primera fila de 00:00:00 a inicial del primer curso menos 1
-                insertaPrimeraFila(horarios[0].Hora_Inicio,function(fila){
-                    if(fila!==null)
-                        $(".tablaHorario").append(fila);
-                });
-                //Filas centrales
-                cargaFilasHorario(horarios);
-                //ultima fila de final ultimo curso a 24:00:00
-                insertaUltimaFila(horarios,function(fila){
-                    if(fila!==null)
-                        $(".tablaHorario").append(fila);
-                });
+                if(horarios.length>0)
+                {
+                    //Eliminamos las filas de la tabla si existen
+                    $(".filaHorario").remove();
+                    //Transformamos las horas  a formato Date
+                    transformaHoras(horarios);
+                    //Primera fila de 00:00:00 a inicial del primer curso menos 1
+                    insertaPrimeraFila(horarios[0].Hora_Inicio,function(fila){
+                        if(fila!==null)
+                            $(".tablaHorario").append(fila);
+                    });
+                    //Filas centrales
+                    cargaFilasHorario(horarios);
+                    //ultima fila de final ultimo curso a 24:00:00
+                    insertaUltimaFila(horarios,function(fila){
+                        if(fila!==null)
+                            $(".tablaHorario").append(fila);
+                    });  
+                }
                 callback(null);
             }
         });

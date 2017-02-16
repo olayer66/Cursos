@@ -482,8 +482,8 @@ function mostrarCursoPorTitulo(titulo,limite,posInicio,callback)
     var conexion = mysql.createConnection(config.conexionBBDD);
     if(titulo!==null && titulo!==undefined)
     {
-        query="SELECT * FROM cursos WHERE Titulo RLIKE ? ORDER BY F_Inicio ASC LIMIT ? OFFSET ?";
-        valoresEntrada=[titulo,parseInt(limite),parseInt(posInicio)];
+        query="SELECT * FROM cursos WHERE Titulo LIKE ? ORDER BY F_Inicio ASC LIMIT ? OFFSET ?";
+        valoresEntrada=["%"+titulo+"%",parseInt(limite),parseInt(posInicio)];
          //Conectamos con la consulta requerida
         conexion.query(mysql.format(query,valoresEntrada),function(err, rows) 
         {
@@ -510,8 +510,8 @@ function contarCursos(titulo,callback)
       var conexion = mysql.createConnection(config.conexionBBDD);
     if(titulo!==null && titulo!==undefined)
     {
-        query="SELECT COUNT(ID_Curso) AS total FROM cursos WHERE Titulo RLIKE ?";
-        valoresEntrada=[titulo];
+        query="SELECT COUNT(ID_Curso) AS total FROM cursos WHERE Titulo LIKE ?";
+        valoresEntrada=["%"+titulo+"%"];
          //Conectamos con la consulta requerida
         conexion.query(mysql.format(query,valoresEntrada),function(err,contador) 
         {
@@ -608,7 +608,7 @@ function inscribirUsuarioEnCurso(IDCurso,IDUsuario,callback)
             else 
             {
                 //Comprobamos que el usuario no este incrito ya en el curso
-                query="SELECT COUNT(ID_Curso) AS total FROM asig_cursos WHERE ID_Curso RLIKE ? and ID_Usuario RLIKE ?";
+                query="SELECT COUNT(ID_Curso) AS total FROM asig_cursos WHERE ID_Curso LIKE ? and ID_Usuario LIKE ?";
                 conexion.query(query,valoresEntrada,function(err, contador) 
                 {
                     if (err) 
