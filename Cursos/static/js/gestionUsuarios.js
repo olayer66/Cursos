@@ -89,15 +89,31 @@ function cargaCursosActuales(cursos){
     });
 }
 /*=============================FUNCIONES HORARIO==============================*/
-//Carga dela tabla del horario de la semana actual
+//Cambia la vista del horario al pulsar la paginacion
+function cambiarHorario(fecha,callback){
+    var fechaDate= new Date(fecha);
+    //cargamos el nuevo horario
+    cargaHorario(fecha,function(err){
+       if(err)
+       {
+           callback(err);
+       }
+       else
+       {
+           cambiaFechaBotones(fecha);
+           callback(null);
+       }
+    });
+}
+//Carga de la tabla del horario de la semana entorno a la fecha pasada
 function cargaHorario(fecha,callback){
     var lunes;
     var domingo;
-    //Extraemos el rango de fecha a mostrar 
+    //Extraemos el rango de fecha a mostrar
     calculaRangoFechas(fecha,function(fechLunes,fechDomingo){
         //Insertamos las fechas en el cuadro
-        $("#fechaIniHorario").text(fechLunes.getDate()+"/"+fechLunes.getMonth()+"/"+fechLunes.getFullYear());
-        $("#fechaFinHorario").text(fechDomingo.getDate()+"/"+fechDomingo.getMonth()+"/"+fechDomingo.getFullYear());
+        $("#fechaIniHorario").text(fechLunes.getDate()+"/"+(fechLunes.getMonth()+1)+"/"+fechLunes.getFullYear());
+        $("#fechaFinHorario").text(fechDomingo.getDate()+"/"+(fechDomingo.getMonth()+1)+"/"+fechDomingo.getFullYear());
         //Extraemos los cursos del usuario en el rango de fechas
         lunes=fechLunes.getFullYear()+"-"+(fechLunes.getMonth()+1)+"-"+fechLunes.getDate();
         domingo=fechDomingo.getFullYear()+"-"+(fechDomingo.getMonth()+1)+"-"+fechDomingo.getDate();
@@ -108,6 +124,8 @@ function cargaHorario(fecha,callback){
             }
             else
             { 
+                //Eliminamos las filas de la tabla si existen
+                $(".filaHorario").remove();
                 //Transformamos las horas  a formato Date
                 transformaHoras(horarios);
                 //Primera fila de 00:00:00 a inicial del primer curso menos 1
@@ -249,11 +267,6 @@ function insertaUltimaFila(horarios,callback){
     else
         callback(null);
 }
-//Cambia la vista del horario al pulsar la paginacion
-function cambiarHorario(fecha,callback)
-{
-    alert("pulsado: "+ fecha);
-}
 /*======================FUNCIONES DEL FORM INSCRIPCION========================*/
 //Rellena los combobox de la fecha en el formulario de inscripcion
 function crearSelectFecha(){
@@ -304,23 +317,14 @@ function calculaRangoFechas(fecha,callback){
 }
 //Cambia la fecha de los botones de paginacion del horario dependiendo de la fecha pasada
 function cambiaFechaBotones(fecha){
-    var fechAnt=new Date();
-    var fechSig=new Date();
-    fechAnt.setDate(fecha.getDate()-7);
-    fechSig.setDate(fecha.getDate()+7);
-    fechAnt=fechAnt.getDate()+"/"+fechAnt.getMonth()+"/"+fechAnt.getFullYear();
-    fechSig=fechSig.getDate()+"/"+fechSig.getMonth()+"/"+fechSig.getFullYear();
-    //Se que no esta bien del todo pero el .data() no he consguido que funcionara no cambia los valores
-    $("#botonSemanaAnt").attr("data-fech",fechAnt);
-    $("#botonSemanaSig").attr("data-fech",fechSig);
-}
-//Suma 1  a la hora pasada
-function sumaHora(hora,callback){
-    var aux=hora.split(":");
-    var cambioHora=new Date();
-    cambioHora.setHours(aux[0],aux[1],aux[2]);
-    cambioHora.setHours(cambioHora.getHours() + 1);
-    callback(cambioHora.getHours()+":"+cambioHora.getMinutes()+":"+cambioHora.getSeconds());
+    var fechAnt=new Date(fecha);
+    var fechSig=new Date(fecha);
+    var concat1;
+    var concat2;
+    fechAnt.setDate(fechAnt.getDate()-7);
+    fechSig.setDate(fechSig.getDate()+7);
+    fAnt=fechAnt;
+    fSig=fechSig;
 }
 //Transforma las hora a formato date
 function transformaHoras(horarios){
@@ -360,7 +364,6 @@ function separarHorarios(horarios){
             timeDiff = Math.abs(horario.Hora_Fin.getTime() - horario.Hora_Inicio.getTime());
             diffDays = Math.ceil(timeDiff / (1000 * 3600));
         }
-        //console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
     });
     //ordenamos el array en funcion de la hora de inicio del curso
     horarios.sort(function (a,b){
@@ -370,10 +373,6 @@ function separarHorarios(horarios){
             return 1;
         return 0;
     });
-    horarios.forEach(function(horario){
-                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
-            });
-    console.log("TOTAL: " +horarios.length);
 }
 //Inserta el texto en la celda corresponciente
 function insertarEnCelda(horaInicio,titulo,posicion)

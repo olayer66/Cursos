@@ -7,6 +7,8 @@
 var divActivo;
 var limite=5;
 var IDUsuarioLogin;
+var fAnt;
+var fSig;
 $(document).ready(function() 
 {
     console.log("DOM inicializado");
@@ -262,8 +264,7 @@ $(document).ready(function()
     });
     //Boton de paginacion de curso hacia atras
     $("#botonSemanaAnt").on("click",function (){
-        var fecha=$("#botonSemanaAnt").data("fech");
-        cambiarHorario(fecha,function(err){
+        cambiarHorario(fAnt,function(err){
             if(err)
             {
                 alert(err);
@@ -272,8 +273,7 @@ $(document).ready(function()
     });
     //Boton de paginacion de curso hacia alante
     $("#botonSemanaSig").on("click",function (){
-        var fecha=$("#botonSemanaSig").data("fech");
-        cambiarHorario(fecha,function(err){
+        cambiarHorario(fSig,function(err){
             if(err)
             {
                 alert(err);

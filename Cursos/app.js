@@ -469,21 +469,21 @@ servidor.delete("/curso/:id",function(req,res){
 });
 /*======================================INICIO DEL SERVIDOR==============================================*/
 //Abrimos el servidor a la escucha por el puerto 3000
-servidor.listen(config.puerto, function(err) {
-    if (err) {
-        console.log("Error al abrir el puerto "+config.puerto+": " + err);
-    } else {
-        console.log("Servidor escuchando en el puerto "+config.puerto+".");
-    }
-});
-
-//Abrimos el servidor https a la escucha por el puerto 5555
-//servidorHTTPS.listen(config.puertoHTTPS, function(err) {
+//servidor.listen(config.puerto, function(err) {
 //    if (err) {
-//        console.log("Error al abrir el puerto "+config.puertoHTTPS+": " + err);
+//        console.log("Error al abrir el puerto "+config.puerto+": " + err);
 //    } else {
-//        console.log("Servidor escuchando en el puerto "+config.puertoHTTPS+".");
+//        console.log("Servidor escuchando en el puerto "+config.puerto+".");
 //    }
 //});
+
+//Abrimos el servidor https a la escucha por el puerto 5555
+servidorHTTPS.listen(config.puertoHTTPS, function(err) {
+    if (err) {
+        console.log("Error al abrir el puerto "+config.puertoHTTPS+": " + err);
+    } else {
+        console.log("Servidor escuchando en el puerto "+config.puertoHTTPS+".");
+    }
+});
 
 

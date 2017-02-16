@@ -87,10 +87,10 @@ function extraerHorariosUsuario(IDUsuario,fechLunes,fechDomingo,callback)
         }
         else
         {
-            console.log("Horario:");
-            horarios.forEach(function(horario){
-                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
-            });
+//            console.log("Horario del "+ fechLunes+" al "+ fechDomingo);
+//            horarios.forEach(function(horario){
+//                console.log(horario.Titulo+"|"+horario.Dia+"|"+horario.Hora_Inicio+"|"+horario.Hora_Fin);
+//            });
             callback(null,horarios);
         }
     });
